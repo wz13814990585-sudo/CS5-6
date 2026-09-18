@@ -1,0 +1,9 @@
+.DS_Store
+**/.DS_Store
+*.textClipping
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.*
