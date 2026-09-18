@@ -1,4 +1,4 @@
-"""Development-only factor analysis for next-week open-to-close stock ranking."""
+"""Warmup-only factor analysis for next-week open-to-close stock ranking."""
 
 from __future__ import annotations
 
@@ -203,13 +203,10 @@ def run_factor_analysis(input_path: Path, output_dir: Path) -> dict[str, list[st
     summary = summarize_factors(development, by_date, quintiles, corr, factors)
     factor_sets, selection = select_factor_sets(summary, corr)
     print("[4/6] Exporting factor evidence and correlation", flush=True)
-    by_date.to_csv(output_dir / "factor_metrics_by_date.csv", index=False)
     yearly = by_date.assign(year=by_date["date"].dt.year).groupby(["year", "factor"], as_index=False).agg(
         mean_rank_ic=("rank_ic", "mean"), median_rank_ic=("rank_ic", "median"), rank_ic_std=("rank_ic", "std"),
         positive_ic_ratio=("rank_ic", lambda x: (x.dropna() > 0).mean()), eligible_weeks=("rank_ic", "count"))
     yearly.to_csv(output_dir / "factor_metrics_by_year.csv", index=False)
-    corr.rename_axis("factor").reset_index().to_csv(output_dir / "factor_correlation.csv", index=False)
-    selection.to_csv(output_dir / "factor_selection_summary.csv", index=False)
     selection.to_csv(output_dir / "warmup_single_factor_summary.csv", index=False)
     by_date.to_csv(output_dir / "warmup_factor_metrics_by_date.csv", index=False)
     corr.rename_axis("factor").reset_index().to_csv(output_dir / "warmup_factor_correlation.csv", index=False)

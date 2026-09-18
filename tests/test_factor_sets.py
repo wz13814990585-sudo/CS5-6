@@ -1,6 +1,6 @@
 import json
 
-from ml.config import FACTOR_OUTPUT_DIR, TARGET_COLUMN
+from ml.config import DATA_FILE, FACTOR_OUTPUT_DIR, TARGET_COLUMN
 from ml.factor_sets import load_factor_sets
 
 
@@ -20,3 +20,8 @@ def test_factor_set_metadata_matches_feature_count():
     payload = json.loads((FACTOR_OUTPUT_DIR / "ml_factor_sets.json").read_text())
     for item in payload["factor_sets"].values():
         assert item["n_features"] == len(item["factors"])
+
+
+def test_canonical_weekly_data_path_is_shared_data_artifact():
+    assert DATA_FILE.as_posix() == "data/test_data_weekly.csv"
+    assert DATA_FILE.exists()

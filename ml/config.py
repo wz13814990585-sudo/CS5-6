@@ -35,7 +35,7 @@ REDUNDANCY_LIMIT = 0.75
 MAX_FORWARD_FACTORS = 15
 MIN_RANK_IC_IMPROVEMENT = 0.001
 
-DATA_FILE = Path("factor_analysis/test_data_weekly.csv")
+DATA_FILE = Path("data/test_data_weekly.csv")
 DAILY_DATA_FILE = Path("data/clean_basic_data.csv")
 FACTOR_OUTPUT_DIR = Path("outputs/factor_analysis")
 XGB_OUTPUT_DIR = Path("outputs/xgb_ranker")

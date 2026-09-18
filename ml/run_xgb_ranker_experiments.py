@@ -44,7 +44,6 @@ def run(args):
     print("[3/8] Joint chronological search entirely inside first-three-year warmup", flush=True)
     search = warmup_ranker_search(data, factor_sets, "common_sample")
     search.to_csv(args.output_dir / "warmup_ranker_search.csv", index=False)
-    search.to_csv(args.output_dir / "xgb_ranker_hyperparameter_results.csv", index=False)  # compatibility alias
     comparison = pd.concat([best_per_factor_set(search),
                             native_results_for_common_winners(data, factor_sets, search)], ignore_index=True)
     comparison["selected_final_config"] = False
@@ -52,7 +51,6 @@ def run(args):
     comparison.loc[(comparison.factor_set_name == best.factor_set_name)
                    & (comparison.sample_mode == "common_sample"), "selected_final_config"] = True
     comparison.to_csv(args.factor_output_dir / "warmup_factor_set_comparison.csv", index=False)
-    comparison.to_csv(args.output_dir / "xgb_ranker_factor_set_comparison.csv", index=False)
     config = frozen_config(best)
     config.update({"random_state": RANDOM_STATE, "python_version": platform.python_version(),
                    "xgboost_version": xgboost.__version__, "pandas_version": pd.__version__,
@@ -79,12 +77,10 @@ def run(args):
     overall["number_of_weeks"] = overall.pop("number_of_dates")
     overall["number_of_monthly_models"] = len(models)
     pd.DataFrame([overall]).to_csv(args.output_dir / "xgb_ranker_oos_summary.csv", index=False)
-    pd.DataFrame([overall]).to_csv(args.output_dir / "xgb_ranker_summary.csv", index=False)
     audit = {"warmup_weeks": int(data.loc[data.date.between(WARMUP_START, WARMUP_END), "date"].nunique()),
              "oos_start": str(predictions.date.min().date()), "oos_end": str(predictions.date.max().date()),
              "monthly_models": len(models), "predictions": len(predictions),
              "post_warmup_selection": False}
-    (args.output_dir / "xgb_ranker_config.json").write_text(json.dumps({**config, **audit}, indent=2), encoding="utf-8")
     print("[8/8] Complete", json.dumps(audit), flush=True)
 
 

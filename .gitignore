@@ -7,4 +7,5 @@ __pycache__/
 venv/
 .env
 .env.*
-/data/
+/data/*
+!/data/test_data_weekly.csv
