@@ -1,4 +1,4 @@
-"""Monthly-refit, weekly-prediction rolling OOS engine."""
+"""Frozen-config monthly refits on the full eligible rolling three-year window."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import json
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-from .config import FINAL_TEST_END, FINAL_TEST_START, TARGET_COLUMN, TRAIN_YEARS, VALIDATION_WEEKS
+from .config import DATA_END, ROLLING_START, TARGET_COLUMN, TRAIN_YEARS
 from .data import observable_training_rows
 from .metrics import aggregate_metrics, metrics_by_date
 from .xgb_ranker import fit_ranker, predict_ranker
@@ -16,55 +16,50 @@ def refit_dates(prediction_dates) -> list[pd.Timestamp]:
     dates = pd.DatetimeIndex(sorted(pd.to_datetime(pd.Series(prediction_dates).unique())))
     result, last_period = [], None
     for date in dates:
-        period = date.to_period("M")
-        if period != last_period:
-            result.append(date); last_period = period
+        if date.to_period("M") != last_period:
+            result.append(date); last_period = date.to_period("M")
     return result
 
 
+def eligible_full_window(df, refit):
+    """Return the full eligible 3-year history used by the final monthly fit."""
+    refit = pd.Timestamp(refit)
+    history = observable_training_rows(df, refit, refit - relativedelta(years=TRAIN_YEARS), inclusive=False)
+    return history.loc[history[TARGET_COLUMN].notna()].copy()
+
+
 def rolling_oos(df, features, factor_set_name, params, objective="rank:ndcg", n_bins=10):
-    test = df.loc[df["date"].between(FINAL_TEST_START, FINAL_TEST_END)].copy()
-    dates = pd.DatetimeIndex(sorted(test["date"].unique()))
+    oos_panel = df.loc[df["date"].between(ROLLING_START, DATA_END)].copy()
+    dates = pd.DatetimeIndex(sorted(oos_panel["date"].unique()))
     starts = refit_dates(dates)
     predictions, model_rows = [], []
     for index, refit in enumerate(starts):
         next_refit = starts[index + 1] if index + 1 < len(starts) else dates.max() + pd.Timedelta(days=1)
-        history = observable_training_rows(df, refit, refit - relativedelta(years=TRAIN_YEARS))
-        history = history.loc[history[TARGET_COLUMN].notna()].copy()
-        history_dates = pd.DatetimeIndex(sorted(history["date"].unique()))
-        if len(history_dates) <= VALIDATION_WEEKS + 10:
+        history = eligible_full_window(df, refit)
+        if history["date"].nunique() < 52:
             continue
-        validation_dates = history_dates[-VALIDATION_WEEKS:]
-        train = history.loc[history["date"] < validation_dates[0]]
-        validation = history.loc[history["date"].isin(validation_dates)]
-        model = fit_ranker(train, features, params, objective, n_bins)
-        train_pred = predict_ranker(model, train, features, n_bins)
-        val_pred = predict_ranker(model, validation, features, n_bins)
-        period = test.loc[(test["date"] >= refit) & (test["date"] < next_refit) & test[TARGET_COLUMN].notna()]
+        # Final OOS model uses every eligible observation; no validation holdout remains removed.
+        model = fit_ranker(history, features, params, objective, n_bins)
+        train_pred = predict_ranker(model, history, features, n_bins)
+        period = oos_panel.loc[(oos_panel["date"] >= refit) & (oos_panel["date"] < next_refit)
+                               & oos_panel[TARGET_COLUMN].notna()].copy()
+        if period.empty:
+            continue
         oos = predict_ranker(model, period, features, n_bins)
-        model_id = f"{factor_set_name}_{refit:%Y%m%d}"
+        model_id = f"xgbranker_{refit:%Y%m%d}"
         oos["model_id"], oos["factor_set_name"], oos["refit_date"] = model_id, factor_set_name, refit
         predictions.append(oos)
         train_metrics = aggregate_metrics(metrics_by_date(train_pred), "train_")
-        val_metrics = aggregate_metrics(metrics_by_date(val_pred), "validation_")
         oos_metrics = aggregate_metrics(metrics_by_date(oos), "oos_")
-        row = {"model_id": model_id, "model_type": "XGBRanker", "objective": objective,
-               "factor_set_name": factor_set_name, "refit_date": refit,
-               "n_relevance_bins": n_bins,
-               "train_start": train["date"].min(), "train_end": train["date"].max(),
-               "validation_start": validation["date"].min(), "validation_end": validation["date"].max(),
-               "number_of_train_dates": train["date"].nunique(), "number_of_train_rows": len(train),
-               "number_of_validation_dates": validation["date"].nunique(), "number_of_validation_rows": len(validation),
-               "number_of_features": len(features), "feature_list": json.dumps(features),
-               "hyperparameters": json.dumps(params, sort_keys=True), **train_metrics, **val_metrics, **oos_metrics}
-        row["train_validation_rank_ic_gap"] = row["train_mean_rank_ic"] - row["validation_mean_rank_ic"]
+        row = {"model_id": model_id, "model_type": "XGBRanker", "refit_date": refit,
+               "factor_set_name": factor_set_name, "number_of_features": len(features),
+               "feature_list": json.dumps(features), "objective": objective,
+               "n_relevance_bins": n_bins, "hyperparameters": json.dumps(params, sort_keys=True),
+               "train_start": history["date"].min(), "train_end": history["date"].max(),
+               "number_of_train_dates": history["date"].nunique(), "number_of_train_rows": len(history),
+               **train_metrics, **oos_metrics}
+        row["number_of_oos_dates"] = row["oos_number_of_dates"]
+        row["prediction_score_std"] = row["oos_prediction_score_std"]
         row["train_oos_rank_ic_gap"] = row["train_mean_rank_ic"] - row["oos_mean_rank_ic"]
-        # Keep the requested concise field names alongside the explicit rank-IC names.
-        row["train_ic_std"] = row["train_rank_ic_std"]
-        row["validation_ic_std"] = row["validation_rank_ic_std"]
-        row["oos_ic_std"] = row["oos_rank_ic_std"]
-        row["train_strong_validation_weak_flag"] = bool(
-            row["train_mean_rank_ic"] > 0.10 and abs(row["validation_mean_rank_ic"]) < 0.01
-        )
         model_rows.append(row)
     return (pd.concat(predictions, ignore_index=True) if predictions else pd.DataFrame(), pd.DataFrame(model_rows))

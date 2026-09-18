@@ -12,9 +12,9 @@ import pandas as pd
 from scipy.stats import spearmanr
 
 from ml.config import (
-    DATA_FILE, DEVELOPMENT_END, DEVELOPMENT_START, DUPLICATE_REPRESENTATIONS,
-    FACTOR_OUTPUT_DIR, MIN_COVERAGE_RATIO, MIN_STOCKS, REDUNDANCY_LIMIT,
-    TARGET_COLUMN, factor_family, stock_factors,
+    DATA_FILE, DUPLICATE_REPRESENTATIONS, FACTOR_OUTPUT_DIR, FUNDAMENTAL_MIN_COVERAGE_RATIO,
+    MIN_STOCKS, REDUNDANCY_LIMIT, TARGET_COLUMN, TECHNICAL_MIN_COVERAGE_RATIO,
+    WARMUP_END, WARMUP_START, factor_family, stock_factors,
 )
 from ml.data import add_exact_week_targets, load_weekly_panel, manual_target_samples
 
@@ -102,7 +102,8 @@ def summarize_factors(development, by_date, quintiles, correlation, factors) -> 
         (result["mean_rank_ic"].abs() >= .006).astype(int) + (result["icir"].abs() >= .30).astype(int)
         + (result["direction_adjusted_top_bottom"] >= .00035).astype(int)
         + (result["monotonicity"].abs() >= .60).astype(int) + same_time.astype(int)
-        + same_regime.astype(int) + (result["coverage"] >= MIN_COVERAGE_RATIO).astype(int)
+        + same_regime.astype(int) + (result["coverage"] >= result["family"].map(
+            lambda family: FUNDAMENTAL_MIN_COVERAGE_RATIO if family == "fundamental" else TECHNICAL_MIN_COVERAGE_RATIO)).astype(int)
     )
     result["evidence_flag"] = np.select(
         [result["evidence_score"] >= 6, result["evidence_score"] >= 4], ["Strong", "Moderate"], default="Weak")
@@ -110,7 +111,9 @@ def summarize_factors(development, by_date, quintiles, correlation, factors) -> 
 
 
 def ranked_admissible(summary: pd.DataFrame) -> pd.DataFrame:
-    result = summary.loc[(~summary["factor"].isin(DUPLICATE_REPRESENTATIONS)) & (summary["coverage"] >= MIN_COVERAGE_RATIO)].copy()
+    thresholds = summary["family"].map(
+        lambda family: FUNDAMENTAL_MIN_COVERAGE_RATIO if family == "fundamental" else TECHNICAL_MIN_COVERAGE_RATIO)
+    result = summary.loc[(~summary["factor"].isin(DUPLICATE_REPRESENTATIONS)) & (summary["coverage"] >= thresholds)].copy()
     result["abs_icir"], result["abs_mean_ic"] = result["icir"].abs(), result["mean_rank_ic"].abs()
     result["abs_spread"] = result["direction_adjusted_top_bottom"].abs()
     return result.sort_values(["evidence_score", "abs_icir", "abs_mean_ic", "abs_spread", "factor"],
@@ -119,24 +122,25 @@ def ranked_admissible(summary: pd.DataFrame) -> pd.DataFrame:
 
 def select_factor_sets(summary: pd.DataFrame, corr: pd.DataFrame) -> tuple[dict, pd.DataFrame]:
     ordered = ranked_admissible(summary)
+    baseline = ordered.loc[ordered["family"] != "fundamental"].copy()
     core, used_families = [], set()
-    for factor in ordered["factor"]:
+    for factor in baseline["factor"]:
         family = factor_family(factor)
         if family != "fundamental" and family not in used_families and all(abs(corr.at[factor, c]) < REDUNDANCY_LIMIT for c in core):
             core.append(factor); used_families.add(family)
         if len(core) == 5: break
-    for factor in ordered["factor"]:
+    for factor in baseline["factor"]:
         if len(core) == 5: break
         if factor not in core and factor_family(factor) != "fundamental" and all(abs(corr.at[factor, c]) < REDUNDANCY_LIMIT for c in core):
             core.append(factor)
     fundamentals = ordered.loc[ordered["family"] == "fundamental", "factor"].tolist()
     fundamental = fundamentals[0] if fundamentals else None
-    extras = [f for f in ordered["factor"] if f not in core and factor_family(f) not in {"fundamental", "cross_sectional_rank"}]
+    extras = [f for f in baseline["factor"] if f not in core and factor_family(f) != "cross_sectional_rank"]
     horizon = extras[0] if extras else None
     extended = list(dict.fromkeys(core + ([fundamental] if fundamental else []) + ([horizon] if horizon else [])))
-    all_factors = ordered["factor"].tolist()
-    strong = ordered.loc[ordered["evidence_flag"] == "Strong", "factor"].tolist() or all_factors[:3]
-    moderate = ordered.loc[ordered["evidence_flag"].isin(["Strong", "Moderate"]), "factor"].tolist() or all_factors[:5]
+    all_factors = baseline["factor"].tolist()
+    strong = baseline.loc[baseline["evidence_flag"] == "Strong", "factor"].tolist() or all_factors[:3]
+    moderate = baseline.loc[baseline["evidence_flag"].isin(["Strong", "Moderate"]), "factor"].tolist() or all_factors[:5]
     sets = {
         "core_5": core, "core_plus_fundamental": list(dict.fromkeys(core + ([fundamental] if fundamental else []))),
         "core_plus_horizon": list(dict.fromkeys(core + ([horizon] if horizon else []))), "extended": extended,
@@ -151,8 +155,9 @@ def select_factor_sets(summary: pd.DataFrame, corr: pd.DataFrame) -> tuple[dict,
     selection["final_role"] = selection["factor"].map(lambda f: ";".join(roles[f]) if roles[f] else "candidate")
     selection["selection_reason"] = selection.apply(
         lambda r: "Duplicate rank representation excluded from default sets" if r.factor in DUPLICATE_REPRESENTATIONS
-        else "Below minimum development coverage" if r.coverage < MIN_COVERAGE_RATIO
-        else "Development-only evidence ordering; compact core also applies family diversity and redundancy", axis=1)
+        else "Below family-specific warmup coverage requirement" if r.coverage < (
+            FUNDAMENTAL_MIN_COVERAGE_RATIO if r.family == "fundamental" else TECHNICAL_MIN_COVERAGE_RATIO)
+        else "Warmup-only evidence ordering; compact core also applies family diversity and redundancy", axis=1)
     return sets, selection
 
 
@@ -185,14 +190,14 @@ def run_factor_analysis(input_path: Path, output_dir: Path) -> dict[str, list[st
     print("[1/6] Loading weekly data", flush=True)
     data = add_exact_week_targets(load_weekly_panel(input_path))
     factors = [f for f in stock_factors() if f in data]
-    development = data.loc[data["date"].between(DEVELOPMENT_START, DEVELOPMENT_END)].copy()
+    development = data.loc[data["date"].between(WARMUP_START, WARMUP_END)].copy()
     print("[2/6] Validating exact next-week open-to-close target", flush=True)
     samples = manual_target_samples(data, 20)
-    if not np.allclose(samples["calculated_target"], samples["manually_recomputed_target"], rtol=1e-12, atol=1e-12):
+    if not np.allclose(samples["calculated_target"], samples["manual_target"], rtol=1e-12, atol=1e-12):
         raise AssertionError("Manual target validation failed")
     samples.to_csv(output_dir / "target_validation_samples.csv", index=False)
     print(samples.to_string(index=False), flush=True)
-    print("[3/6] Running development-only weekly factor analysis", flush=True)
+    print("[3/6] Running first-three-year warmup factor analysis", flush=True)
     by_date, quintiles = weekly_factor_metrics(development, factors)
     corr = correlation_matrix(development, factors)
     summary = summarize_factors(development, by_date, quintiles, corr, factors)
@@ -205,12 +210,15 @@ def run_factor_analysis(input_path: Path, output_dir: Path) -> dict[str, list[st
     yearly.to_csv(output_dir / "factor_metrics_by_year.csv", index=False)
     corr.rename_axis("factor").reset_index().to_csv(output_dir / "factor_correlation.csv", index=False)
     selection.to_csv(output_dir / "factor_selection_summary.csv", index=False)
+    selection.to_csv(output_dir / "warmup_single_factor_summary.csv", index=False)
+    by_date.to_csv(output_dir / "warmup_factor_metrics_by_date.csv", index=False)
+    corr.rename_axis("factor").reset_index().to_csv(output_dir / "warmup_factor_correlation.csv", index=False)
     print("[5/6] Building corrected-target factor combinations", flush=True)
     calculate_multifactor(development, factor_sets, selection).to_csv(output_dir / "multifactor_summary.csv", index=False)
-    payload = {"target": TARGET_COLUMN, "development_period": {"start": DEVELOPMENT_START, "end": DEVELOPMENT_END},
+    payload = {"target": TARGET_COLUMN, "warmup_period": {"start": WARMUP_START, "end": WARMUP_END},
                "selection_order": "evidence_score desc, |ICIR| desc, |Mean Rank IC| desc, |Q5-Q1| desc, factor asc; core adds family diversity and |rho| limit",
                "redundancy_limit": REDUNDANCY_LIMIT, "factor_sets": {
-                   name: {"factors": values, "n_features": len(values), "selection_method": "development_only_deterministic_evidence"}
+                   name: {"factors": values, "n_features": len(values), "selection_method": "warmup_only_deterministic_evidence"}
                    for name, values in factor_sets.items()}}
     (output_dir / "ml_factor_sets.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print("[6/6] Factor analysis complete", flush=True)

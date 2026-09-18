@@ -65,9 +65,12 @@ def aggregate_metrics(by_date: pd.DataFrame, prefix: str = "") -> dict:
         "ndcg20": by_date["ndcg20"].mean() if len(by_date) else np.nan,
         "top5_return": by_date["top5_return"].mean() if len(by_date) else np.nan,
         "top10_return": by_date["top10_return"].mean() if len(by_date) else np.nan,
+        "bottom5_return": by_date["bottom5_return"].mean() if len(by_date) else np.nan,
+        "bottom10_return": by_date["bottom10_return"].mean() if len(by_date) else np.nan,
         "top5_bottom5_spread": by_date["top5_bottom5_spread"].mean() if len(by_date) else np.nan,
         "top10_bottom10_spread": by_date["top10_bottom10_spread"].mean() if len(by_date) else np.nan,
         "number_of_dates": len(ic),
+        "prediction_score_std": by_date["prediction_score_std"].mean() if len(by_date) else np.nan,
     }
     return {f"{prefix}{key}": value for key, value in values.items()}
 
@@ -86,4 +89,5 @@ def yearly_metrics(by_date: pd.DataFrame) -> pd.DataFrame:
                                   "ndcg20": "mean_ndcg20", "top5_return": "mean_top5_return",
                                   "top10_return": "mean_top10_return",
                                   "top5_bottom5_spread": "mean_top5_bottom5_spread",
-                                  "top10_bottom10_spread": "mean_top10_bottom10_spread"})
+                                  "top10_bottom10_spread": "mean_top10_bottom10_spread",
+                                  "number_of_dates": "number_of_prediction_dates"})

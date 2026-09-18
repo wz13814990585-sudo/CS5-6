@@ -6,7 +6,7 @@ from ml.data import observable_training_rows, validate_feature_columns
 from ml.validation import assert_disjoint_dates
 
 
-@pytest.mark.parametrize("bad", ["date", "ticker", TARGET_COLUMN, "open", "adj_close", "macro_vix_level", "future_open", "fwd_x"])
+@pytest.mark.parametrize("bad", ["date", "decision_date", "ticker", TARGET_COLUMN, "open", "adj_close", "macro_vix_level", "future_open", "fwd_x"])
 def test_forbidden_features_rejected(bad):
     with pytest.raises(ValueError):
         validate_feature_columns([bad], [bad])
@@ -21,7 +21,9 @@ def test_target_must_be_observable_before_training():
     df = pd.DataFrame({"date": pd.to_datetime(["2020-01-03", "2020-01-10"]),
                        "target_observation_date": pd.to_datetime(["2020-01-10", "2020-01-17"])})
     got = observable_training_rows(df, "2020-01-10")
-    assert got.date.tolist() == [pd.Timestamp("2020-01-03")]
+    assert got.empty
+    inclusive = observable_training_rows(df, "2020-01-10", inclusive=True)
+    assert inclusive.date.tolist() == [pd.Timestamp("2020-01-03")]
 
 
 def test_periods_are_ordered_and_dates_never_split():

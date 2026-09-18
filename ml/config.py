@@ -7,26 +7,36 @@ from pathlib import Path
 TARGET_COLUMN = "target_next_week_oc_return"
 TARGET_OBSERVATION_DATE = "target_observation_date"
 
-DEVELOPMENT_START = "2016-01-01"
-DEVELOPMENT_END = "2021-12-31"
-VALIDATION_START = "2022-01-01"
-VALIDATION_END = "2023-12-31"
-FINAL_TEST_START = "2024-01-01"
-FINAL_TEST_END = "2026-12-31"
+MODEL_START = "2016-01-01"
+WARMUP_START = "2016-01-01"
+WARMUP_END = "2018-12-31"
+ROLLING_START = "2019-01-01"
+DATA_END = "2026-08-31"
+
+# Deprecated aliases retained only for external import compatibility.
+DEVELOPMENT_START, DEVELOPMENT_END = WARMUP_START, WARMUP_END
+VALIDATION_START, VALIDATION_END = WARMUP_START, WARMUP_END
+FINAL_TEST_START, FINAL_TEST_END = ROLLING_START, DATA_END
 
 TRAIN_YEARS = 3
 VALIDATION_WEEKS = 13
 REFIT_FREQUENCY = "monthly"
 PREDICTION_FREQUENCY = "weekly"
 MIN_STOCKS = 30
-MIN_COVERAGE_RATIO = 0.50
+TECHNICAL_MIN_COVERAGE_RATIO = 0.80
+FUNDAMENTAL_MIN_COVERAGE_RATIO = 0.50
+MIN_COVERAGE_RATIO = TECHNICAL_MIN_COVERAGE_RATIO  # deprecated alias
 N_RELEVANCE_BINS = 10
+RELEVANCE_BIN_CANDIDATES = [5, 10, 20]
+OBJECTIVE_CANDIDATES = ["rank:ndcg", "rank:pairwise"]
+WARMUP_CV_FOLDS = 3
 RANDOM_STATE = 5703
 REDUNDANCY_LIMIT = 0.75
 MAX_FORWARD_FACTORS = 15
 MIN_RANK_IC_IMPROVEMENT = 0.001
 
 DATA_FILE = Path("factor_analysis/test_data_weekly.csv")
+DAILY_DATA_FILE = Path("data/clean_basic_data.csv")
 FACTOR_OUTPUT_DIR = Path("outputs/factor_analysis")
 XGB_OUTPUT_DIR = Path("outputs/xgb_ranker")
 
@@ -47,7 +57,8 @@ DUPLICATE_REPRESENTATIONS = {
     "cs_rank_vol20": "realized_vol_20", "cs_rank_amihud20": "amihud_illiq_20",
 }
 RAW_MARKET_COLUMNS = {"open", "high", "low", "close", "adj_close", "volume", "daily_return"}
-METADATA_COLUMNS = {"date", "ticker", "week_id", "source_row", TARGET_OBSERVATION_DATE}
+METADATA_COLUMNS = {"date", "decision_date", "ticker", "week_id", "market_week_id", "source_row",
+                    "target_week_id", "target_week_first_date", "target_week_last_date", TARGET_OBSERVATION_DATE}
 FORBIDDEN_FEATURE_COLUMNS = RAW_MARKET_COLUMNS | METADATA_COLUMNS | set(MACRO_FACTORS) | {
     TARGET_COLUMN, "fwd_1w_close_to_close", "fwd_4w_close_to_close", "fwd_12w_close_to_close",
     "adj_open_calc", "relevance_label", "ranking_score", "actual_return",

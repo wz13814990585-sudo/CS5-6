@@ -26,3 +26,12 @@ def test_relevance_is_date_local():
 def test_relevance_bin_count_is_configurable():
     out = add_relevance_by_date(data(), "target_next_week_oc_return", 5)
     assert out.relevance_label.max() <= 4
+
+
+def test_ranker_output_names_score_and_actual_return_separately():
+    from ml.xgb_ranker import predict_ranker
+    class Model:
+        def predict(self, x): return range(len(x))
+    out = predict_ranker(Model(), data(), ["f"])
+    assert {"ranking_score", "actual_return"} <= set(out)
+    assert "predicted_return" not in out

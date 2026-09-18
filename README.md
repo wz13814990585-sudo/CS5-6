@@ -2,18 +2,17 @@
 
 This project ranks stocks at each week-end using only information available by that close. The primary target is the following market week's adjusted Open-to-Close log return. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for timing, leakage controls, periods, and the SEC filing-date rule.
 
-Run the corrected development-only factor analysis:
+Build the local daily OHLCV source, then run the warmup-only factor analysis:
 
 ```bash
+python 'raw data/fetch_and_clean(1).py'
 python -m factor_analysis.build_weekly_factor_analysis
 ```
 
-Run a fast four-set smoke experiment or the complete experiment:
+Run the complete frozen-configuration experiment:
 
 ```bash
-python -m ml.run_xgb_ranker_experiments --quick --run-forward-selection
-python -m ml.run_xgb_ranker_experiments --full
-python -m ml.optimize_ranker
+python -m ml.run_xgb_ranker_experiments
 ```
 
-Useful switches include `--factor-set core_5`, `--objective rank:pairwise`, `--skip-tuning`, and `--common-sample`. Both common-sample and native-coverage results are always exported. Outputs are written beneath `outputs/factor_analysis` and `outputs/xgb_ranker`.
+The runner jointly selects the factor set, ranking objective, relevance bins, and controlled hyperparameters using chronological folds entirely within 2016–2018. It freezes that configuration before fitting monthly full-window rolling models from 2019 onward. Outputs are written beneath `outputs/factor_analysis` and `outputs/xgb_ranker`.

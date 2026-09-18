@@ -161,21 +161,27 @@ def calculate_one_ticker(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def keep_last_trading_day_of_week(data: pd.DataFrame) -> pd.DataFrame:
-    """每只股票每周仅保留最后一个实际交易日，用于周频模型训练。
+    """Keep rows only on the shared final market session of each W-FRI week.
 
-    因子应先在完整日频记录上计算，再进行本筛选；这样保留的周末记录仍然
-    包含该周每日价格信息形成的 rolling window 和技术指标。
+    A ticker missing on the common decision date is excluded; it never falls
+    back to an earlier ticker-specific session. A terminal Mon-Wed partial week
+    is also excluded because its final market session is not yet known.
     """
     weekly = data.sort_values(["ticker", "date"]).copy()
     weekly["_trading_week"] = weekly["date"].dt.to_period("W-FRI")
-    weekly = (
-        weekly.groupby(["ticker", "_trading_week"], group_keys=False, sort=False)
-        .tail(1)
-        .drop(columns="_trading_week")
-        .sort_values(["ticker", "date"])
-        .reset_index(drop=True)
-    )
-    return weekly
+    market = (weekly[["date", "_trading_week"]].drop_duplicates()
+              .groupby("_trading_week", as_index=False)["date"].max()
+              .rename(columns={"date": "_decision_date"}).sort_values("_trading_week"))
+    if len(market):
+        last = market.iloc[-1]
+        if last._decision_date < last._trading_week.end_time.normalize() and last._decision_date.weekday() <= 2:
+            market = market.iloc[:-1]
+    weekly = weekly.merge(market, on="_trading_week", how="inner", validate="many_to_one")
+    weekly = weekly.loc[weekly["date"] == weekly["_decision_date"]].copy()
+    weekly["market_week_id"] = pd.Categorical(
+        weekly["_trading_week"], categories=market["_trading_week"], ordered=True).codes
+    return weekly.drop(columns=["_trading_week", "_decision_date"]).sort_values(
+        ["ticker", "date"]).reset_index(drop=True)
 
 
 def calculate_internal_one_ticker(frame: pd.DataFrame) -> pd.DataFrame:

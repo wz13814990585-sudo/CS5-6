@@ -64,11 +64,5 @@
   "xgboost_version": "3.4.1",
   "pandas_version": "2.2.3",
   "numpy_version": "2.4.4",
-  "git_commit": "8dc00449d4d5382fd539fdd83bfe42ae37de0faa",
-  "warmup_weeks": 156,
-  "oos_start": "2019-01-04",
-  "oos_end": "2026-08-21",
-  "monthly_models": 92,
-  "predictions": 39900,
-  "post_warmup_selection": false
+  "git_commit": "8dc00449d4d5382fd539fdd83bfe42ae37de0faa"
 }
