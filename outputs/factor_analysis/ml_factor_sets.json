@@ -1,0 +1,221 @@
+{
+  "target": "target_next_week_oc_return",
+  "development_period": {
+    "start": "2016-01-01",
+    "end": "2021-12-31"
+  },
+  "selection_order": "evidence_score desc, |ICIR| desc, |Mean Rank IC| desc, |Q5-Q1| desc, factor asc; core adds family diversity and |rho| limit",
+  "redundancy_limit": 0.75,
+  "factor_sets": {
+    "core_5": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "body_range_ratio",
+        "signed_volume_pressure_20",
+        "vol_ratio_5_20"
+      ],
+      "n_features": 5,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "core_plus_fundamental": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "body_range_ratio",
+        "signed_volume_pressure_20",
+        "vol_ratio_5_20",
+        "gross_margin_change_yoy"
+      ],
+      "n_features": 6,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "core_plus_horizon": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "body_range_ratio",
+        "signed_volume_pressure_20",
+        "vol_ratio_5_20",
+        "ema20_distance"
+      ],
+      "n_features": 6,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "extended": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "body_range_ratio",
+        "signed_volume_pressure_20",
+        "vol_ratio_5_20",
+        "gross_margin_change_yoy",
+        "ema20_distance"
+      ],
+      "n_features": 7,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "strong_only": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance",
+        "rsi14_centered",
+        "body_range_ratio",
+        "breakout_position_60",
+        "signed_volume_pressure_20",
+        "ret_1d",
+        "close_location_value",
+        "intraday_return"
+      ],
+      "n_features": 10,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "moderate_and_strong": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance",
+        "rsi14_centered",
+        "body_range_ratio",
+        "breakout_position_60",
+        "signed_volume_pressure_20",
+        "ret_1d",
+        "close_location_value",
+        "intraday_return",
+        "momentum_20_5",
+        "gross_margin_change_yoy",
+        "vol_ratio_5_20",
+        "ret_5d",
+        "downside_vol_20",
+        "overnight_vol_20",
+        "revenue_growth_yoy",
+        "ema60_distance",
+        "gap_followthrough_20"
+      ],
+      "n_features": 19,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "top_3": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance"
+      ],
+      "n_features": 3,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "top_5": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance",
+        "rsi14_centered",
+        "body_range_ratio"
+      ],
+      "n_features": 5,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "top_8": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance",
+        "rsi14_centered",
+        "body_range_ratio",
+        "breakout_position_60",
+        "signed_volume_pressure_20",
+        "ret_1d"
+      ],
+      "n_features": 8,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "top_10": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance",
+        "rsi14_centered",
+        "body_range_ratio",
+        "breakout_position_60",
+        "signed_volume_pressure_20",
+        "ret_1d",
+        "close_location_value",
+        "intraday_return"
+      ],
+      "n_features": 10,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "top_15": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance",
+        "rsi14_centered",
+        "body_range_ratio",
+        "breakout_position_60",
+        "signed_volume_pressure_20",
+        "ret_1d",
+        "close_location_value",
+        "intraday_return",
+        "momentum_20_5",
+        "gross_margin_change_yoy",
+        "vol_ratio_5_20",
+        "ret_5d",
+        "downside_vol_20"
+      ],
+      "n_features": 15,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "all_eligible": {
+      "factors": [
+        "macd_hist_atr",
+        "ret_20d",
+        "ema20_distance",
+        "rsi14_centered",
+        "body_range_ratio",
+        "breakout_position_60",
+        "signed_volume_pressure_20",
+        "ret_1d",
+        "close_location_value",
+        "intraday_return",
+        "momentum_20_5",
+        "gross_margin_change_yoy",
+        "vol_ratio_5_20",
+        "ret_5d",
+        "downside_vol_20",
+        "overnight_vol_20",
+        "revenue_growth_yoy",
+        "ema60_distance",
+        "gap_followthrough_20",
+        "volume_zscore_20",
+        "amihud_illiq_20",
+        "realized_vol_20",
+        "volume_cv_20",
+        "asset_growth_yoy",
+        "return_volume_corr_20",
+        "ret_60d",
+        "operating_profitability",
+        "overnight_gap",
+        "cashflow_to_assets",
+        "volume_trend_5_20",
+        "trend_r2_20",
+        "ema20_60_spread",
+        "parkinson_vol_20",
+        "ret_120d",
+        "realized_vol_5",
+        "debt_to_assets",
+        "return_autocorr_20"
+      ],
+      "n_features": 37,
+      "selection_method": "development_only_deterministic_evidence"
+    },
+    "forward_selected": {
+      "factors": [
+        "macd_hist_atr"
+      ],
+      "n_features": 1,
+      "selection_method": "development-only chronological model-based forward selection"
+    }
+  }
+}

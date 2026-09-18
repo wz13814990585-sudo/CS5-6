@@ -1,0 +1,25 @@
+{
+  "target": "target_next_week_oc_return",
+  "development": [
+    "2016-01-01",
+    "2021-12-31"
+  ],
+  "validation": [
+    "2022-01-01",
+    "2023-12-31"
+  ],
+  "final_test": [
+    "2024-01-01",
+    "2026-12-31"
+  ],
+  "objective": "rank:ndcg",
+  "random_state": 5703,
+  "quick": false,
+  "versions": {
+    "python": "3.13.5",
+    "xgboost": "3.4.1",
+    "pandas": "2.2.3",
+    "numpy": "2.4.4"
+  },
+  "git_commit": "1c698cb6629ea8d6384f3677ed69e00335d64cb7"
+}
