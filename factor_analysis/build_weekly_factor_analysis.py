@@ -187,7 +187,7 @@ def run_factor_analysis(input_path: Path, output_dir: Path) -> dict[str, list[st
     factors = [f for f in stock_factors() if f in data]
     development = data.loc[data["date"].between(DEVELOPMENT_START, DEVELOPMENT_END)].copy()
     print("[2/6] Validating exact next-week open-to-close target", flush=True)
-    samples = manual_target_samples(data, 10)
+    samples = manual_target_samples(data, 20)
     if not np.allclose(samples["calculated_target"], samples["manually_recomputed_target"], rtol=1e-12, atol=1e-12):
         raise AssertionError("Manual target validation failed")
     samples.to_csv(output_dir / "target_validation_samples.csv", index=False)

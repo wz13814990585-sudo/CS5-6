@@ -1,6 +1,6 @@
 # Research pipeline architecture
 
-The source weekly panel is read by `ml.data`, which assigns one shared market-week index and constructs the primary label as `log(next adjusted close / next adjusted open)`. A ticker must have a row at exactly `week_id + 1`; otherwise the label is missing. Adjusted open is `open * adj_close / close`. Close-to-close labels remain diagnostics only.
+The source weekly panel is read by `ml.data`. Before assigning the shared market-week index, a terminal Monday–Wednesday snapshot is conservatively removed because it cannot represent a completed W-FRI trading week; terminal Thursdays are retained for Friday-market-holiday cases. The primary label is `log(next adjusted close / next adjusted open)`. A ticker must have a row at exactly `week_id + 1`; otherwise the label is missing. Adjusted open is `open * adj_close / close`. Close-to-close labels remain diagnostics only.
 
 `factor_analysis.build_weekly_factor_analysis` performs date-local Rank IC, quintile, stability, coverage, and redundancy analysis on the development period only (2016–2021). The VIX regime median and all factor directions are also learned only there. Cross-sectional rank copies are analyzed but excluded from the default admissible pool. The resulting JSON is the only factor-set contract consumed by ML.
 

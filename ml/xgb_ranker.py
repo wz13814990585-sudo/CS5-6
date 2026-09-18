@@ -11,11 +11,11 @@ from .data import validate_feature_columns
 from .relevance import add_relevance_by_date
 
 
-def prepare_rank_data(df: pd.DataFrame, features: list[str]) -> pd.DataFrame:
+def prepare_rank_data(df: pd.DataFrame, features: list[str], n_bins: int = N_RELEVANCE_BINS) -> pd.DataFrame:
     validate_feature_columns(features, df.columns)
     work = df.dropna(subset=[TARGET_COLUMN]).sort_values(["date", "ticker"], kind="stable").reset_index(drop=True).copy()
     work = work.loc[work[features].notna().any(axis=1)].copy()
-    return add_relevance_by_date(work, TARGET_COLUMN, N_RELEVANCE_BINS)
+    return add_relevance_by_date(work, TARGET_COLUMN, n_bins)
 
 
 def group_sizes(df: pd.DataFrame) -> list[int]:
@@ -23,8 +23,9 @@ def group_sizes(df: pd.DataFrame) -> list[int]:
     return ordered.groupby("date", sort=False).size().astype(int).tolist()
 
 
-def fit_ranker(df: pd.DataFrame, features: list[str], params: dict, objective: str = "rank:ndcg") -> XGBRanker:
-    work = prepare_rank_data(df, features)
+def fit_ranker(df: pd.DataFrame, features: list[str], params: dict, objective: str = "rank:ndcg",
+               n_bins: int = N_RELEVANCE_BINS) -> XGBRanker:
+    work = prepare_rank_data(df, features, n_bins)
     if work["date"].nunique() < 2:
         raise ValueError("At least two complete date groups are required")
     model = XGBRanker(objective=objective, random_state=RANDOM_STATE, tree_method="hist",
@@ -33,12 +34,13 @@ def fit_ranker(df: pd.DataFrame, features: list[str], params: dict, objective: s
     return model
 
 
-def predict_ranker(model: XGBRanker, df: pd.DataFrame, features: list[str]) -> pd.DataFrame:
+def predict_ranker(model: XGBRanker, df: pd.DataFrame, features: list[str],
+                   n_bins: int = N_RELEVANCE_BINS) -> pd.DataFrame:
     work = df.loc[df[features].notna().any(axis=1)].sort_values(["date", "ticker"], kind="stable").copy()
     work["ranking_score"] = model.predict(work[features])
     work["predicted_rank"] = work.groupby("date")["ranking_score"].rank(method="first", ascending=False).astype(int)
     work["actual_return"] = work[TARGET_COLUMN]
     if "relevance_label" not in work:
-        work = add_relevance_by_date(work, TARGET_COLUMN, N_RELEVANCE_BINS)
+        work = add_relevance_by_date(work, TARGET_COLUMN, n_bins)
     work["actual_rank"] = work.groupby("date")["actual_return"].rank(method="first", ascending=False)
     return work

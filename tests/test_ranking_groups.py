@@ -21,3 +21,8 @@ def test_relevance_is_date_local():
     out = add_relevance_by_date(data(), "target_next_week_oc_return", 10)
     assert out.groupby("date").relevance_label.min().eq(0).all()
     assert out.groupby("date").relevance_label.max().le(9).all()
+
+
+def test_relevance_bin_count_is_configurable():
+    out = add_relevance_by_date(data(), "target_next_week_oc_return", 5)
+    assert out.relevance_label.max() <= 4

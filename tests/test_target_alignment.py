@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 from ml.config import TARGET_COLUMN
-from ml.data import add_exact_week_targets
+from ml.data import add_exact_week_targets, exclude_incomplete_terminal_week
 
 
 def panel():
@@ -38,3 +38,14 @@ def test_final_week_target_missing_and_valid_targets_finite():
 def test_adjusted_open_formula():
     out = add_exact_week_targets(panel())
     np.testing.assert_allclose(out.adj_open_calc, out.open * out.adj_close / out.close)
+
+
+def test_incomplete_terminal_monday_is_removed_before_targeting():
+    raw = pd.DataFrame({"date": pd.to_datetime(["2026-08-28", "2026-08-31"]), "ticker": ["A", "A"]})
+    got = exclude_incomplete_terminal_week(raw)
+    assert got.date.tolist() == [pd.Timestamp("2026-08-28")]
+
+
+def test_terminal_thursday_can_be_a_complete_holiday_week():
+    raw = pd.DataFrame({"date": pd.to_datetime(["2026-04-02"]), "ticker": ["A"]})
+    assert len(exclude_incomplete_terminal_week(raw)) == 1

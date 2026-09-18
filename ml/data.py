@@ -17,7 +17,25 @@ def load_weekly_panel(path) -> pd.DataFrame:
         raise ValueError("date+ticker must be unique")
     for column in df.columns.difference(["date", "ticker"]):
         df[column] = pd.to_numeric(df[column], errors="coerce")
-    return df.sort_values(["ticker", "date"], kind="stable").reset_index(drop=True)
+    df = df.sort_values(["ticker", "date"], kind="stable").reset_index(drop=True)
+    return exclude_incomplete_terminal_week(df)
+
+
+def exclude_incomplete_terminal_week(df: pd.DataFrame) -> pd.DataFrame:
+    """Conservatively remove a terminal Mon-Wed snapshot from a W-FRI panel.
+
+    A weekly file produced before the trading week has ended can otherwise turn a
+    partial Monday/Tuesday/Wednesday observation into the prior week's target.
+    Thursday is retained because it can be the legitimate final session before a
+    Friday market holiday (for example, Good Friday).
+    """
+    if df.empty:
+        return df.copy()
+    latest = pd.Timestamp(df["date"].max()).normalize()
+    terminal_period = latest.to_period("W-FRI")
+    if latest < terminal_period.end_time.normalize() and latest.weekday() <= 2:
+        return df.loc[df["date"].dt.to_period("W-FRI") != terminal_period].copy().reset_index(drop=True)
+    return df.copy()
 
 
 def add_exact_week_targets(df: pd.DataFrame) -> pd.DataFrame:

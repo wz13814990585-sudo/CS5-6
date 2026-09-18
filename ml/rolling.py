@@ -22,7 +22,7 @@ def refit_dates(prediction_dates) -> list[pd.Timestamp]:
     return result
 
 
-def rolling_oos(df, features, factor_set_name, params, objective="rank:ndcg"):
+def rolling_oos(df, features, factor_set_name, params, objective="rank:ndcg", n_bins=10):
     test = df.loc[df["date"].between(FINAL_TEST_START, FINAL_TEST_END)].copy()
     dates = pd.DatetimeIndex(sorted(test["date"].unique()))
     starts = refit_dates(dates)
@@ -37,11 +37,11 @@ def rolling_oos(df, features, factor_set_name, params, objective="rank:ndcg"):
         validation_dates = history_dates[-VALIDATION_WEEKS:]
         train = history.loc[history["date"] < validation_dates[0]]
         validation = history.loc[history["date"].isin(validation_dates)]
-        model = fit_ranker(train, features, params, objective)
-        train_pred = predict_ranker(model, train, features)
-        val_pred = predict_ranker(model, validation, features)
+        model = fit_ranker(train, features, params, objective, n_bins)
+        train_pred = predict_ranker(model, train, features, n_bins)
+        val_pred = predict_ranker(model, validation, features, n_bins)
         period = test.loc[(test["date"] >= refit) & (test["date"] < next_refit) & test[TARGET_COLUMN].notna()]
-        oos = predict_ranker(model, period, features)
+        oos = predict_ranker(model, period, features, n_bins)
         model_id = f"{factor_set_name}_{refit:%Y%m%d}"
         oos["model_id"], oos["factor_set_name"], oos["refit_date"] = model_id, factor_set_name, refit
         predictions.append(oos)
@@ -50,6 +50,7 @@ def rolling_oos(df, features, factor_set_name, params, objective="rank:ndcg"):
         oos_metrics = aggregate_metrics(metrics_by_date(oos), "oos_")
         row = {"model_id": model_id, "model_type": "XGBRanker", "objective": objective,
                "factor_set_name": factor_set_name, "refit_date": refit,
+               "n_relevance_bins": n_bins,
                "train_start": train["date"].min(), "train_end": train["date"].max(),
                "validation_start": validation["date"].min(), "validation_end": validation["date"].max(),
                "number_of_train_dates": train["date"].nunique(), "number_of_train_rows": len(train),

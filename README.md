@@ -13,6 +13,7 @@ Run a fast four-set smoke experiment or the complete experiment:
 ```bash
 python -m ml.run_xgb_ranker_experiments --quick --run-forward-selection
 python -m ml.run_xgb_ranker_experiments --full
+python -m ml.optimize_ranker
 ```
 
 Useful switches include `--factor-set core_5`, `--objective rank:pairwise`, `--skip-tuning`, and `--common-sample`. Both common-sample and native-coverage results are always exported. Outputs are written beneath `outputs/factor_analysis` and `outputs/xgb_ranker`.
