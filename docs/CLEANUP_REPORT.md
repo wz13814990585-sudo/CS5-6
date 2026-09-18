@@ -12,7 +12,7 @@ Cleanup preserved the research methodology and changed only paths, generated-out
 | `data/test_data_weekly.csv` | ACTIVE | Kept as canonical | Single weekly dataset consumed downstream |
 | `factor_analysis/test_data_weekly.csv` | DUPLICATE | Removed old path | Canonical file is under `data/` |
 | `factor_analysis/build_weekly_factor_analysis.py` | ACTIVE | Kept | Official factor-analysis entry point |
-| `factor_analysis/weekly_factor_analysis_from_original_csv.xlsx` | LEGACY | Moved to `archive/legacy_analysis/` | Unreferenced manual spreadsheet |
+| `factor_analysis/weekly_factor_analysis_from_original_csv.xlsx` | LEGACY | Deleted | Unreferenced manual spreadsheet |
 | `ml/config.py`, `data.py`, `factor_sets.py` | ACTIVE | Kept | Core configuration, data, and feature contracts |
 | `ml/relevance.py`, `metrics.py`, `validation.py` | ACTIVE | Kept | Current labeling, metrics, and time folds |
 | `ml/xgb_ranker.py`, `optimize_ranker.py`, `rolling.py` | ACTIVE | Kept | Current ranker implementation |
@@ -20,9 +20,9 @@ Cleanup preserved the research methodology and changed only paths, generated-out
 | `ml/forward_selection.py` | OPTIONAL | Kept | Planned research feature; currently not called |
 | `outputs/factor_analysis/` | GENERATED | Kept | Official current factor outputs |
 | `outputs/xgb_ranker/` | GENERATED | Kept | Official current model outputs |
-| `outputs/xgb_ranker_optimized/` | LEGACY | Moved to `archive/legacy_outputs/` | Superseded 2016–2023 optimization flow |
-| Old compatibility output aliases | DUPLICATE | Moved to `archive/legacy_outputs/compatibility_aliases/` | Byte-identical current aliases or stale optional output |
-| `raw data/test_data_weekly.csv.textClipping` | LEGACY | Moved to `archive/legacy_data/` | Finder clipping, not a dataset |
+| `outputs/xgb_ranker_optimized/` | LEGACY | Deleted | Superseded 2016–2023 optimization flow |
+| Old compatibility output aliases | DUPLICATE | Deleted | Byte-identical current aliases or stale optional output |
+| `raw data/test_data_weekly.csv.textClipping` | LEGACY | Deleted | Finder clipping, not a dataset |
 | `.DS_Store` files | GENERATED | Deleted | OS metadata, ignored and reproducible |
 | `tests/` | ACTIVE | Kept | Correctness and leakage verification |
 

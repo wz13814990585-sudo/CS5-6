@@ -11,7 +11,6 @@ This repository builds weekly stock-ranking signals from daily market, fundament
 - `tests/` — target, leakage, grouping, rolling, and metric tests.
 - `outputs/factor_analysis/` — current official factor-research results.
 - `outputs/xgb_ranker/` — current official model results.
-- `archive/` — preserved legacy artifacts; never read by the main pipeline.
 - `docs/` — methodology, repository map, and cleanup record.
 
 ## Execution order

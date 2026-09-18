@@ -31,15 +31,10 @@ CS5-6/
 ├── outputs/
 │   ├── factor_analysis/              # Current official factor outputs
 │   └── xgb_ranker/                   # Current official frozen-ranker outputs
-├── archive/
-│   ├── legacy_data/                  # Preserved non-canonical data fragments
-│   ├── legacy_outputs/               # Historical/duplicate experiment outputs
-│   ├── legacy_analysis/              # Old manual analysis artifacts
-│   └── legacy_scripts/               # Reserved for obsolete scripts (currently none)
 └── docs/
     ├── ARCHITECTURE.md                # Research methodology and timing
     ├── REPOSITORY_STRUCTURE.md        # This repository map
     └── CLEANUP_REPORT.md              # Cleanup decisions and evidence
 ```
 
-Only `outputs/factor_analysis/` and `outputs/xgb_ranker/` are official result locations. Nothing under `archive/` is imported or consumed by the pipeline.
+Only `outputs/factor_analysis/` and `outputs/xgb_ranker/` are official result locations.

@@ -9,3 +9,5 @@ venv/
 .env.*
 /data/*
 !/data/test_data_weekly.csv
+.pytest_cache/
+tests/
