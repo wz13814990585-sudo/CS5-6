@@ -1,0 +1,23 @@
+{
+  "original_training_csv_sha256": "26e234363e83f2eaefe0ba787b6909be0999f6d4405fbf6ef2e2c7cb8b918d97",
+  "packaged_training_csv_sha256": "dc5daacfaea842690ca827eb3a14a2b98f77ce9a6d655e76f25d9d4003d95dbb",
+  "training_columns_preserved_as_original_text": [
+    "date",
+    "ticker",
+    "adj_close",
+    "target",
+    "revenue_growth_yoy",
+    "operating_profitability",
+    "cashflow_to_assets",
+    "debt_to_assets",
+    "asset_growth_yoy"
+  ],
+  "test_csv_sha256": "8e43a5a4a91356fa34ba0e14419677d7cffcf13b99f135c5a7f82c74df1b2833",
+  "original_core_sha256": "6dfd9c7d02076015c0dc9fabec4f2815fd31543d69511154993503a59a58727e",
+  "original_runner_sha256": "c52e03044afeb7fe8184133106e079268a9272bae0fd175cd94921bc6f3efa90",
+  "original_evaluator_sha256": "37a19c092b28ccb19cebd410b448d172de33aa45fe5e48f766f0ea69fa973a44",
+  "model_files_copied_without_changes": 45,
+  "csv_outputs_copied_without_changes": 15,
+  "algorithm_change": false,
+  "adaptations": "Only package-relative paths, prediction/evaluation entry points and removal of unused code. Training, scoring and ensemble functions extracted unchanged."
+}

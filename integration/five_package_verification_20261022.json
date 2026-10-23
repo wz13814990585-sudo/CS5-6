@@ -1,0 +1,58 @@
+{
+  "verified_at_utc": "2026-10-22T08:59:42.244271+00:00",
+  "scope": "Five confirmed packages, original-file preservation and launcher integration only",
+  "python": "3.13.2",
+  "archives_verified": 5,
+  "archive_members_compared_byte_for_byte": 27,
+  "unique_original_files_verified": 23,
+  "original_script_syntax_checked": 8,
+  "new_script_syntax_checked": 3,
+  "model_data": {
+    "rows": 27651,
+    "stocks": 66,
+    "weeks": 522,
+    "first_date": "2016-09-02",
+    "last_date": "2026-08-28"
+  },
+  "read_only_commands_verified": [
+    "verify",
+    "check",
+    "status",
+    "plan --model all --output runs/review_models",
+    "data --step all --output runs/review_data --dry-run"
+  ],
+  "read_only_commands_preserved_all_files": true,
+  "integration_tests": {
+    "count": 11,
+    "passed": 11,
+    "failed": 0,
+    "execution_method": "Temporary harmless stand-ins; no delivered model or data source executed"
+  },
+  "independent_review": {
+    "status": "reviewed",
+    "finding": "XGBoost wrapper dependency precheck omitted scikit-learn",
+    "resolution": "Added dependency to both XGBoost wrappers and regression test; all 11 tests pass"
+  },
+  "dependencies_observed": {
+    "exchange-calendars": null,
+    "numpy": "2.4.0",
+    "pandas": "2.3.3",
+    "scikit-learn": null,
+    "scipy": null,
+    "xgboost": null,
+    "yfinance": null
+  },
+  "training_executed": false,
+  "data_download_executed": false,
+  "unified_evaluation_backtest_executed": false,
+  "historical_metrics_reproduced": false,
+  "selection_boundary_unified": false,
+  "new_delivery_files_sha256": {
+    "run.py": "8af2267e6d1867f0f08a360b402020c164b6979b70d14e40ad7da4f9a30a067b",
+    "integration/runner.py": "0056e376f63bb7903e2e32dc0fdaabc4b77a176d17d70ae6f16988093420daff",
+    "tests/test_runner.py": "e0dbf18db31c0c906f6f7e6d3d8435a440841a419a1ee1d811f4bc4b9c3951ba",
+    "README.md": "a523204d90d6a56b7bc1723f1e2cf3489bd369a7a73ebea4323de84cbb40f222",
+    "requirements.txt": "d840dde376f19db0ef20199a018498dd90bf00f1d5a36941b1cdccd9bf65d11f",
+    "requirements-data.txt": "a87cfb00b823d672616294cfa60ca33cc5bcb82a3f33b15efa149f5a62a95ea8"
+  }
+}

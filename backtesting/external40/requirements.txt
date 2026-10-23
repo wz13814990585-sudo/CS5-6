@@ -1,0 +1,5 @@
+# Versions used for the verified run, Python 3.13.3 / macOS
+numpy==2.5.3
+pandas==3.0.6
+xgboost==3.4.1
+# PNG figures additionally use R 4.5.2 base graphics (Quartz on macOS).

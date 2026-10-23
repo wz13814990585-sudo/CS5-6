@@ -1,0 +1,15 @@
+﻿check,value
+test_input_rows,17353
+test_input_weeks,574
+test_tickers,40
+train_tickers,66
+ticker_overlap,0
+formal_test_rows,13517
+formal_test_weeks,366
+excluded_rows_outside_formal_period,3836
+minimum_formal_week_stocks,27
+maximum_formal_week_stocks,40
+missing_required_values,0
+duplicate_keys,0
+target2_used,False
+test_targets_used_in_training,False

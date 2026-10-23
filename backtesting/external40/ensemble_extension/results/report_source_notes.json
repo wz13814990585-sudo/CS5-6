@@ -1,0 +1,20 @@
+{
+  "artifact_id": "preserved existing local report ID",
+  "source_audit": "prepared/source_audit.json",
+  "verification": {
+    "status": "passed",
+    "jobs_verified": 8,
+    "jobs_expected": 8,
+    "checks": 18742397,
+    "maximum_absolute_error": 7.421476766467094e-10,
+    "added_cases": 12648,
+    "trade_orders": 2224700,
+    "holdings": 2466904,
+    "prototype_cases": 48,
+    "source_audit": "prepared/source_audit.json"
+  },
+  "comparison_scope": "Common210 versus Native366 kept separate",
+  "ndcg_convention": "exponential gain in supplemental six-model table; original linear-gain metrics retained",
+  "original_two_model_report": "prepared/original_two_model_report.md",
+  "added_figures": 510
+}

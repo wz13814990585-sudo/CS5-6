@@ -1,0 +1,3 @@
+budget,price,cost_bps,shares,buy_amount,buy_fee,cash_after_buy
+2000,300,0,6,1800,0.0,200.0
+2000,300,10,6,1800,1.8,198.2

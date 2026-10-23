@@ -1,0 +1,79 @@
+{
+  "surface": "local shared Data report app; portable offline HTML and Markdown; requested PNG figures",
+  "audience": "technical",
+  "scope": "six models: Ensemble, three components, new150 and old50; common210 and native366 separated",
+  "version_mapping": {
+    "Ranker150_New": "新版150树",
+    "Ranker50_Old": "旧版50树"
+  },
+  "source_model_assumption": "latest model_only package is new, prior standalone handoff is old, as clarified by user",
+  "chart_map": [
+    {
+      "segment": "完整期",
+      "family": "line",
+      "fields": [
+        "signal week",
+        "NAV",
+        "version"
+      ],
+      "claim": "Top5 comparison"
+    },
+    {
+      "segment": "最终期",
+      "family": "line",
+      "fields": [
+        "signal week",
+        "NAV",
+        "version"
+      ],
+      "claim": "Top10 strategy contrast"
+    },
+    {
+      "segment": "最终期",
+      "family": "grouped bar",
+      "fields": [
+        "strategy",
+        "CAGR",
+        "version"
+      ],
+      "claim": "strategy-specific changes"
+    }
+  ],
+  "static_chart_renderer": "R PNG via Quartz",
+  "line_repetition": "用户明确要求不同窗口和策略折线图",
+  "confidence": "share with stated proxy-price and historical-selection caveats",
+  "open_questions": [
+    "代理价格复权与成交含义",
+    "因子真实披露时点",
+    "新的未见前推区间"
+  ],
+  "verification": {
+    "status": "passed",
+    "checks": 4160178,
+    "maximum_absolute_error": 1.8917489796876907e-09,
+    "summary_cases": 2856,
+    "trade_orders_checked": 464859,
+    "holdings_checked": 536888,
+    "supplied_script_reference_cases": 12,
+    "integer_example": "2000 budget / 300 price = 6 shares; 200 cash before fees",
+    "cash_nonnegative": true,
+    "all_windows_start_fresh": true,
+    "both_models_evaluated": true
+  },
+  "replay_audits": [
+    "prepared/comparison_audit.json",
+    "prepared/old50_replay_audit.json"
+  ],
+  "ensemble_verification": {
+    "status": "passed",
+    "jobs_verified": 8,
+    "jobs_expected": 8,
+    "checks": 18742397,
+    "maximum_absolute_error": 7.421476766467094e-10,
+    "added_cases": 12648,
+    "trade_orders": 2224700,
+    "holdings": 2466904,
+    "prototype_cases": 48,
+    "source_audit": "prepared/source_audit.json"
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "model": "Ranker150_New",
+    "input_rows": 8354,
+    "weeks": 210,
+    "first_signal": "2022-08-26",
+    "last_signal": "2026-08-28",
+    "stocks": 40
+  },
+  {
+    "model": "Ranker50_Old",
+    "input_rows": 8354,
+    "weeks": 210,
+    "first_signal": "2022-08-26",
+    "last_signal": "2026-08-28",
+    "stocks": 40
+  }
+]

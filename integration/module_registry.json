@@ -1,0 +1,47 @@
+[
+  {
+    "id": "original_data",
+    "path": "data",
+    "status": "included_original_five_packages"
+  },
+  {
+    "id": "data_collection",
+    "path": "data_processing",
+    "status": "six_scripts_preserved_new40_not_connected_to_old_cli"
+  },
+  {
+    "id": "factor_analysis",
+    "path": "factor_analysis",
+    "status": "confirmed_revision_financial_dimension_candidate"
+  },
+  {
+    "id": "historical_search",
+    "path": "research_history/ranker_search",
+    "status": "source_and_search_records_archived_not_active_config_lineage_pending"
+  },
+  {
+    "id": "four_model_comparison",
+    "path": "models",
+    "status": "preserved_four_models_5_7_11_45_6y26w"
+  },
+  {
+    "id": "external40_standalone",
+    "path": "external_validation/standalone_ranker",
+    "status": "formal_model_only_150_trees_handoff_is_source"
+  },
+  {
+    "id": "external40_ensemble",
+    "path": "external_validation/ensemble_ranker",
+    "status": "preserved_three_components_45_refit_assets"
+  },
+  {
+    "id": "backtest_references",
+    "path": "reference_results/external40_backtest",
+    "status": "historical_results_not_recomputed"
+  },
+  {
+    "id": "integer_backtesting",
+    "path": "backtesting/external40",
+    "status": "complete_source_snapshot_preserved_static_only_runtime_environment_and_cache_fixes_pending"
+  }
+]

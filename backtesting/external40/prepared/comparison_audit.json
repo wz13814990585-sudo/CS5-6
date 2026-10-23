@@ -1,0 +1,17 @@
+{
+  "status": "aligned",
+  "new_model": "supplied saved candidate2; 150 trees; nine refits",
+  "old_model": "frozen predictions from previous standalone candidate1; 50 trees; no re-selection",
+  "rows_each": 8354,
+  "weeks_each": 210,
+  "stocks": 40,
+  "first_signal": "2022-08-26",
+  "last_signal": "2026-08-28",
+  "common_keys_identical": true,
+  "new_replayed_max_score_difference": 5.705451971982356e-09,
+  "new_replayed_ranks_identical": true,
+  "input_sha256": "3ff2cbfd862ec7207157dc67675f5c4e28c5f7e9061ff8fa7fcfa24a134fdc39",
+  "old_frozen_prediction_sha256": "426339c1643c0ef3fef6c323ce5e7c9a6180293628baae2fe36c1df0ac501d7c",
+  "first_raw_date": "2015-09-04",
+  "last_raw_date": "2026-08-28"
+}

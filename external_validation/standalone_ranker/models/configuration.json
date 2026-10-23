@@ -1,0 +1,21 @@
+{
+  "model": "standalone five-factor XGBRanker",
+  "training_tickers": 66,
+  "external_test_tickers": 40,
+  "training_window_weeks": 312,
+  "refit_interval_weeks": 26,
+  "features": [
+    "revenue_growth_yoy",
+    "operating_profitability",
+    "cashflow_to_assets",
+    "debt_to_assets",
+    "asset_growth_yoy"
+  ],
+  "selected_candidate": {
+    "candidate_id": 2,
+    "max_depth": 2,
+    "min_child_weight": 5,
+    "n_estimators": 150
+  },
+  "random_state": 5703
+}

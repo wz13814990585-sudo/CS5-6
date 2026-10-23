@@ -1,0 +1,19 @@
+{
+  "model": "Model2",
+  "scope": "Common210",
+  "prediction_file": "Model2_Common210.csv",
+  "weeks": 210,
+  "rows": 8354,
+  "engine_sha256": "14b85f22cc7d9a585f406d1481a698a4fbd81584dd61b58872b2058819612561",
+  "prediction_sha256": "1e85f020baf7c836a52c47738230d7e6b8449a092b7bcfce697d2f1850d115e0",
+  "status": "verified",
+  "summary_cases": 1428,
+  "coverage": {
+    "model": "Model2",
+    "input_rows": 8354,
+    "weeks": 210,
+    "first_signal": "2022-08-26",
+    "last_signal": "2026-08-28",
+    "stocks": 40
+  }
+}

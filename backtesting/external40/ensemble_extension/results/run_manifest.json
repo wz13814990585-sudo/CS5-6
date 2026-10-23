@@ -1,0 +1,34 @@
+{
+  "status": "verified",
+  "distinct_models": 6,
+  "model_labels": {
+    "Ensemble": "Ensemble等权集成",
+    "Model1": "子模型1_156周五因子",
+    "Model2": "子模型2_52周两因子",
+    "Model3": "子模型3_52周五因子",
+    "Ranker150_New": "独立新版150树",
+    "Ranker50_Old": "独立旧版50树"
+  },
+  "case_count": 15504,
+  "common_cases": 8568,
+  "native_cases": 6936,
+  "common_weeks": 210,
+  "native_weeks": 366,
+  "primary_strategies": 15,
+  "extra_comparators": 2,
+  "common_windows": 14,
+  "native_windows": 17,
+  "initial_capitals": [
+    100000,
+    10000
+  ],
+  "one_way_cost_bps": [
+    0,
+    10,
+    25
+  ],
+  "all_benchmarks_identical_within_scope": true,
+  "old_two_model_results_unchanged": true,
+  "ndcg_definition": "same exponential-gain definition for all six models: gain=2^weekly relevance-1; differs from original handoff sklearn linear-gain NDCG; original handoff metrics retained in source/outputs/current",
+  "price_proxy_caveat": true
+}

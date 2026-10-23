@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "jobs_verified": 8,
+  "jobs_expected": 8,
+  "checks": 18742397,
+  "maximum_absolute_error": 7.421476766467094e-10,
+  "added_cases": 12648,
+  "trade_orders": 2224700,
+  "holdings": 2466904,
+  "prototype_cases": 48,
+  "source_audit": "prepared/source_audit.json"
+}

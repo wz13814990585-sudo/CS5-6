@@ -1,0 +1,19 @@
+{
+  "model": "Model1",
+  "scope": "Native366",
+  "prediction_file": "Model1_Native366.csv",
+  "weeks": 366,
+  "rows": 13517,
+  "engine_sha256": "14b85f22cc7d9a585f406d1481a698a4fbd81584dd61b58872b2058819612561",
+  "prediction_sha256": "01026ea82b341a259386bb608f75f1ec289291d5a7ddb3c18e94f274d947ee95",
+  "status": "verified",
+  "summary_cases": 1734,
+  "coverage": {
+    "model": "Model1",
+    "input_rows": 13517,
+    "weeks": 366,
+    "first_signal": "2019-08-30",
+    "last_signal": "2026-08-28",
+    "stocks": 40
+  }
+}

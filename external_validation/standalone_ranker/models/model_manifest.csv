@@ -1,0 +1,10 @@
+model_id,refit_date,training_start_date,training_end_date,training_weeks,training_tickers,candidate_id,max_depth,min_child_weight,n_estimators
+five_factor_ranker_refit_01_20220826,2022-08-26,2016-09-02,2022-08-19,312,62,2,2,5,150
+five_factor_ranker_refit_02_20230224,2023-02-24,2017-03-03,2023-02-17,312,62,2,2,5,150
+five_factor_ranker_refit_03_20230825,2023-08-25,2017-09-01,2023-08-18,312,62,2,2,5,150
+five_factor_ranker_refit_04_20240223,2024-02-23,2018-03-02,2024-02-16,312,62,2,2,5,150
+five_factor_ranker_refit_05_20240823,2024-08-23,2018-08-31,2024-08-16,312,63,2,2,5,150
+five_factor_ranker_refit_06_20250221,2025-02-21,2019-03-01,2025-02-14,312,63,2,2,5,150
+five_factor_ranker_refit_07_20250822,2025-08-22,2019-08-30,2025-08-15,312,64,2,2,5,150
+five_factor_ranker_refit_08_20260220,2026-02-20,2020-02-28,2026-02-13,312,65,2,2,5,150
+five_factor_ranker_refit_09_20260821,2026-08-21,2020-08-28,2026-08-14,312,66,2,2,5,150

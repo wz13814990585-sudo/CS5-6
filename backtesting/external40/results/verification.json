@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "checks": 4160178,
+  "maximum_absolute_error": 1.8917489796876907e-09,
+  "summary_cases": 2856,
+  "trade_orders_checked": 464859,
+  "holdings_checked": 536888,
+  "supplied_script_reference_cases": 12,
+  "integer_example": "2000 budget / 300 price = 6 shares; 200 cash before fees",
+  "cash_nonnegative": true,
+  "all_windows_start_fresh": true,
+  "both_models_evaluated": true
+}

@@ -1,0 +1,17 @@
+{
+  "chosen_candidate": {
+    "candidate_id": 1,
+    "max_depth": 2,
+    "min_child_weight": 5,
+    "n_estimators": 50
+  },
+  "selection_rule": "development_gate_then_highest_top5_excess",
+  "fallback_used": false,
+  "training_tickers": 66,
+  "test_tickers": 40,
+  "test_targets_used_for_selection": false,
+  "fit_window_weeks": 312,
+  "refit_weeks": 26,
+  "source_script_sha256": "cb89935cd4118fdf87ddc4111609ffd65967ac9ab67af02e0c436a8da1fd96ea",
+  "simulation_called": false
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "model": "Ensemble",
+    "scope": "Native366",
+    "prediction_file": "Ensemble_Native366.csv",
+    "weeks": 366,
+    "rows": 13517
+  },
+  {
+    "model": "Ensemble",
+    "scope": "Common210",
+    "prediction_file": "Ensemble_Common210.csv",
+    "weeks": 210,
+    "rows": 8354
+  },
+  {
+    "model": "Model1",
+    "scope": "Native366",
+    "prediction_file": "Model1_Native366.csv",
+    "weeks": 366,
+    "rows": 13517
+  },
+  {
+    "model": "Model1",
+    "scope": "Common210",
+    "prediction_file": "Model1_Common210.csv",
+    "weeks": 210,
+    "rows": 8354
+  },
+  {
+    "model": "Model2",
+    "scope": "Native366",
+    "prediction_file": "Model2_Native366.csv",
+    "weeks": 366,
+    "rows": 13517
+  },
+  {
+    "model": "Model2",
+    "scope": "Common210",
+    "prediction_file": "Model2_Common210.csv",
+    "weeks": 210,
+    "rows": 8354
+  },
+  {
+    "model": "Model3",
+    "scope": "Native366",
+    "prediction_file": "Model3_Native366.csv",
+    "weeks": 366,
+    "rows": 13517
+  },
+  {
+    "model": "Model3",
+    "scope": "Common210",
+    "prediction_file": "Model3_Common210.csv",
+    "weeks": 210,
+    "rows": 8354
+  }
+]

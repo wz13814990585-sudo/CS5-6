@@ -1,0 +1,143 @@
+{
+  "delivery_date": "2026-10-23",
+  "timezone": "Australia/Sydney",
+  "scope": "static integrity, source membership, syntax, frozen JSON metadata and data relationships only",
+  "project_check": {
+    "ok": true,
+    "checked_files": 1633,
+    "python_syntax_checked": 68,
+    "standalone_refit_models": 9,
+    "ensemble_component_refit_models": 45,
+    "backtest_original_manifest_files": 1395,
+    "backtest_model_assets_equal_confirmed": 95,
+    "model_code_executed": false,
+    "training_prediction_evaluation_backtest_run": false,
+    "errors": []
+  },
+  "archive_member_byte_comparisons": 1530,
+  "historical_research_source_byte_comparisons": 69,
+  "previous_verified_delivery_comparisons_for_expired_temporary_attachments": [
+    {
+      "path": "factor_analysis/Factor_Analysis.py",
+      "unavailable_original_archive": "/Users/huangyi/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/2.0b4.0.9/119e42605a86af42c33ee3d85b5a4526/SaveTemp/8b84659e2e8b258b7ae8123c4f117db6/Factor_Analysis_Collection.zip",
+      "verified_prior_zip": "/Users/huangyi/Documents/ChatGPT/5703/outputs/内部过程_无需交付/完整工程整合_20261023/before_backtest_added/SafeCapital_整合工程_20261023.zip",
+      "prior_zip_sha256": "808ddab8438118713a3979665bfffc2a92dead8817ea758b2c40e8cf6effa2c7",
+      "source_member_sha256": "6d9fc0e77b110afba1da2ec65bd657e8cce160d64cde7999d16e31cf72047f20"
+    },
+    {
+      "path": "factor_analysis/Factor_Analysis_Guide_CN_EN.docx",
+      "unavailable_original_archive": "/Users/huangyi/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/2.0b4.0.9/119e42605a86af42c33ee3d85b5a4526/SaveTemp/8b84659e2e8b258b7ae8123c4f117db6/Factor_Analysis_Collection.zip",
+      "verified_prior_zip": "/Users/huangyi/Documents/ChatGPT/5703/outputs/内部过程_无需交付/完整工程整合_20261023/before_backtest_added/SafeCapital_整合工程_20261023.zip",
+      "prior_zip_sha256": "808ddab8438118713a3979665bfffc2a92dead8817ea758b2c40e8cf6effa2c7",
+      "source_member_sha256": "0936991a4091bd026e567e02761e3e0d97b0d8fab2a21914c1946a1d0cb5ad5e"
+    },
+    {
+      "path": "factor_analysis/Factor_Analysis_Results_EN.xlsx",
+      "unavailable_original_archive": "/Users/huangyi/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/2.0b4.0.9/119e42605a86af42c33ee3d85b5a4526/SaveTemp/8b84659e2e8b258b7ae8123c4f117db6/Factor_Analysis_Collection.zip",
+      "verified_prior_zip": "/Users/huangyi/Documents/ChatGPT/5703/outputs/内部过程_无需交付/完整工程整合_20261023/before_backtest_added/SafeCapital_整合工程_20261023.zip",
+      "prior_zip_sha256": "808ddab8438118713a3979665bfffc2a92dead8817ea758b2c40e8cf6effa2c7",
+      "source_member_sha256": "c6e95ba9a39d47fe7f746d6c550833499af5268302f93800def958b86ff5d2df"
+    }
+  ],
+  "source_archive_resolution": {
+    "original_path": "/Users/huangyi/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/2.0b4.0.9/119e42605a86af42c33ee3d85b5a4526/SaveTemp/cf0e449d9a522e45d52901892a67823d/data collection .zip",
+    "resolved_copy": "/Users/huangyi/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/119e42605a86af42c33ee3d85b5a4526/Message/MessageTemp/14985ac3e6ca87538d66b1b887611757/File/data collection .zip",
+    "sha256": "187fa0fcc6bf7d9eea8ad0a5ebaf06f2caad3d701028e02951b773f2f9678c2b",
+    "reason": "Original WeChat SaveTemp location no longer exists; byte-identical archive is available in the supplied message File directory."
+  },
+  "original_five_source_files_unchanged": 23,
+  "data_relationships": {
+    "checks_are_read_only": true,
+    "model_jobs_run": false,
+    "train66_rows": 27651,
+    "train66_matches_original_projection": true,
+    "external40_rows": 17353,
+    "external40_stocks": 40,
+    "external40_columns": 12,
+    "xlsx_matches_standalone_csv": true,
+    "ensemble_same_date_ticker_keys": true,
+    "ensemble_shared_numeric_max_difference": {
+      "target2": 0.0,
+      "debt_to_assets": 4.440892098500626e-16,
+      "cashflow_to_assets": 0.0,
+      "operating_profitability": 0.0,
+      "revenue_growth_yoy": 2.220446049250313e-16,
+      "target1": 2.220446049250313e-16,
+      "asset_growth_yoy": 4.440892098500626e-16
+    },
+    "training_external_tickers_disjoint": true
+  },
+  "independent_review": {
+    "status": "passed",
+    "reviewer": "independent read-only review agent /root/review_backtest_integration",
+    "scope": [
+      "formal150 vs historical50 vs ensemble version boundaries",
+      "backtest directory and source preservation",
+      "strategy explanations",
+      "cache and runtime environment limitations",
+      "read-only standard-library checker",
+      "current documentation and metadata consistency"
+    ],
+    "must_fix": [],
+    "other_must_fix": [],
+    "model_or_package_jobs_executed": false,
+    "resolved_findings": [
+      "Refreshed static_verification: missing_core_module=null;1633 files,68 Python syntax checks,1395 original archive entries,95 matching source assets"
+    ],
+    "provenance_review": "Three factor files use verified previous delivery when WeChat temporary source archive expired; no older factor package substitution",
+    "review_completed": "2026-10-23 Australia/Sydney"
+  },
+  "not_executed": [
+    "network data collection",
+    "dependency installation",
+    "factor-screening run",
+    "model training",
+    "saved-model loading for prediction",
+    "prediction",
+    "metric recomputation",
+    "strategy or integer-share backtest"
+  ],
+  "missing_core_module": null,
+  "backtest_integration": {
+    "source_archive": "Ensemble完整复现工程_20261023.zip",
+    "source_archive_sha256": "9e5e0ffb52090ab51c2d9b1296c1c23950e62efd539c5565cad7430501d2681f",
+    "archive_files_preserved": 1396,
+    "original_manifest_entries_verified": 1395,
+    "canonical_standalone_files_equal": 15,
+    "canonical_ensemble_files_equal": 80,
+    "backtest_price_csv_equal_confirmed_input": true,
+    "price_rows": 17353,
+    "price_stocks": 40,
+    "price_weeks": 574,
+    "keys_match_ensemble_inputs": true,
+    "train_test_stock_overlap": 0,
+    "main_strategies_from_code": 15,
+    "additional_comparators_from_code": [
+      "UniverseEqualWeight",
+      "Top5_WeeklyRoundTrip"
+    ],
+    "formal_standalone_trees": 150,
+    "historical_control_trees": 50,
+    "newly_received_historical_selection_evidence": "old_source/standalone_selection.json: 50-tree candidate1, not formal150 selection evidence",
+    "local_module_dependency_check": "26 original Python files AST valid; 29 critical local paths present",
+    "pending_before_modified_input_replay": [
+      "complete_ensemble cache identity omits full historical price source hash",
+      "verify_extension may reuse historical verification without current output/verifier hash",
+      "pandas pins differ: root3.0.6 vs nested2.2.3; root omits sklearn/scipy listed nested; runtime untested",
+      "R Quartz graphics is macOS specific"
+    ],
+    "still_missing_provenance": [
+      "additional_40_weekly_5_factors.csv",
+      "additional_40_universe.csv",
+      "additional_40_daily_ohlcv.csv",
+      "formal150 original candidate comparison and selection trace",
+      "mapping of historical factor/model search to current frozen ensemble",
+      "original four-model frozen prediction/run artifacts and final confirmed unified evaluation/backtest code"
+    ],
+    "source_code_changed": false,
+    "source_package_scripts_executed": false,
+    "model_prediction_evaluation_backtest_executed": false,
+    "performance_claims_reverified": false
+  },
+  "performance_reproduction_confirmed": false
+}

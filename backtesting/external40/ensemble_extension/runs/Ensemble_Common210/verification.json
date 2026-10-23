@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "cases": 1428,
+  "orders": 240784,
+  "holdings": 268444,
+  "weekly_rows": 99858,
+  "prototype_cases": 6,
+  "checks": 2031366,
+  "maximum_absolute_error": 4.3655745685100555e-10
+}

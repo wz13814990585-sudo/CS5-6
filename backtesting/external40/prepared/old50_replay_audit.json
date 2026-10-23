@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "refits": 9,
+  "rows": 8354,
+  "maximum_score_difference": 0.0,
+  "rankings_identical": true,
+  "chosen_candidate": {
+    "candidate_id": 1,
+    "max_depth": 2,
+    "min_child_weight": 5,
+    "n_estimators": 50
+  },
+  "hyperparameter_search_rerun": false,
+  "training_test_ticker_overlap": 0
+}

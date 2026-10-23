@@ -1,0 +1,26 @@
+{
+  "status": "passed_with_stated_data_caveats",
+  "comparison_models": [
+    "Ranker150_New",
+    "Ranker50_Old"
+  ],
+  "line_pngs_decoded": 386,
+  "static_chart_spot_checks": [
+    "FullHistory_Top5",
+    "FinalTest_annualized_return",
+    "FinalTest_Top5_RankWeighted"
+  ],
+  "report_preview": "http://127.0.0.1:4185/?view=1",
+  "rendered_checks": [
+    "All report narrative sections and four tables present",
+    "Two three-series NAV plots visible",
+    "Grouped final-test bars show correct signed percent units",
+    "Old-version search yields 17 results and reset returns 34",
+    "Finished build has no pending-model banner"
+  ],
+  "current_viewport": "default in-app width 689px; no override requested",
+  "independent_numerical_verification": "results/verification.json",
+  "old_model_replay": "prepared/old50_replay_audit.json",
+  "new_model_replay": "prepared/comparison_audit.json",
+  "confidence": "Historical simulation shareable with supplied-price, corporate-action and disclosure-timing caveats"
+}

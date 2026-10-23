@@ -1,29 +1,155 @@
-# Weekly cross-sectional XGBRanker research pipeline
+# SafeCapital 整合工程
 
-This repository builds weekly stock-ranking signals from daily market, fundamental, and macro data. The model predicts ranking scores—not percentage returns—for the following full market week.
+本工程把已确认的基础数据、因子分析、四模型比较、新40股预测和完整整数股回测材料放在同一目录。**先看这一份说明即可。** 文件版本截至2026年10月23日，时区 Australia/Sydney。本次已接收 `Ensemble完整复现工程_20261023.zip`，之前等待的外部40股回测源码已经补齐。
 
-## Repository layout
+本次完成文件组织、来源记录和静态核验，**没有下载数据、安装依赖、训练模型、加载模型做预测、重算评估或运行回测**。原包随附的预测、指标和报告全部作为历史交付结果保留。
 
-- `raw data/` — data acquisition and factor-generation source code (the name is historical; generated data does not live here).
-- `data/` — generated daily and weekly datasets. The canonical weekly panel is `data/test_data_weekly.csv`.
-- `factor_analysis/` — warmup factor evaluation and factor-set construction.
-- `ml/` — chronological warmup selection and frozen XGBRanker rolling OOS pipeline.
-- `tests/` — target, leakage, grouping, rolling, and metric tests.
-- `outputs/factor_analysis/` — current official factor-research results.
-- `outputs/xgb_ranker/` — current official model results.
-- `docs/` — methodology, repository map, and cleanup record.
+## 项目流程与当前状态
 
-## Execution order
+数据采集与清洗 → 股票筛选 → 构建45因子 → 单因子筛选与组合研究 → 四模型训练比较 → 新40股预测评估 → 多策略回测与整数股模拟。
 
-```bash
-python 'raw data/fetch_and_clean(1).py'
-python 'raw data/build_technical_factors.py'
-python -m factor_analysis.build_weekly_factor_analysis
-python -m ml.run_xgb_ranker_experiments
+| 模块 | 位置 | 已整合内容 | 当前边界 |
+|---|---|---|---|
+| 基础数据与清洗 | `data/`、`data_processing/` | 原五包共用的5份CSV、原4个采集/因子脚本 | 原始文件保留；不是本次重新下载的数据 |
+| 因子分析 | `factor_analysis/` | 最新 `Factor_Analysis.py`、方法说明Word、结果Excel | 7因子统计筛选；5因子为指定的财务维度候选 |
+| 历史组合与参数研究 | `research_history/ranker_search/` | 已找到的研究源码、组合/参数/窗口搜索指标及说明 | 独立归档；与当前正式配置的对应关系仍需核对 |
+| 四模型比较 | `models/`、`reference_results/` | Random Forest、Ridge、XGBoost、XGBRanker 的5/7/11/45因子、6年/26周版本，原选参代码和随附结果 | 保留已有五包整合入口；未重跑或统一修改原实验口径 |
+| 新40股采集与价格输出 | `data_processing/`、`data/external40/` | 新增2个采集/导出脚本、包含买卖价格的12列Excel | 三份冻结中间CSV未提供；新步骤尚未加入旧 `run.py data` 的阶段选项 |
+| 独立Ranker，正式150树版 | `external_validation/standalone_ranker/` | 9个重训时点的模型、冻结重训代码、加载/模拟代码、原预测、配置；handoff补充输入与选参源代码 | 正式版本是 model_only；handoff不另算一套正式模型 |
+| 三子模型集成Ranker | `external_validation/ensemble_ranker/` | 45个保存模型、输入、训练/预测/模型评估代码、配置和原评估结果 | 与四模型统一比较中的Ranker是不同实验协议 |
+| 早先收到的外部回测摘录 | `reference_results/external40_backtest/` | Ensemble重点文件里的报告、表、交易记录和图片 | 来源档案；完整工程及其结果以 `backtesting/external40/` 为入口 |
+| 完整多策略整数股回测 | `backtesting/external40/` | 原引擎、15策略＋2对照、评估与核验、输入、缓存结果、图表和页面源码 | **源码和随附结果已接入；没有执行或重算，运行前事项见下文** |
+
+## 目录怎么找
+
+```text
+SafeCapital_整合工程_20261023/
+├── README.md                      先读这里：范围、版本、缺口
+├── check_project.py               只读检查整合后的文件和Python语法
+├── run.py                         保留的原四模型入口，不是全项目一键入口
+├── requirements*.txt              依赖说明；本次没有安装
+├── data/                          原66股数据；external40/为确认版Excel
+├── data_processing/               6个采集、清洗、因子及价格输出脚本
+├── factor_analysis/               最新因子分析代码、Word、Excel
+├── research_history/              因子组合和模型搜索的历史源码及记录
+├── models/                        原四模型代码和说明
+├── external_validation/
+│   ├── standalone_ranker/         独立150树版本＋handoff输入和选参来源
+│   └── ensemble_ranker/           三子模型集成、45个历史模型及评估代码
+├── reference_results/             原四模型结果及收到的外部回测结果
+├── backtesting/
+│   ├── README.md                  回测目录、策略含义及运行前事项
+│   └── external40/               新收到的完整复现包，原目录原样保留
+├── integration/                   文件来源、哈希、版本登记和核验记录
+└── tests/                         保留的原四模型入口测试
 ```
 
-The factor builder writes `data/test_data_weekly.csv`. Factor analysis and ML both consume that same path through `ml.config.DATA_FILE`.
+**普通阅读只需要根目录README；写代码时再进入对应模块。** 原包说明保留在模块中，讲的是原交付包的用法。`integration/original_five_package_README.md` 和旧核验记录是来源档案，其中“因子模块未纳入”等旧状态以本README为准。新包中的大量图片、交易流水和页面文件是复现材料，不需要逐个打开，也不是要求你分别交付的报告。
 
-The first three complete years (2016–2018) are the only configuration-selection period. From 2019 onward, the selected factor set, objective, relevance bins, and hyperparameters remain frozen while models refit monthly on the full eligible trailing three-year window.
+## 已确定的版本
 
-See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for research timing and [REPOSITORY_STRUCTURE.md](docs/REPOSITORY_STRUCTURE.md) for file responsibilities.
+1. 原来的五部分全部保留：基础数据、Random Forest、Ridge、XGBoost、XGBRanker。原23个源码/数据/结果文件与之前确认版一致。
+2. 因子分析使用本次修改后的 `Factor_Analysis_Collection.zip`（来源目录标识 `8b84659e2e8b258b7ae8123c4f117db6`）。更早版本不放在当前模块旁边混用。
+3. 新40股使用**12列版** `additional_40_five_factors_targets_final.xlsx`，含 `buy_price` 和 `sell_price`，不采用不含价格的10列版。文件位于 `data/external40/`。
+4. 独立外部Ranker采用 `model_only`：5个财务因子、312个观测周窗口、每26周更新、150棵树、深度2、`min_child_weight=5`。9个JSON对应9个不同重训时点，不是9种模型方案。
+5. `standalone_ranker/run_external40_simulation.py` 来自handoff，属于选参来源，会重新比较候选并进行模拟。**它不是加载正式150树模型的入口，也不保证重新搜索必然选150。** 正式资产在该目录的 `models/` 和 `predictions/`。
+6. 集成版保留156周5因子、52周2因子、52周正则化5因子三个子模型，按周内预测百分位等权合并，每26周重训。45个JSON是15个时点×3个子模型。
+7. 原四模型比较版Ranker的 `rank:ndcg` 与外部独立/集成的 `rank:pairwise` 分开保存，不把它们视为同一冻结模型的简单换股测试。
+8. 新回测包的 `source/` 共15个文件，与正式独立版对应文件逐字节相同；`ensemble_extension/source/` 共80个文件，与已确认集成版对应文件逐字节相同。回测包没有替换上述模型或因子版本。
+9. 回测包的 `old_source/` 是旧50棵树历史对照。新增的50树选择记录不构成150树的选参依据。原报告“六模型”指独立150、历史独立50、三个集成子模型及其组合，不是六套新的正式模型。
+
+原四模型的选参边界仍保留原样：Random Forest/Ridge使用104个Development信号周，XGBoost/XGBRanker使用105个。整合文件没有统一这些实验差异，也没有据此重新评选模型。
+
+## 因子选择说明
+
+新版7因子筛选逻辑与已有结果不变。5因子名单不变，但现在明确写为五个财务维度的指定候选：业务增长、经营现金生成、盈利能力、资产扩张、财务杠杆。统计指标用于描述，不能据此称为“统计自动筛出的最优五因子”。毛利率变化仍作为第六个财务因子的对照，未入选不代表无效或冗余。
+
+原始模型搜索如何形成这组候选，仍应通过历史搜索记录说明。已找到的组合、参数和窗口搜索源码及记录单独归档到 `research_history/ranker_search/`，作为研究来源；尚未确认与当前交付逐项对应，因此不加入正式执行链。旧模型快照及逐股预测大表没有重复复制，原资料未删除。
+
+7因子属于全样本探索筛选；再对同一段历史划分模型测试期，不能自动视为因子选择之外的完全独立验证。原代码和说明中的这一限制予以保留。
+
+**接入冻结模型时必须保持训练列顺序。** 新因子脚本导出的5因子排列是“收入增长、现金流、盈利、资产增长、负债”；现有模型顺序是：
+
+```text
+revenue_growth_yoy
+operating_profitability
+cashflow_to_assets
+debt_to_assets
+asset_growth_yoy
+```
+
+名单相同不等于顺序可以互换。原模型代码中的顺序已保留，不用新JSON的列表顺序直接覆盖。新版因子JSON键为 `5_factors_candidate`。原四模型目前仍使用各自脚本中已冻结的因子名单，并未自动消费因子分析新输出。
+
+## 数据怎样衔接
+
+- `data/test_45_factors_weekly.csv`：原66股清洗数据，27,651行、55列、522个观测周，包含45因子。
+- `data/external40/additional_40_five_factors_targets_final.xlsx`：新40股完整输入，17,353行、12列。
+- 两个外部模型目录的 `inputs/train66.csv` 是原66股表的9列投影。两份文件完全相同；为保留原包相对路径和完整性校验，各模块留一份必要的局部副本。
+- 独立版 `inputs/test40_with_prices.csv` 对应确认版12列Excel；集成版 `inputs/test40.csv` 是不带买卖价格的模型输入视图。不同列数表示用途不同，不是另一批股票。
+- 所有外部模型均以66股历史训练、40股预测；训练窗口长度按各自配置。新40股并未因为文件放在同一工程就加入训练。
+- 40股来自固定候选名单及完整历史长度筛选，不是随机抽样。当前采集代码不提供严格行业归属校验。
+
+原五包重复的66股数据继续只在根目录 `data/` 保存一份；与新采集包重复的原4脚本、5CSV也合并复用。必要的模型局部输入和原报告相对路径图片保持原结构，来源清单会显示这些保留的相同文件。新回测模块也保留其自带的已核对模型和输入副本，以保持原相对路径、内层清单和历史结果可追溯；这些副本不是另外的模型版本。
+
+## 这次补入的回测在做什么
+
+完整源包位于 `backtesting/external40/`，共1,396个文件，按原结构保留，没有修改计算代码。它补齐了 `integer_backtest.py`、`run_all.py` 以及 `ensemble_extension/` 中的 `complete_ensemble.py`、`evaluate_extension.py`、`verify_extension.py`，并包含配套评估、核验、图表、报告和交互页面源码。
+
+回测比较15种主策略和2种对照，采用整数股数、现金余额、买卖双边费用，并计算收益和回撤。独立版本及集成版在共同210周比较；集成版另有366周自身历史口径。包内现成结果属于原作者的历史交付，本次没有重新验证其收益。
+
+“过去13周亏损过滤后选Top5”的准确含义是：**先在整个候选股票池中保留过去13周累计价格收益不低于0的股票，再按模型排名选前5只；不足5只的预算留作现金。** 它不是要求13周每一周都盈利。引擎通过错后一行的收盘价格代理构造已知历史；原始行情与因子披露时点仍需要来源数据支持。
+
+这里的回撤按每周收盘账户价值计算，包含初始资金；不是每日回撤，也没有盘中最低值。多周持仓策略会保留股票；只有专门的每周往返对照每周全部清仓。结果CSV的最大回撤以负数表示。
+
+## 本次可以安全检查什么
+
+在工程根目录执行以下命令只读取文件，不导入或运行模型：
+
+```bash
+python3 check_project.py
+python3 run.py verify
+python3 run.py plan --model all --output runs/preview_all
+```
+
+`check_project.py` 检查整合清单、文件哈希、Python静态语法、模型文件数量及关键输入路径。`run.py verify/plan` 只覆盖原五包对应的四模型部分。**文件检查通过不等于模型运行、评估或历史收益已经复现。**
+
+本轮没有执行任何训练/预测/评估/模拟命令。以下原入口具有计算副作用，后续明确要运行时再使用：
+
+- 原 `run.py train` 会训练原四模型；`run.py data` 会运行采集或因子步骤。
+- 新40股的 collector 与 exporter 原脚本已放在 `data_processing/`，还没有接入 `run.py data` 的阶段选项。后续应把6个数据脚本暂存到同一个运行工作目录，在该目录先采集、再导出，统一它们对工作目录与脚本目录的处理；不要直接在项目根目录依赖默认路径运行这两个脚本。
+- 独立版 `export_saved_models.py` 会重新训练；`run_saved_model_simulation.py` 会预测并**无条件继续执行其自带的简单Top5模拟**。
+- 集成版 `code/run_pipeline.py` 的 `replay` 也会预测并重算模型评估，`train` 会训练。
+- 因子脚本需要显式提供 `--input data/test_45_factors_weekly.csv` 和新的输出目录；本轮未运行。
+- 新回测 `backtesting/external40/run_all.py` 会执行预测、回测、评估和报告，并通过 `replay_old50.py` 重新训练旧50树对照。它不是全项目纯读取入口，也不是从数据采集开始的一键流程。
+- 新回测包自带的 `check_package.py` 会导入计算库并执行合成回测；它不是纯静态检查。本次只运行根目录的 `check_project.py`，没有执行它。
+
+这次是文件与版本层面的整合。完整回测的输入、源码和依赖文件已放入同一工程，但尚未新增一个从数据采集开始自动串起全部模块的执行器，也没有进行端到端运行验收。
+
+## 还缺什么
+
+### 本次已补齐，不需要再找
+
+新40股完整多策略整数股回测源码，以及配套核验、评估、图表、报告和页面源码已经收到。原独立150树和集成模型的资产也已对齐，无需重复发送这些包。
+
+### 完整复现与来源解释的补充材料
+
+- 新40股当次采集的三份中间数据：`additional_40_weekly_5_factors.csv`、`additional_40_universe.csv`、`additional_40_daily_ohlcv.csv`。现有最终输入可供后续预测；缺这些文件影响离线复核数据生成和买卖价格来源。
+- 独立150树版实际选中的候选分数与冻结选择记录；集成及五因子原始搜索资料与当前配置的对应关系。此前本地历史搜索分支仍在，需先核对，不必笼统要求重发全部模型代码。
+- 原四模型历史成绩的完整冻结选择、逐股逐周预测和运行记录。现有结果CSV不能替代这些原实验记录；各模型原选参代码已在本工程。
+- 原四模型统一评估/回测代码的最终确认版。旧资料中的不完整、口径不同的回测引擎未并入当前运行链。
+
+这些缺口分别影响数据来源追溯、选参解释或旧实验复现；**不妨碍本次将已确认代码整理成同一个工程**，也不表示新40股回测源码还缺失。
+
+### 真正运行前需要处理的事项
+
+- 环境：回测根依赖固定 `pandas==3.0.6`，其集成源包固定 `pandas==2.2.3`；根清单没有列出嵌套清单中的 scikit-learn/scipy。需要核实实际统一运行环境，不能直接将两份固定版本混装。图表脚本还使用macOS的R Quartz图形设备。
+- 回测缓存：`complete_ensemble.py` 的缓存判定只包含引擎和该期预测文件，未覆盖完整前序价格历史；以后改了这些价格，旧回测可能仍被复用。
+- 核验缓存：`verify_extension.py` 可凭已有“通过”记录跳过本次核验。以后换输入、代码或结果时，需要重新核验，不能直接沿用旧状态。
+
+以上缓存逻辑本次未改，以保持交付源码原样；它们是未来修改输入并重算前需要修正的事项，不能据此断言现成历史结果错误。更多路径和规则说明见 `backtesting/README.md`。
+
+## 依赖和核验记录
+
+`requirements.txt` 保留原四模型依赖；`requirements-data.txt` 补充新Excel导出需要的 `openpyxl`；`requirements-external40.txt` 引用已交付集成包的依赖要求。新回测的原依赖清单保留在 `backtesting/external40/` 及其源包内，存在上述差异，尚未统一。均不等于原始环境完整锁定，本轮未安装或验证运行环境。独立保存模型JSON记录的XGBoost版本为3.4.1，不保证任意其他版本产生相同结果。
+
+`integration/project_manifest.json` 是本次完整文件清单，记录路径、大小、SHA-256和来源；原五包来源仍保留在 `integration/source_manifest.json`。`integration/static_verification.json` 记录本次静态检查及未执行事项。原模型说明和结果中的成绩属于历史交付，不作为本次新验证成绩。

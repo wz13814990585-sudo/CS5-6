@@ -1,0 +1,8 @@
+{
+  "label": "target1: supplied next-week close-to-close log-return label; expm1 for simple returns",
+  "rank_ic": "Spearman correlation within each signal week; mean over valid weeks",
+  "rank_icir": "mean weekly Rank IC / sample standard deviation; NOT annualized",
+  "ndcg_at5": "weekly relevance=floor((target rank - 1)*5/N), clipped 0..4; gain=2^relevance-1; log2 discounts; ties average",
+  "portfolio_pnl": "uses supplied buy/sell price proxies and integer shares; NOT target1",
+  "delta": "new minus old; less negative max_drawdown means smaller observed drawdown"
+}

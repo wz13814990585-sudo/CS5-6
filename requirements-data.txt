@@ -1,0 +1,6 @@
+# Install only when running data download or factor construction.
+-r requirements.txt
+exchange-calendars
+yfinance
+# Added for the confirmed external-40 Excel export script.
+openpyxl

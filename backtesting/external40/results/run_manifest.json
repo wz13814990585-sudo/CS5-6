@@ -1,0 +1,39 @@
+{
+  "status": "both_models_completed_verified",
+  "models_available": [
+    "Ranker150_New",
+    "Ranker50_Old"
+  ],
+  "version_mapping": {
+    "Ranker150_New": "new supplied saved model, candidate2, 150 trees",
+    "Ranker50_Old": "previous frozen predictions from standalone handoff, candidate1, 50 trees"
+  },
+  "case_count": 2856,
+  "main_strategies": 15,
+  "extra_comparators": [
+    "UniverseEqualWeight",
+    "Top5_WeeklyRoundTrip"
+  ],
+  "window_count": 14,
+  "capital": [
+    100000.0,
+    10000.0
+  ],
+  "cost_bps": [
+    0,
+    10,
+    25
+  ],
+  "integer_shares": true,
+  "price_source": "next-week open/close proxies supplied in test40_with_prices.csv",
+  "hold_overnight": true,
+  "window_end_liquidation": true,
+  "currency": "same units as quoted prices; no FX conversion; not labelled AUD",
+  "risk_free_rate": 0,
+  "stock_cap_on_risk_weights": 0.35,
+  "selection_features": "historical filters use prior rows sell_price shifted to signal date; no future target1",
+  "zero_fractional_shares": true,
+  "all_costs_resimulated": true,
+  "summary_sha256": "52e5ae37bc7db49b9c0f744cd95ae36eade06838f984928fff412aa9089c4986",
+  "independent_checks": 4160178
+}

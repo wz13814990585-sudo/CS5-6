@@ -1,0 +1,3 @@
+# Compatibility requirements supplied with the ensemble package, not a run lockfile.
+# The standalone code uses numpy, pandas and xgboost from the same list.
+-r external_validation/ensemble_ranker/requirements.txt
