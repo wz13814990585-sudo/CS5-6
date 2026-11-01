@@ -45,15 +45,17 @@
   </head>
   <body>
     <header>
-      <strong>客户网站 · 演示外壳</strong><a href="./">返回独立 Dashboard</a>
+      <strong id="site-label">客户网站 · 演示外壳</strong
+      ><a id="back-link" href="./">返回独立 Dashboard</a>
     </header>
     <main>
-      <h1>投资研究模块</h1>
-      <p>
+      <h1 id="module-title">投资研究模块</h1>
+      <p id="module-description">
         下面是真正通过 iframe 嵌入的 SafeCapital 页面。此示例与 Dashboard
         同源；跨域接入时请配置客户域名白名单。框内可以独立滚动、筛选日期和下载结果。
       </p>
-      <iframe src="./?embed=1" title="SafeCapital 历史策略研究"></iframe>
+      <iframe id="dashboard-frame" title="SafeCapital 历史策略研究"></iframe>
     </main>
+    <script type="module" src="./embed-example.mjs"></script>
   </body>
 </html>

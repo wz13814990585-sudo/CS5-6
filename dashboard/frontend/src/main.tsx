@@ -32,6 +32,8 @@ import {
 } from "lucide-react";
 import "./styles.css";
 import InputsPanel from "./InputsPanel";
+import { LanguageProvider, LanguageSwitcher, useLanguage } from "./i18n";
+import { languageURL } from "./i18n-core";
 
 type Run = {
   id: string;
@@ -96,11 +98,8 @@ const money = (n: number) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-const time = (s: string) =>
-  new Date(s).toLocaleString("zh-CN", { hour12: false });
 const embedded =
   new URLSearchParams(window.location.search).get("embed") === "1";
-const localEmbeddedURL = new URL("?embed=1", base).href;
 async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
   const res = await fetch(api(path), { signal });
   if (!res.ok)
@@ -112,19 +111,26 @@ async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
   return res.json();
 }
 function ErrorBox({ message, retry }: { message: string; retry?: () => void }) {
+  const { t } = useLanguage();
   return (
     <div className="error" role="alert">
       <CircleHelp size={20} />
-      <span>{message}</span>
-      {retry && <button onClick={retry}>重试</button>}
+      <span>{t(message)}</span>
+      {retry && <button onClick={retry}>{t("重试")}</button>}
     </div>
   );
 }
 function App() {
+  const { language, t } = useLanguage();
+  const time = (value: string) =>
+    new Date(value).toLocaleString(language === "zh" ? "zh-CN" : "en-AU", {
+      hour12: false,
+    });
   const [publicURL, setPublicURL] = useState("");
-  const embeddedURL = publicURL
-    ? new URL("?embed=1", publicURL).href
-    : localEmbeddedURL;
+  const embeddedURL = languageURL(
+    new URL("?embed=1", publicURL || base).href,
+    language,
+  );
   const [runs, setRuns] = useState<Run[]>([]);
   const [runId, setRunId] = useState("");
   const [rejected, setRejected] = useState(0);
@@ -236,7 +242,7 @@ function App() {
   const chartRows =
     period === "all" ? allEquity : allEquity.slice(-Number(period));
   const dateIndex = overview?.dates.indexOf(date) ?? -1;
-  const embedCode = `<iframe\n  src="${embeddedURL}"\n  title="SafeCapital 历史策略研究"\n  width="100%" height="1400"\n  style="border:0; border-radius:16px"\n  loading="lazy">\n</iframe>`;
+  const embedCode = `<iframe\n  src="${embeddedURL}"\n  title="${t("SafeCapital 历史策略研究")}"\n  width="100%" height="1400"\n  style="border:0; border-radius:16px"\n  loading="lazy">\n</iframe>`;
   async function copyEmbed() {
     try {
       await navigator.clipboard.writeText(embedCode);
@@ -253,7 +259,7 @@ function App() {
         <>
           {menu && (
             <button
-              aria-label="关闭导航遮罩"
+              aria-label={t("关闭导航遮罩")}
               className="scrim"
               onClick={() => setMenu(false)}
             />
@@ -269,9 +275,10 @@ function App() {
               </span>
             </a>
             <div className="workspace-label">
-              工作空间 <span>V1</span>
+              {t("工作空间")}
+              <span>V1</span>
             </div>
-            <nav aria-label="主导航">
+            <nav aria-label={t("主导航")}>
               <a
                 className={`nav-link ${section === "#overview" ? "primary" : ""}`}
                 aria-current={section === "#overview" ? "location" : undefined}
@@ -279,7 +286,7 @@ function App() {
                 onClick={() => setMenu(false)}
               >
                 <LayoutDashboard size={18} />
-                策略总览
+                {t("策略总览")}
                 <ArrowUpRight size={14} />
               </a>
               <a
@@ -289,7 +296,7 @@ function App() {
                 onClick={() => setMenu(false)}
               >
                 <Layers3 size={18} />
-                输入数据
+                {t("输入数据")}
               </a>
               <a
                 className={`nav-link ${section === "#rankings" ? "primary" : ""}`}
@@ -298,7 +305,7 @@ function App() {
                 onClick={() => setMenu(false)}
               >
                 <ListOrdered size={18} />
-                股票排名
+                {t("股票排名")}
               </a>
               <a
                 className={`nav-link ${section === "#results" ? "primary" : ""}`}
@@ -307,7 +314,7 @@ function App() {
                 onClick={() => setMenu(false)}
               >
                 <FileCheck2 size={18} />
-                验证与下载
+                {t("验证与下载")}
               </a>
               <a
                 className={`nav-link ${section === "#integration" ? "primary" : ""}`}
@@ -318,17 +325,17 @@ function App() {
                 onClick={() => setMenu(false)}
               >
                 <Code2 size={18} />
-                输入输出接口
+                {t("输入输出接口")}
               </a>
             </nav>
             <div className="sidebar-bottom">
               <div className="sidebar-note">
                 <ShieldCheck size={22} />
-                <strong>每个结果，都有依据</strong>
-                <p>读取真实回放记录，展示已通过校验的历史策略结果。</p>
+                <strong>{t("每个结果，都有依据")}</strong>
+                <p>{t("读取真实回放记录，展示已通过校验的历史策略结果。")}</p>
                 <span className="dot-label">
                   <i />
-                  只读研究模式
+                  {t("只读研究模式")}
                 </span>
               </div>
               <div className="sidebar-footer">
@@ -344,33 +351,42 @@ function App() {
             <div>
               <button
                 className="mobile-menu icon-button"
-                aria-label="打开导航"
+                aria-label={t("打开导航")}
                 onClick={() => setMenu(!menu)}
               >
                 {menu ? <X size={20} /> : <Menu size={20} />}
               </button>
-              <span>研究工作台</span>
+              <span>{t("研究工作台")}</span>
               <ChevronRight size={14} />
-              <strong>历史策略</strong>
+              <strong>{t("历史策略")}</strong>
             </div>
-            <span className="topbar-status">
-              <i />
-              历史结果
-            </span>
+            <div className="topbar-actions">
+              <span className="topbar-status">
+                <i />
+                {t("历史结果")}
+              </span>
+              <LanguageSwitcher />
+            </div>
           </header>
         )}
         <main>
+          {embedded && (
+            <div className="embed-toolbar">
+              <LanguageSwitcher />
+            </div>
+          )}
           <section className="page-heading" id="overview">
             <div>
               <div className="eyebrow">SAFECAPITAL / ENSEMBLE RESEARCH</div>
               <h1>
-                让策略表现，一目了然<span>.</span>
+                {t("让策略表现，一目了然")}
+                <span>.</span>
               </h1>
-              <p>查看真实输入因子与价格，对照模型排名和组合历史表现。</p>
+              <p>{t("查看真实输入因子与价格，对照模型排名和组合历史表现。")}</p>
             </div>
             <span className="history-badge">
               <Activity size={15} />
-              历史回测 · 非实时行情
+              {t("历史回测 · 非实时行情")}
             </span>
           </section>
           <div className="run-toolbar">
@@ -378,7 +394,7 @@ function App() {
               <span className="small-icon">
                 <Layers3 size={17} />
               </span>
-              <label htmlFor="run">结果版本</label>
+              <label htmlFor="run">{t("结果版本")}</label>
               <select
                 id="run"
                 value={runId}
@@ -387,7 +403,7 @@ function App() {
               >
                 {runs.map((r) => (
                   <option key={r.id} value={r.id}>
-                    {time(r.finished_utc)} · {r.label}
+                    {time(r.finished_utc)} · {t(r.label)}
                   </option>
                 ))}
               </select>
@@ -395,7 +411,7 @@ function App() {
             {overview && (
               <span className="verified">
                 <ShieldCheck size={15} />
-                文件哈希校验通过
+                {t("文件哈希校验通过")}
               </span>
             )}
           </div>
@@ -405,51 +421,58 @@ function App() {
           {!error && !summary && (
             <div className="loading" role="status">
               <span className="spinner" />
-              正在读取已验证的运行结果…
+              {t("正在读取已验证的运行结果…")}
             </div>
           )}
           {summary && overview && (
             <>
               <div className="metric-grid">
                 <Metric
-                  label="期末账户资金"
+                  label={t("期末账户资金")}
                   value={money(summary.final_capital)}
-                  note={`初始资金 ${money(summary.initial_capital)}`}
+                  note={t("初始资金 {value}", {
+                    value: money(summary.initial_capital),
+                  })}
                   icon={<BarChart3 size={18} />}
                   accent
                 />
                 <Metric
-                  label="累计收益"
+                  label={t("累计收益")}
                   value={`${summary.total_return >= 0 ? "+" : ""}${pct(summary.total_return)}`}
-                  note={`年化收益 ${pct(summary.annualized_return)}`}
+                  note={t("年化收益 {value}", {
+                    value: pct(summary.annualized_return),
+                  })}
                   icon={<ArrowUpRight size={18} />}
                   positive={summary.total_return >= 0}
                 />
                 <Metric
-                  label="最大回撤"
+                  label={t("最大回撤")}
                   value={pct(summary.max_drawdown)}
-                  note="完整回测区间 · 峰值至谷值"
+                  note={t("完整回测区间 · 峰值至谷值")}
                   icon={<Activity size={18} />}
                 />
                 <Metric
-                  label="夏普比率"
+                  label={t("夏普比率")}
                   value={summary.sharpe.toFixed(3)}
-                  note={`覆盖 ${summary.weeks} 个信号周`}
+                  note={t("覆盖 {count} 个信号周", { count: summary.weeks })}
                   icon={<Layers3 size={18} />}
                 />
               </div>
               <div className="chart-layout">
-                <section className="panel chart-panel" aria-label="回测图表">
+                <section
+                  className="panel chart-panel"
+                  aria-label={t("回测图表")}
+                >
                   <div className="panel-heading">
                     <div>
                       <span className="eyebrow">PORTFOLIO PERFORMANCE</span>
-                      <h2>看见资金的每一步</h2>
+                      <h2>{t("看见资金的每一步")}</h2>
                     </div>
-                    <div className="period-control" aria-label="图表区间">
+                    <div className="period-control" aria-label={t("图表区间")}>
                       {[
-                        ["52", "末 52 周"],
-                        ["156", "末 156 周"],
-                        ["all", "全部"],
+                        ["52", t("末 52 周")],
+                        ["156", t("末 156 周")],
+                        ["all", t("全部")],
                       ].map(([key, label]) => (
                         <button
                           key={key}
@@ -462,12 +485,12 @@ function App() {
                       ))}
                     </div>
                   </div>
-                  <div className="chart-tabs" aria-label="图表指标">
+                  <div className="chart-tabs" aria-label={t("图表指标")}>
                     {(
                       [
-                        ["end_capital", "账户资金"],
-                        ["net_return", "每周收益"],
-                        ["drawdown", "历史回撤"],
+                        ["end_capital", t("账户资金")],
+                        ["net_return", t("每周收益")],
+                        ["drawdown", t("历史回撤")],
                       ] as const
                     ).map(([key, label]) => (
                       <button
@@ -483,7 +506,15 @@ function App() {
                   <div
                     className="chart"
                     role="img"
-                    aria-label={`${tab === "end_capital" ? "账户资金" : tab === "net_return" ? "每周净收益率" : "相对历史峰值的回撤"}曲线；完整数值可下载每周资金 CSV`}
+                    aria-label={t("{metric}曲线；完整数值可下载每周资金 CSV", {
+                      metric: t(
+                        tab === "end_capital"
+                          ? "账户资金"
+                          : tab === "net_return"
+                            ? "每周净收益率"
+                            : "相对历史峰值的回撤",
+                      ),
+                    })}
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart
@@ -541,12 +572,14 @@ function App() {
                           formatter={(v: number) => [
                             tab === "end_capital" ? money(v) : pct(v),
                             tab === "end_capital"
-                              ? "期末资金"
+                              ? t("期末资金")
                               : tab === "net_return"
-                                ? "当周净收益"
-                                : "历史回撤",
+                                ? t("当周净收益")
+                                : t("历史回撤"),
                           ]}
-                          labelFormatter={(v) => `信号日期 ${v}`}
+                          labelFormatter={(v) =>
+                            t("信号日期 {date}", { date: String(v) })
+                          }
                           contentStyle={{
                             borderRadius: 12,
                             border: "1px solid #dbe5df",
@@ -578,7 +611,9 @@ function App() {
                     </span>
                   </div>
                   <p className="chart-footnote">
-                    横轴为信号日期；资金为对应持有期末值。顶部指标始终对应完整回测区间。
+                    {t(
+                      "横轴为信号日期；资金为对应持有期末值。顶部指标始终对应完整回测区间。",
+                    )}
                   </p>
                 </section>
                 <aside className="panel strategy-panel">
@@ -587,38 +622,43 @@ function App() {
                   </div>
                   <span className="eyebrow">THE STRATEGY</span>
                   <h2>
-                    三个模型组件
+                    {t("三个模型组件")}
                     <br />
-                    一个组合策略。
+                    {t("一个组合策略。")}
                   </h2>
                   <p className="strategy-description">
-                    按周综合模型排名，以过去 13 周非负收益筛选，最多选择 5
-                    只股票。
+                    {t(
+                      "按周综合模型排名，以过去 13 周非负收益筛选，最多选择 5 只股票。",
+                    )}
                   </p>
                   <dl>
                     <div>
-                      <dt>组合方式</dt>
-                      <dd>三组件等权</dd>
+                      <dt>{t("组合方式")}</dt>
+                      <dd>{t("三组件等权")}</dd>
                     </div>
                     <div>
-                      <dt>模型快照</dt>
-                      <dd>{overview.run.models_loaded} 个</dd>
+                      <dt>{t("模型快照")}</dt>
+                      <dd>
+                        {t("{count} 个", { count: overview.run.models_loaded })}
+                      </dd>
                     </div>
                     <div>
-                      <dt>单只目标权重</dt>
+                      <dt>{t("单只目标权重")}</dt>
                       <dd>20%</dd>
                     </div>
                     <div>
-                      <dt>交易成本</dt>
-                      <dd>单边 {summary.cost_bps} bps</dd>
+                      <dt>{t("交易成本")}</dt>
+                      <dd>
+                        {t("单边 {cost} bps", { cost: summary.cost_bps })}
+                      </dd>
                     </div>
                     <div>
-                      <dt>调仓频率</dt>
-                      <dd>每周</dd>
+                      <dt>{t("调仓频率")}</dt>
+                      <dd>{t("每周")}</dd>
                     </div>
                   </dl>
                   <a href="#results" className="text-link">
-                    查看结果依据
+                    {t("查看结果依据")}
                     <ArrowRight size={16} />
                   </a>
                 </aside>
@@ -637,27 +677,29 @@ function App() {
                   <div>
                     <span className="eyebrow">WEEKLY STOCK RANKINGS</span>
                     <h2>
-                      每周股票排名{" "}
+                      {t("每周股票排名")}{" "}
                       <span className="count-badge">
-                        {overview.ticker_count} 只股票池
+                        {t("{count} 只股票池", {
+                          count: overview.ticker_count,
+                        })}
                       </span>
                     </h2>
-                    <p>{overview.ranking_notice}</p>
+                    <p>{t(overview.ranking_notice)}</p>
                   </div>
                   <a
                     className="button secondary"
                     href={download(runId, "predictions")}
                   >
                     <ArrowDownToLine size={16} />
-                    下载全部排名
+                    {t("下载全部排名")}
                   </a>
                 </div>
                 <div className="table-toolbar">
                   <div className="date-control">
-                    <label htmlFor="date">信号日期</label>
+                    <label htmlFor="date">{t("信号日期")}</label>
                     <button
                       className="icon-button"
-                      aria-label="上一个信号周"
+                      aria-label={t("上一个信号周")}
                       disabled={dateIndex <= 0}
                       onClick={() => {
                         setDate(overview.dates[dateIndex - 1]);
@@ -680,7 +722,7 @@ function App() {
                     </select>
                     <button
                       className="icon-button"
-                      aria-label="下一个信号周"
+                      aria-label={t("下一个信号周")}
                       disabled={dateIndex >= overview.dates.length - 1}
                       onClick={() => {
                         setDate(overview.dates[dateIndex + 1]);
@@ -693,8 +735,8 @@ function App() {
                   <label className="search">
                     <Search size={16} />
                     <input
-                      aria-label="搜索股票代码"
-                      placeholder="搜索股票代码，例如 ANF"
+                      aria-label={t("搜索股票代码")}
+                      placeholder={t("搜索股票代码，例如 ANF")}
                       value={search}
                       maxLength={30}
                       onChange={(e) => {
@@ -705,7 +747,7 @@ function App() {
                     {search && (
                       <button
                         className="icon-button"
-                        aria-label="清空搜索"
+                        aria-label={t("清空搜索")}
                         onClick={() => {
                           setSearch("");
                           setPage(1);
@@ -726,30 +768,34 @@ function App() {
                     <table>
                       <thead>
                         <tr>
-                          <th>排名</th>
-                          <th>股票代码</th>
+                          <th>{t("排名")}</th>
+                          <th>{t("股票代码")}</th>
                           <th>
-                            集成得分{" "}
-                            <span title="三个组件的周内百分位得分的等权平均；不是收益预测">
+                            {t("集成得分")}{" "}
+                            <span
+                              title={t(
+                                "三个组件的周内百分位得分的等权平均；不是收益预测",
+                              )}
+                            >
                               ⓘ
                             </span>
                           </th>
-                          <th>组件 1 百分位</th>
-                          <th>组件 2 百分位</th>
-                          <th>组件 3 百分位</th>
+                          <th>{t("组件 1 百分位")}</th>
+                          <th>{t("组件 2 百分位")}</th>
+                          <th>{t("组件 3 百分位")}</th>
                         </tr>
                       </thead>
                       <tbody>
                         {!ranking ? (
                           <tr>
                             <td colSpan={6} className="table-empty">
-                              正在读取排名…
+                              {t("正在读取排名…")}
                             </td>
                           </tr>
                         ) : ranking.rows.length === 0 ? (
                           <tr>
                             <td colSpan={6} className="table-empty">
-                              没有匹配的股票，试试其他代码。
+                              {t("没有匹配的股票，试试其他代码。")}
                             </td>
                           </tr>
                         ) : (
@@ -795,17 +841,19 @@ function App() {
                 <div className="table-footer">
                   <span>
                     {ranking
-                      ? `共 ${ranking.total} 条匹配结果 · 每页 10 条`
-                      : "正在加载"}
+                      ? t("共 {count} 条匹配结果 · 每页 10 条", {
+                          count: ranking.total,
+                        })
+                      : t("正在加载")}
                     <span className="desktop-only">
                       {" "}
-                      · 分数越高，模型排序越靠前
+                      {t("· 分数越高，模型排序越靠前")}
                     </span>
                   </span>
                   <div>
                     <button
                       className="icon-button"
-                      aria-label="上一页"
+                      aria-label={t("上一页")}
                       disabled={page <= 1 || !ranking}
                       onClick={() => setPage((p) => p - 1)}
                     >
@@ -817,7 +865,7 @@ function App() {
                     </span>
                     <button
                       className="icon-button"
-                      aria-label="下一页"
+                      aria-label={t("下一页")}
                       disabled={!ranking || page * 10 >= ranking.total}
                       onClick={() => setPage((p) => p + 1)}
                     >
@@ -831,11 +879,11 @@ function App() {
                   <div className="panel-heading">
                     <div>
                       <span className="eyebrow">VERIFIED & TRACEABLE</span>
-                      <h2>真实运行，可追溯</h2>
+                      <h2>{t("真实运行，可追溯")}</h2>
                     </div>
                     <span className="verified">
                       <ShieldCheck size={16} />
-                      校验通过
+                      {t("校验通过")}
                     </span>
                   </div>
                   <div className="provenance-stats">
@@ -843,57 +891,74 @@ function App() {
                       <strong>
                         {overview.run.prediction_rows.toLocaleString()}
                       </strong>
-                      <span>股票 × 周预测记录</span>
+                      <span>{t("股票 × 周预测记录")}</span>
                     </div>
                     <div>
                       <strong>{overview.run.prediction_weeks}</strong>
-                      <span>预测信号周</span>
+                      <span>{t("预测信号周")}</span>
                     </div>
                     <div>
                       <strong>{summary.weeks}</strong>
-                      <span>组合回测周</span>
+                      <span>{t("组合回测周")}</span>
                     </div>
                   </div>
                   <dl>
                     <div>
-                      <dt>运行完成时间</dt>
-                      <dd>{time(overview.run.finished_utc)}（本地时间）</dd>
+                      <dt>{t("运行完成时间")}</dt>
+                      <dd>
+                        {t("{time}（本地时间）", {
+                          time: time(overview.run.finished_utc),
+                        })}
+                      </dd>
                     </div>
                     <div>
-                      <dt>预测覆盖</dt>
+                      <dt>{t("预测覆盖")}</dt>
                       <dd>
                         {overview.prediction_first_date} —{" "}
                         {overview.prediction_last_date}
                       </dd>
                     </div>
                     <div>
-                      <dt>回测覆盖</dt>
+                      <dt>{t("回测覆盖")}</dt>
                       <dd>
                         {summary.first_signal} — {summary.last_signal}
                       </dd>
                     </div>
                     <div>
-                      <dt>结果编号</dt>
+                      <dt>{t("结果编号")}</dt>
                       <dd className="mono">{runId}</dd>
                     </div>
                   </dl>
                   {rejected > 0 && (
                     <p className="muted">
-                      另有 {rejected} 份不完整或未通过校验的记录，未用于展示。
+                      {t(
+                        "另有 {count} 份不完整或未通过校验的记录，未用于展示。",
+                        { count: rejected },
+                      )}
                     </p>
                   )}
                 </div>
                 <div className="panel downloads">
                   <span className="eyebrow">TAKE A CLOSER LOOK</span>
-                  <h2>把研究结果带走</h2>
-                  <p>下载当前版本的原始文件，继续分析或核对。</p>
+                  <h2>{t("把研究结果带走")}</h2>
+                  <p>{t("下载当前版本的原始文件，继续分析或核对。")}</p>
                   {[
-                    ["summary", "回测汇总", "收益、风险与交易成本", "CSV"],
-                    ["equity", "每周资金", "210 周账户变化与净收益", "CSV"],
+                    [
+                      "summary",
+                      t("回测汇总"),
+                      t("收益、风险与交易成本"),
+                      "CSV",
+                    ],
+                    [
+                      "equity",
+                      t("每周资金"),
+                      t("210 周账户变化与净收益"),
+                      "CSV",
+                    ],
                     [
                       "manifest",
-                      "运行校验清单",
-                      "运行状态与原始文件哈希",
+                      t("运行校验清单"),
+                      t("运行状态与原始文件哈希"),
                       "JSON",
                     ],
                   ].map(([kind, title, desc, format]) => (
@@ -909,7 +974,9 @@ function App() {
                         <strong>{title}</strong>
                         <small>
                           {kind === "equity"
-                            ? `${summary.weeks} 周账户变化与净收益`
+                            ? t("{count} 周账户变化与净收益", {
+                                count: summary.weeks,
+                              })
                             : desc}
                         </small>
                       </span>
@@ -923,9 +990,11 @@ function App() {
                 <section className="panel integration" id="integration">
                   <div>
                     <span className="eyebrow">BUILT TO CONNECT</span>
-                    <h2>输入与输出，都有查询接口</h2>
+                    <h2>{t("输入与输出，都有查询接口")}</h2>
                     <p>
-                      直接读取现有输入和已验证结果，也可以嵌入完整 Dashboard。
+                      {t(
+                        "直接读取现有输入和已验证结果，也可以嵌入完整 Dashboard。",
+                      )}
                     </p>
                     <div className="io-links">
                       <a
@@ -933,7 +1002,8 @@ function App() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        输入清单 JSON <ArrowUpRight size={13} />
+                        {t("输入清单 JSON")}
+                        <ArrowUpRight size={13} />
                       </a>
                       <a
                         href={api(
@@ -942,21 +1012,24 @@ function App() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        当前日期输出排名 <ArrowUpRight size={13} />
+                        {t("当前日期输出排名")}
+                        <ArrowUpRight size={13} />
                       </a>
                       <a
                         href={api(`runs/${runId}/overview`)}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        输出汇总 JSON <ArrowUpRight size={13} />
+                        {t("输出汇总 JSON")}
+                        <ArrowUpRight size={13} />
                       </a>
                       <a
                         href={new URL("api/docs", base).href}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        完整 API 文档 <ArrowUpRight size={13} />
+                        {t("完整 API 文档")}
+                        <ArrowUpRight size={13} />
                       </a>
                     </div>
                     <div className="integration-actions">
@@ -967,20 +1040,25 @@ function App() {
                         rel="noreferrer"
                       >
                         <ArrowUpRight size={16} />
-                        预览嵌入模式
+                        {t("预览嵌入模式")}
                       </a>
                       <a
                         className="text-link"
-                        href={new URL("embed-example.html", base).href}
+                        href={languageURL(
+                          new URL("embed-example.html", base).href,
+                          language,
+                        )}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        查看网站嵌入示例
+                        {t("查看网站嵌入示例")}
                         <ArrowRight size={15} />
                       </a>
                     </div>
                     <p className="integration-note">
-                      正式接入时，将地址换成部署域名，并在服务端允许客户域名。未配置公开域名时，代码中的本机地址仅供当前设备预览。
+                      {t(
+                        "正式接入时，将地址换成部署域名，并在服务端允许客户域名。未配置公开域名时，代码中的本机地址仅供当前设备预览。",
+                      )}
                     </p>
                   </div>
                   <div className="code-box">
@@ -988,24 +1066,26 @@ function App() {
                       {copied ? (
                         <>
                           <Check size={14} />
-                          已复制
+                          {t("已复制")}
                         </>
                       ) : (
                         <>
                           <Code2 size={14} />
-                          复制代码
+                          {t("复制代码")}
                         </>
                       )}
                     </button>
                     <pre tabIndex={0}>{embedCode}</pre>
-                    {copyError && <p role="status">{copyError}</p>}
+                    {copyError && <p role="status">{t(copyError)}</p>}
                   </div>
                 </section>
               )}
               <footer className="page-footer">
                 <span>
                   <ShieldCheck size={16} />
-                  历史研究结果不代表未来收益。价格为回测代理值，排名不等同于投资建议。
+                  {t(
+                    "历史研究结果不代表未来收益。价格为回测代理值，排名不等同于投资建议。",
+                  )}
                 </span>
                 <span>SafeCapital · Research with evidence</span>
               </footer>
@@ -1046,6 +1126,8 @@ function Metric({
 }
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <LanguageProvider>
+      <App />
+    </LanguageProvider>
   </React.StrictMode>,
 );

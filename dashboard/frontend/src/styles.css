@@ -1579,3 +1579,95 @@ td:nth-child(n + 4) {
     flex-wrap: wrap;
   }
 }
+
+/* Language controls remain available in standalone and embedded views. */
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid #dce5d9;
+  border-radius: 8px;
+  background: #f4f7f1;
+  flex-shrink: 0;
+}
+.language-switch button {
+  min-height: 32px;
+  padding: 5px 11px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #687d6a;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.language-switch button[aria-pressed="true"] {
+  background: #fff;
+  color: #245d40;
+  font-weight: 650;
+  box-shadow: 0 1px 4px #183c2114;
+}
+.language-switch button:focus-visible {
+  outline: 2px solid #468263;
+  outline-offset: 2px;
+}
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #ffffffed;
+}
+main section[id] {
+  scroll-margin-top: 90px;
+}
+.embed-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 8px 0;
+  margin-top: -16px;
+  margin-bottom: 12px;
+  background: #f4f6f2ed;
+}
+html[lang="en"] .nav-link {
+  font-size: 12px;
+  gap: 9px;
+}
+.nav-link > svg {
+  flex-shrink: 0;
+}
+html[lang="en"] .chart-panel .panel-heading {
+  flex-wrap: wrap;
+}
+html[lang="en"] .strategy-panel dl > div {
+  gap: 14px;
+}
+html[lang="en"] .strategy-panel dd {
+  text-align: right;
+}
+@media (max-width: 760px) {
+  .topbar > div:first-child > span,
+  .topbar > div:first-child > svg,
+  .topbar .topbar-status {
+    display: none;
+  }
+  .topbar .topbar-actions {
+    margin-left: auto;
+  }
+  .language-switch button {
+    min-height: 36px;
+  }
+  .input-filters {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .input-filters select {
+    min-width: 0;
+  }
+  main section[id] {
+    scroll-margin-top: 76px;
+  }
+}

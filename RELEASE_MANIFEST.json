@@ -5,7 +5,7 @@
     "name": "SafeCapital_Final_FrozenTrees_RunFix_20261024.zip",
     "sha256": "64aa8bf7ec88621602b649cf0c2be0b1cf3b71dea9aaae515a1838c403e6af01"
   },
-  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not. Local Dashboard 1.2 adds identity-bound input browsing and query/download APIs, 30 web tests, local browser/HTTP acceptance and input-inclusive package checks. Docker and public deployment are deferred.",
+  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not. Local Dashboard 1.2 adds identity-bound input browsing and query/download APIs, 30 web tests, local browser/HTTP acceptance and input-inclusive package checks. Docker and public deployment are deferred. Chinese/English UI switching adds six language tests, persistent language and URL preferences, and standalone/embed/mobile browser acceptance without changing model data or API contracts.",
   "checks": {
     "python_syntax_files": 60,
     "regression_tests_run": 87,
@@ -28,7 +28,9 @@
     "dashboard_version": "1.2.0",
     "dashboard_clean_native_install_passed": true,
     "dashboard_clean_native_install_version": "1.1.0",
-    "dashboard_input_package_roundtrip_passed": true
+    "dashboard_input_package_roundtrip_passed": true,
+    "dashboard_language_tests_passed": 6,
+    "dashboard_language_validation_record": "dashboard/docs/LANGUAGE_SUPPORT.md"
   },
   "files": {
     ".dockerignore": {
@@ -44,8 +46,8 @@
       "bytes": 1153
     },
     "CHANGELOG.md": {
-      "sha256": "a656d5fe15cb8860f3518484112143ee6d1218fbbcf5f7de3ee38d9698b453d7",
-      "bytes": 4200
+      "sha256": "b0a7b34242d7fc16cf2fd7ce593e6a556f71ba0989a57978af9f7d428b13b307",
+      "bytes": 4400
     },
     "EXTERNAL_SCOPE.md": {
       "sha256": "39b8aefad9a255468ee72364bf49135805dc11b2d5f66fcb1f4e5629d3888680",
@@ -144,8 +146,8 @@
       "bytes": 767
     },
     "dashboard/README.md": {
-      "sha256": "ecf0837d064cef652b7b5208b90bcb4e0ec05020f0a8ed9201929d8567cb61e4",
-      "bytes": 10506
+      "sha256": "f357057f6e33e5cbb3c82ce568d227e7da2c698f9611a4af6415d67a406ab7e0",
+      "bytes": 10799
     },
     "dashboard/compose.delivery.yaml": {
       "sha256": "98c8ad3e7a12bac3214712f621def214457ac7658726739b30d5f86e0baf13b5",
@@ -164,8 +166,8 @@
       "bytes": 6769
     },
     "dashboard/docs/CUSTOMER_DEMO_GUIDE.md": {
-      "sha256": "88d2ca7405d35b4b92ce295969572d7911912bdf1520adfde8eceb64911a7303",
-      "bytes": 20878
+      "sha256": "39e49ec16fe2847660dc69b21fa4d615dd362acdea0c68038d4878ff7ad9f4c9",
+      "bytes": 21203
     },
     "dashboard/docs/CUSTOMER_HANDOFF.md": {
       "sha256": "849ca4c3fe42e2d5ae382c8989a1f75ce825a4bf341e03bdb39620d3c9d78e50",
@@ -179,9 +181,13 @@
       "sha256": "14e3028d302ac1152623289d7ef42000f7abc72492509595f8d789384f79a38e",
       "bytes": 3578
     },
+    "dashboard/docs/LANGUAGE_SUPPORT.md": {
+      "sha256": "b34c2e2deeb9dfa034a4d7a72d6db9570aec96883a127d5a72f8e618d915c0b1",
+      "bytes": 3366
+    },
     "dashboard/docs/LOCAL_IO.md": {
-      "sha256": "6b4d233a5cbf0b1c8e26720587ffc189524b08e03a192108d15ecb6af1b7be93",
-      "bytes": 4873
+      "sha256": "00179cc6413eabe4b1266c3298e82d803791a11d3c26f9459b80f1034c3c9f0b",
+      "bytes": 5390
     },
     "dashboard/docs/LOCAL_IO_VALIDATION.md": {
       "sha256": "e0da654a3143d178e67dab05bf31f5cd83ca28e73c4ce26ce903d2fc67eeefff",
@@ -202,6 +208,10 @@
     "dashboard/docs/delivery-preview.jpg": {
       "sha256": "630f15eccc3a0cb61b964b3793e656ddee3b305f4ff2edcaca746b398b75b0d8",
       "bytes": 73127
+    },
+    "dashboard/docs/english-dashboard-preview.jpg": {
+      "sha256": "6a4818fd458524dfb27164fd880a5c7fa7f0cafd798d5cd3a7401891a516132f",
+      "bytes": 75788
     },
     "dashboard/docs/integration-tests.log": {
       "sha256": "d4a4072e01790016cbe4ce3589e64431bf0223ba4479123aa6df56c2e4111749",
@@ -240,24 +250,44 @@
       "bytes": 553
     },
     "dashboard/frontend/public/embed-example.html": {
-      "sha256": "0c912e35659760025484482eff49ced5afeec9314e27649c7542b6c124671a25",
-      "bytes": 1518
+      "sha256": "ccfd77c66cfb8209d6c4b0cdbe49659581dd58bad8454d394327adfadbd61a80",
+      "bytes": 1664
+    },
+    "dashboard/frontend/public/embed-example.mjs": {
+      "sha256": "a0f54bf351b91f7a59edba5eb0c9f6f95e803d2195192494878c5955855ae334",
+      "bytes": 2198
     },
     "dashboard/frontend/public/favicon.svg": {
       "sha256": "df04d610ec7cfc1032c0e6f8c37342ed2a6fb3d20454da06771c0309da839daf",
       "bytes": 274
     },
     "dashboard/frontend/src/InputsPanel.tsx": {
-      "sha256": "a51ee95af33e8afd41f6b9ab276ecbae608abc3c61d810a2038b9dc90d8bd711",
-      "bytes": 14643
+      "sha256": "b029ad9d8eb66289302a549182b2fc525f8a552b28dd80add7f4c1a4943d5f0f",
+      "bytes": 15626
+    },
+    "dashboard/frontend/src/i18n-core.ts": {
+      "sha256": "ff2def89e5b9165145fbd52ea77d1895ca7981fb7e65b26f0263cb6e65f362e7",
+      "bytes": 1282
+    },
+    "dashboard/frontend/src/i18n.tsx": {
+      "sha256": "7da1edd2ccd9ebeb52d3fa80c48d24a2e26895a256765b7b99399fdb45e7888d",
+      "bytes": 2557
     },
     "dashboard/frontend/src/main.tsx": {
-      "sha256": "6cd74a6310aa66fdeef10dbb17ed711fcb654fcff0c4f6ca8c468c4c60668b22",
-      "bytes": 39245
+      "sha256": "fa8029d01b58a9d156a0228860fa3dad4955cee009e0fe4c4dcdf723f0739700",
+      "bytes": 42234
+    },
+    "dashboard/frontend/src/messages.ts": {
+      "sha256": "83ea39654cf8f878e3fc50c5eca85c11c2cf01324196cbfa08e51221afe5a8cb",
+      "bytes": 13133
     },
     "dashboard/frontend/src/styles.css": {
-      "sha256": "9205d9823fb55b46f8979a2c125303351084cc3874ee9de4b15cf9a8985871e3",
-      "bytes": 26435
+      "sha256": "d2d6a0a97af089648c0ce3ea2ad260eb13dc30f222c0ef3efe2a1a65f5a610e0",
+      "bytes": 28203
+    },
+    "dashboard/frontend/tests/i18n.test.ts": {
+      "sha256": "260e7b3caf6df4e31c6e8a0e118488a27dff0fb64ba35e888ab6b375fdf6e684",
+      "bytes": 3357
     },
     "dashboard/frontend/tsconfig.json": {
       "sha256": "ce16c4ec7adb978cdfed0b3dc319eb36ea064bcbd821bb61deed380448534e65",

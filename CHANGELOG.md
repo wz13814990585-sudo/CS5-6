@@ -2,6 +2,8 @@
 
 ## 2026-11-01
 
+- Added Chinese/English Dashboard switching, persistent language preference, language-specific embed links and translated input/output views while preserving active filters and API data contracts.
+
 - Added Dashboard 1.2 local input/output browsing: identity-checked factors and price inputs, source/output coverage, row-to-ranking links, versioned query/download endpoints and an executable client example. Docker deployment is deferred.
 
 - Added customer delivery 1.1: deployment configuration, versioned typed read-only API, separate iframe/CORS origins, portable prebuilt ZIP tooling, installation and checksum checks, and clean-environment HTTP acceptance. All 23 web tests passed; container runtime and customer-specific deployment remain unverified.

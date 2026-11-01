@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLanguage } from "./i18n";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -60,6 +61,7 @@ export default function InputsPanel({
   outputDates,
   onViewOutput,
 }: Props) {
+  const { t } = useLanguage();
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [dataset, setDataset] = useState<"factors" | "prices">("factors");
   const [scope, setScope] = useState<"output" | "source">("output");
@@ -143,29 +145,35 @@ export default function InputsPanel({
       <div className="panel-heading">
         <div>
           <span className="eyebrow">INPUTS → MODEL → RESULTS</span>
-          <h2>从输入，看懂输出</h2>
+          <h2>{t("从输入，看懂输出")}</h2>
           <p>
-            查看当前运行所对应的现有输入；选择一只股票，即可对照它的输出排名。
+            {t(
+              "查看当前运行所对应的现有输入；选择一只股票，即可对照它的输出排名。",
+            )}
           </p>
         </div>
         <span className="input-mode">
           <Database size={15} />
-          现有数据 · 只读查询
+          {t("现有数据 · 只读查询")}
         </span>
       </div>
       {error && (
         <div className="error" role="alert">
-          {error}
-          <button onClick={() => setRetry((n) => n + 1)}>重新读取</button>
+          {t(error)}
+          <button onClick={() => setRetry((n) => n + 1)}>
+            {t("重新读取")}
+          </button>
         </div>
       )}
       {!current && !error && (
         <div className="input-loading" role="status">
-          正在验证输入与本次结果的对应关系…
+          {t("正在验证输入与本次结果的对应关系…")}
         </div>
       )}
       {current && !current.available && (
-        <div className="error">{current.reason}</div>
+        <div className="error">
+          {t(current.reason || "暂时无法读取输入数据")}
+        </div>
       )}
       {info && current?.available && (
         <>
@@ -173,23 +181,31 @@ export default function InputsPanel({
             <div>
               <Database size={18} />
               <span>
-                <strong>输入数据</strong>
-                <small>5 个因子 + 历史回测价格</small>
+                <strong>{t("输入数据")}</strong>
+                <small>{t("5 个因子 + 历史回测价格")}</small>
               </span>
             </div>
             <ArrowRight size={17} />
             <div>
               <ShieldCheck size={18} />
               <span>
-                <strong>{current.model?.component_count} 个模型组件</strong>
-                <small>{current.model?.snapshot_count} 个已保存快照</small>
+                <strong>
+                  {t("{count} 个模型组件", {
+                    count: current.model?.component_count ?? 0,
+                  })}
+                </strong>
+                <small>
+                  {t("{count} 个已保存快照", {
+                    count: current.model?.snapshot_count ?? 0,
+                  })}
+                </small>
               </span>
             </div>
             <ArrowRight size={17} />
             <div>
               <span>
-                <strong>排名与回测</strong>
-                <small>按日期和股票代码关联</small>
+                <strong>{t("排名与回测")}</strong>
+                <small>{t("按日期和股票代码关联")}</small>
               </span>
             </div>
           </div>
@@ -204,46 +220,58 @@ export default function InputsPanel({
                   reset();
                 }}
               >
-                {d.title}
+                {t(d.title)}
               </button>
             ))}
             <a className="button secondary" href={downloadURL}>
               <ArrowDownToLine size={15} />
-              下载完整输入 CSV
+              {t("下载完整输入 CSV")}
             </a>
           </div>
           <div className="input-summary">
             <div>
               <strong>{info.source_rows.toLocaleString()}</strong>
-              <span>源文件记录 · {info.source_dates.length} 个信号周</span>
+              <span>
+                {t("源文件记录 · {count} 个信号周", {
+                  count: info.source_dates.length,
+                })}
+              </span>
             </div>
             <div>
               <strong>{info.output_aligned_rows.toLocaleString()}</strong>
               <span>
-                与本次{dataset === "factors" ? "预测" : "回测"}输出对齐的记录
+                {t(
+                  dataset === "factors"
+                    ? "与本次预测输出对齐的记录"
+                    : "与本次回测输出对齐的记录",
+                )}
               </span>
             </div>
             <div>
-              <strong>{info.ticker_count} 只</strong>
-              <span>源文件股票池</span>
+              <strong>{t("{count} 只", { count: info.ticker_count })}</strong>
+              <span>{t("源文件股票池")}</span>
             </div>
             <span className="verified">
               <ShieldCheck size={15} />
-              输入与运行记录哈希一致
+              {t("输入与运行记录哈希一致")}
             </span>
           </div>
           <div className="input-explanation">
-            <p>{info.purpose}</p>
+            <p>{t(info.purpose)}</p>
             <p>
-              源文件范围：{info.source_dates[0]} — {info.source_dates.at(-1)}
-              。表格显示 6
-              位小数；接口返回数值，下载保留原始文件。可左右滚动查看全部字段。
+              {t(
+                "源文件范围：{start} — {end}。表格显示 6 位小数；接口返回数值，下载保留原始文件。可左右滚动查看全部字段。",
+                {
+                  start: info.source_dates[0],
+                  end: info.source_dates.at(-1) ?? "",
+                },
+              )}
             </p>
             <code>{info.source_file}</code>
           </div>
           <div className="table-toolbar">
             <div className="input-filters">
-              <label htmlFor="input-scope">查看范围</label>
+              <label htmlFor="input-scope">{t("查看范围")}</label>
               <select
                 id="input-scope"
                 value={scope}
@@ -252,10 +280,10 @@ export default function InputsPanel({
                   reset();
                 }}
               >
-                <option value="output">与本次输出对齐</option>
-                <option value="source">完整源文件</option>
+                <option value="output">{t("与本次输出对齐")}</option>
+                <option value="source">{t("完整源文件")}</option>
               </select>
-              <label htmlFor="input-date">输入日期</label>
+              <label htmlFor="input-date">{t("输入日期")}</label>
               <select
                 id="input-date"
                 value={selectedDate}
@@ -272,8 +300,8 @@ export default function InputsPanel({
             <label className="search">
               <Search size={16} />
               <input
-                aria-label="搜索输入股票代码"
-                placeholder="搜索输入股票代码"
+                aria-label={t("搜索输入股票代码")}
+                placeholder={t("搜索输入股票代码")}
                 value={search}
                 maxLength={30}
                 onChange={(e) => {
@@ -284,15 +312,15 @@ export default function InputsPanel({
             </label>
           </div>
           <div className="table-scroll" aria-busy={!result}>
-            <table aria-label="输入数据表">
+            <table aria-label={t("输入数据表")}>
               <thead>
                 <tr>
                   {info.columns.map((c) => (
                     <th key={c.key} title={c.key}>
-                      {c.label}
+                      {t(c.label)}
                     </th>
                   ))}
-                  <th className="input-output-link">对应输出</th>
+                  <th className="input-output-link">{t("对应输出")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -302,7 +330,7 @@ export default function InputsPanel({
                       className="table-empty"
                       colSpan={info.columns.length + 1}
                     >
-                      正在读取输入…
+                      {t("正在读取输入…")}
                     </td>
                   </tr>
                 ) : !result.rows.length ? (
@@ -311,7 +339,7 @@ export default function InputsPanel({
                       className="table-empty"
                       colSpan={info.columns.length + 1}
                     >
-                      这个日期没有匹配的股票。
+                      {t("这个日期没有匹配的股票。")}
                     </td>
                   </tr>
                 ) : (
@@ -341,11 +369,11 @@ export default function InputsPanel({
                             href="#rankings"
                             onClick={() => onViewOutput(row.date, row.ticker)}
                           >
-                            查看输出
+                            {t("查看输出")}
                             <ArrowRight size={13} />
                           </a>
                         ) : (
-                          <span className="muted">不在预测区间</span>
+                          <span className="muted">{t("不在预测区间")}</span>
                         )}
                       </td>
                     </tr>
@@ -356,12 +384,16 @@ export default function InputsPanel({
           </div>
           <div className="table-footer">
             <span>
-              {result ? `共 ${result.total} 条匹配输入 · 每页 10 条` : "读取中"}
+              {result
+                ? t("共 {count} 条匹配输入 · 每页 10 条", {
+                    count: result.total,
+                  })
+                : t("读取中")}
             </span>
             <div>
               <button
                 className="icon-button"
-                aria-label="输入上一页"
+                aria-label={t("输入上一页")}
                 disabled={page === 1 || !result}
                 onClick={() => setPage((n) => n - 1)}
               >
@@ -372,7 +404,7 @@ export default function InputsPanel({
               </span>
               <button
                 className="icon-button"
-                aria-label="输入下一页"
+                aria-label={t("输入下一页")}
                 disabled={!result || page * 10 >= result.total}
                 onClick={() => setPage((n) => n + 1)}
               >
@@ -383,17 +415,13 @@ export default function InputsPanel({
           <div className="input-api">
             <div>
               <Code2 size={17} />
-              <strong>当前输入查询接口</strong>
+              <strong>{t("当前输入查询接口")}</strong>
               <button
                 className="button secondary"
-                onClick={() => copy(endpoint(query), "输入接口")}
+                onClick={() => copy(endpoint(query), "input")}
               >
-                {copied === "输入接口" ? (
-                  <Check size={14} />
-                ) : (
-                  <Code2 size={14} />
-                )}
-                复制地址
+                {copied === "input" ? <Check size={14} /> : <Code2 size={14} />}
+                {t("复制地址")}
               </button>
               <a
                 className="text-link"
@@ -401,35 +429,36 @@ export default function InputsPanel({
                 target="_blank"
                 rel="noreferrer"
               >
-                打开 JSON
+                {t("打开 JSON")}
                 <ArrowRight size={13} />
               </a>
             </div>
             <code>{endpoint(query)}</code>
             <p>
-              仅查询现有数据。完整 CSV
-              还包含研究标签等列；表格查询只返回上面列出的字段，target1 /
-              target2 不参与预测或选股。
+              {t(
+                "仅查询现有数据。完整 CSV 还包含研究标签等列；表格查询只返回上面列出的字段，target1 / target2 不参与预测或选股。",
+              )}
             </p>
             {copied && (
               <span role="status">
-                {copied === "输入接口" ? "接口地址已复制" : copied}
+                {t(copied === "input" ? "接口地址已复制" : copied)}
               </span>
             )}
             <details>
-              <summary>字段说明与文件校验</summary>
+              <summary>{t("字段说明与文件校验")}</summary>
               <div className="input-field-list">
                 {info.columns.map((c) => (
                   <div key={c.key}>
                     <code>{c.key}</code>
                     <span>
-                      {c.label} · {c.type}
+                      {t(c.label)} · {c.type}
                     </span>
                   </div>
                 ))}
               </div>
               <p>
-                原文件 SHA-256：<code>{info.sha256}</code>
+                {t("原文件 SHA-256：")}
+                <code>{info.sha256}</code>
               </p>
             </details>
           </div>
