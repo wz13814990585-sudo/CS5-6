@@ -22,16 +22,16 @@ import {
   CircleHelp,
   Code2,
   FileCheck2,
+  FlaskConical,
   Layers3,
-  LayoutDashboard,
-  ListOrdered,
-  Menu,
   Search,
   ShieldCheck,
   X,
 } from "lucide-react";
 import "./styles.css";
 import InputsPanel from "./InputsPanel";
+import PortfolioPanel from "./PortfolioPanel";
+import "./client-theme.css";
 import { LanguageProvider, LanguageSwitcher, useLanguage } from "./i18n";
 import { languageURL } from "./i18n-core";
 
@@ -89,7 +89,7 @@ type Rank = {
 };
 type Ranking = { rows: Rank[]; total: number };
 const base = new URL("./", window.location.href);
-const api = (path: string) => new URL(`api/v1/${path}`, base).href;
+const api = (path: string) => new URL(`api/cs5_6_equity/v1/${path}`, base).href;
 const download = (id: string, kind: string) =>
   api(`runs/${encodeURIComponent(id)}/downloads/${kind}`);
 const pct = (n: number, digits = 2) => `${(n * 100).toFixed(digits)}%`;
@@ -141,7 +141,6 @@ function App() {
   } | null>(null);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
-  const [menu, setMenu] = useState(false);
   const [section, setSection] = useState(window.location.hash || "#overview");
   useEffect(() => {
     const update = () => setSection(window.location.hash || "#overview");
@@ -254,135 +253,54 @@ function App() {
     }
   }
   return (
-    <div className={embedded ? "app embedded" : "app"}>
-      {!embedded && (
-        <>
-          {menu && (
-            <button
-              aria-label={t("关闭导航遮罩")}
-              className="scrim"
-              onClick={() => setMenu(false)}
-            />
-          )}
-          <aside className={`sidebar ${menu ? "open" : ""}`}>
-            <a className="brand" href="#overview">
-              <span className="brand-mark">
-                <Activity size={23} />
-              </span>
-              <span>
-                SafeCapital
-                <span className="brand-caption">RESEARCH WORKSPACE</span>
-              </span>
-            </a>
-            <div className="workspace-label">
-              {t("工作空间")}
-              <span>V1</span>
-            </div>
-            <nav aria-label={t("主导航")}>
-              <a
-                className={`nav-link ${section === "#overview" ? "primary" : ""}`}
-                aria-current={section === "#overview" ? "location" : undefined}
-                href="#overview"
-                onClick={() => setMenu(false)}
-              >
-                <LayoutDashboard size={18} />
-                {t("策略总览")}
-                <ArrowUpRight size={14} />
-              </a>
-              <a
-                className={`nav-link ${section === "#inputs" ? "primary" : ""}`}
-                aria-current={section === "#inputs" ? "location" : undefined}
-                href="#inputs"
-                onClick={() => setMenu(false)}
-              >
-                <Layers3 size={18} />
-                {t("输入数据")}
-              </a>
-              <a
-                className={`nav-link ${section === "#rankings" ? "primary" : ""}`}
-                aria-current={section === "#rankings" ? "location" : undefined}
-                href="#rankings"
-                onClick={() => setMenu(false)}
-              >
-                <ListOrdered size={18} />
-                {t("股票排名")}
-              </a>
-              <a
-                className={`nav-link ${section === "#results" ? "primary" : ""}`}
-                aria-current={section === "#results" ? "location" : undefined}
-                href="#results"
-                onClick={() => setMenu(false)}
-              >
-                <FileCheck2 size={18} />
-                {t("验证与下载")}
-              </a>
-              <a
-                className={`nav-link ${section === "#integration" ? "primary" : ""}`}
-                aria-current={
-                  section === "#integration" ? "location" : undefined
-                }
-                href="#integration"
-                onClick={() => setMenu(false)}
-              >
-                <Code2 size={18} />
-                {t("输入输出接口")}
-              </a>
-            </nav>
-            <div className="sidebar-bottom">
-              <div className="sidebar-note">
-                <ShieldCheck size={22} />
-                <strong>{t("每个结果，都有依据")}</strong>
-                <p>{t("读取真实回放记录，展示已通过校验的历史策略结果。")}</p>
-                <span className="dot-label">
-                  <i />
-                  {t("只读研究模式")}
-                </span>
-              </div>
-              <div className="sidebar-footer">
-                SafeCapital Ensemble <span>1.2</span>
-              </div>
-            </div>
-          </aside>
-        </>
-      )}
+    <div className={embedded ? "app cs5-module embedded" : "app cs5-module"}>
       <div className="main-shell">
-        {!embedded && (
-          <header className="topbar">
+        <header className="module-header">
+          <a href="#overview" className="module-brand">
+            <span>
+              <FlaskConical size={21} />
+            </span>
             <div>
-              <button
-                className="mobile-menu icon-button"
-                aria-label={t("打开导航")}
-                onClick={() => setMenu(!menu)}
-              >
-                {menu ? <X size={20} /> : <Menu size={20} />}
-              </button>
-              <span>{t("研究工作台")}</span>
-              <ChevronRight size={14} />
-              <strong>{t("历史策略")}</strong>
+              SafeCapital<small>STRATEGY LAB</small>
             </div>
-            <div className="topbar-actions">
-              <span className="topbar-status">
-                <i />
-                {t("历史结果")}
-              </span>
-              <LanguageSwitcher />
-            </div>
-          </header>
-        )}
+          </a>
+          <span className="module-status">
+            <i />
+            CS5-6 · {t("历史模拟")}
+          </span>
+          <LanguageSwitcher />
+        </header>
+        <nav className="module-tabs" aria-label={t("主导航")}>
+          {[
+            ["overview", "模型股票策略"],
+            ["allocation", "股票与权重"],
+            ["inputs", "输入数据"],
+            ["rankings", "股票排名"],
+            ["results", "验证与下载"],
+            ...(!embedded ? [["integration", "输入输出接口"]] : []),
+          ].map(([id, label]) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className={section === `#${id}` ? "active" : ""}
+              aria-current={section === `#${id}` ? "location" : undefined}
+            >
+              {t(label)}
+            </a>
+          ))}
+        </nav>
         <main>
-          {embedded && (
-            <div className="embed-toolbar">
-              <LanguageSwitcher />
-            </div>
-          )}
           <section className="page-heading" id="overview">
             <div>
-              <div className="eyebrow">SAFECAPITAL / ENSEMBLE RESEARCH</div>
+              <div className="eyebrow">
+                CS5-6 RESEARCH · INDEPENDENT EQUITY MODULE
+              </div>
               <h1>
-                {t("让策略表现，一目了然")}
-                <span>.</span>
+                {t("基于模型的")}
+                <br />
+                <span>{t("股票策略")}</span>
               </h1>
-              <p>{t("查看真实输入因子与价格，对照模型排名和组合历史表现。")}</p>
+              <p>{t("探索模型选出的股票组合，查看其历史表现与风险。")}</p>
             </div>
             <span className="history-badge">
               <Activity size={15} />
@@ -428,13 +346,20 @@ function App() {
             <>
               <div className="metric-grid">
                 <Metric
+                  label={t("年化收益")}
+                  value={pct(summary.annualized_return)}
+                  note={t("完整区间 · 每年 52 周")}
+                  icon={<ArrowUpRight size={18} />}
+                  accent
+                />
+
+                <Metric
                   label={t("期末账户资金")}
                   value={money(summary.final_capital)}
-                  note={t("初始资金 {value}", {
+                  note={t("初始研究资金 {value}", {
                     value: money(summary.initial_capital),
                   })}
                   icon={<BarChart3 size={18} />}
-                  accent
                 />
                 <Metric
                   label={t("累计收益")}
@@ -532,12 +457,12 @@ function App() {
                           >
                             <stop
                               offset="0%"
-                              stopColor="#29816b"
+                              stopColor="#49c9a5"
                               stopOpacity={0.19}
                             />
                             <stop
                               offset="100%"
-                              stopColor="#29816b"
+                              stopColor="#49c9a5"
                               stopOpacity={0.015}
                             />
                           </linearGradient>
@@ -545,7 +470,7 @@ function App() {
                         <CartesianGrid
                           strokeDasharray="3 5"
                           vertical={false}
-                          stroke="#e6ebe8"
+                          stroke="#243632"
                         />
                         <XAxis
                           dataKey="date"
@@ -553,7 +478,7 @@ function App() {
                           axisLine={false}
                           tickLine={false}
                           minTickGap={48}
-                          tick={{ fontSize: 11, fill: "#7a8981" }}
+                          tick={{ fontSize: 11, fill: "#819992" }}
                           dy={10}
                         />
                         <YAxis
@@ -565,7 +490,7 @@ function App() {
                           }
                           axisLine={false}
                           tickLine={false}
-                          tick={{ fontSize: 11, fill: "#7a8981" }}
+                          tick={{ fontSize: 11, fill: "#819992" }}
                           width={52}
                         />
                         <Tooltip
@@ -582,7 +507,9 @@ function App() {
                           }
                           contentStyle={{
                             borderRadius: 12,
-                            border: "1px solid #dbe5df",
+                            border: "1px solid #29453d",
+                            background: "#101e1b",
+                            color: "#e7f3ee",
                             boxShadow: "0 8px 24px #20392b12",
                             fontSize: 12,
                           }}
@@ -593,7 +520,7 @@ function App() {
                         <Area
                           type="linear"
                           dataKey={tab}
-                          stroke="#21765f"
+                          stroke="#53d0ad"
                           strokeWidth={2}
                           fill="url(#capitalFill)"
                           isAnimationActive={false}
@@ -663,6 +590,14 @@ function App() {
                   </a>
                 </aside>
               </div>
+              <PortfolioPanel
+                runId={runId}
+                onViewRanking={(signalDate, ticker) => {
+                  setDate(signalDate);
+                  setSearch(ticker);
+                  setPage(1);
+                }}
+              />
               <InputsPanel
                 runId={runId}
                 outputDates={overview.dates}
@@ -997,6 +932,14 @@ function App() {
                       )}
                     </p>
                     <div className="io-links">
+                      <a
+                        href={api(`runs/${runId}/portfolio`)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {t("查看模块数据合同 JSON")}
+                        <ArrowUpRight size={13} />
+                      </a>
                       <a
                         href={api(`runs/${runId}/inputs`)}
                         target="_blank"

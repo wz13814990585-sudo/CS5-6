@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/cs5_6_equity/v1/runs/delivered/portfolio?date=not-a-date"
+  },
+  "http_status": 422,
+  "response": {
+    "status": "error",
+    "module_id": "cs5_6_equity",
+    "error": {
+      "code": "invalid_request",
+      "message": "请求参数不符合接口约定",
+      "request_id": "9ebd6e8ccc2f4791974fa37275ea0986",
+      "fields": [
+        "query.date"
+      ]
+    },
+    "detail": "请求参数不符合接口约定"
+  }
+}

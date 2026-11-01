@@ -48,13 +48,13 @@
 - 汇总指标：本次历史回测初始资金 100,000，期末资金约 149,330.61，累计收益约 49.33%；数值以当前回放 CSV 为准。
 - 原始下载：预测、每周资金、汇总以及校验清单。
 
-Dashboard 不会重新生成这些输出。本机默认选择最近一次验证通过的回放；新克隆仓库使用随仓库交付的 verified_replay。由 `/api/v1/runs` 返回实际运行 ID，客户不要写死本机 ID。
+Dashboard 不会重新生成这些输出。本机默认选择最近一次验证通过的回放；新克隆仓库使用随仓库交付的 verified_replay。由 `/api/cs5_6_equity/v1/runs` 返回实际运行 ID，客户不要写死本机 ID。
 
 ## 客户怎样拿到接口
 
 本地文档：<http://127.0.0.1:8000/api/docs>；机器可读定义：<http://127.0.0.1:8000/api/openapi.json>。可直接把 [openapi.json](openapi.json)、[API_V1.md](API_V1.md) 和 [client.mjs](../examples/client.mjs) 交给客户开发者。
 
-以下路径均以 `http://127.0.0.1:8000/api/v1/` 为基础地址：
+以下路径均以 `http://127.0.0.1:8000/api/cs5_6_equity/v1/` 为基础地址：
 
 | 步骤 | GET 路径 |
 |---|---|

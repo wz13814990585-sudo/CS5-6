@@ -20,6 +20,7 @@ from .data import discover
 from .config import Settings, frame_sources, exact_origins
 from . import schemas
 from .inputs import load_source, bind
+from .portfolio import API_PREFIX, MODULE_ID, MODULE_VERSION, load_archive, contract
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -55,11 +56,15 @@ def create_app(
                 app.state.inputs[run_id] = bind(source, replay)
             except (ValueError, KeyError, TypeError):
                 app.state.inputs[run_id] = None
+        try:
+            app.state.portfolio_archive = load_archive(root)
+        except (OSError, ValueError, KeyError, TypeError):
+            app.state.portfolio_archive = None
         yield
 
     app = FastAPI(
         title="SafeCapital Dashboard API",
-        version="1.2.0",
+        version=MODULE_VERSION,
         lifespan=lifespan,
         docs_url="/api/docs",
         openapi_url="/api/openapi.json",
@@ -85,6 +90,11 @@ def create_app(
         return JSONResponse(
             status_code=status,
             content={
+                **(
+                    {"status": "error", "module_id": MODULE_ID}
+                    if request.url.path.startswith(API_PREFIX + "/")
+                    else {}
+                ),
                 "error": {
                     "code": code,
                     "message": message,
@@ -155,7 +165,7 @@ def create_app(
     @router.get("/config", response_model=schemas.PublicConfig)
     def config():
         return {
-            "app_version": "1.2.0",
+            "app_version": MODULE_VERSION,
             "api_version": "v1",
             "public_url": settings.public_url,
             "data_mode": "historical_read_only",
@@ -320,6 +330,16 @@ def create_app(
             },
         )
 
+    @router.get("/runs/{run_id}/portfolio", response_model=schemas.PortfolioContract)
+    def portfolio(run_id: str, date: Date | None = None):
+        return contract(
+            get_run(run_id),
+            app.state.inputs.get(run_id),
+            app.state.portfolio_archive,
+            date.isoformat() if date else None,
+        )
+
+    app.include_router(router, prefix=API_PREFIX)
     app.include_router(router, prefix="/api/v1")
     app.include_router(router, prefix="/api", include_in_schema=False)
 

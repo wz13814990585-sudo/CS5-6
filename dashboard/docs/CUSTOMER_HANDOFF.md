@@ -1,8 +1,10 @@
-# SafeCapital Web 1.2 — 从这里开始
+# SafeCapital Web 1.3 — 从这里开始
 
 本包为可独立运行的历史股票研究模块：网页、后端接口、已构建的前端、真实验证结果、与结果匹配的现有输入和文档。支持独立访问或嵌入客户网站；不需要整个训练工程。初始资金 100000，历史期末资金约 149330.61；请以包中真实 CSV 为准。
 
 当前优先使用本地原生启动，Docker 和公网部署暂缓。输入/输出操作见 `dashboard/docs/LOCAL_IO.md`，可交付接口定义为 `dashboard/docs/openapi.json`。
+
+本版客户需求、组合权重合同、范围/假设/缺失值与实际接入步骤见 [Portfolio Neo 交接](PORTFOLIO_NEO_INTEGRATION.md)（ZIP 根目录版本请打开 `dashboard/docs/PORTFOLIO_NEO_INTEGRATION.md`）。
 
 ## 1. 安装与启动
 
@@ -66,7 +68,7 @@ api_origins = "https://client.example"
 
 页面内带滚动，不需要父页面读取框内 DOM。双方站点的 CSP 要允许对应嵌入：本服务设置 frame-ancestors，客户设置 frame-src。示例 `embed-example.html` 可在运行的网站里查看。
 
-方式 B：客户自建页面调用 `/api/v1/`；字段定义和 JavaScript 示例见 `dashboard/docs/API_V1.md` 及 `dashboard/examples/client.mjs`。集成时先请求 runs 获取 ID。
+方式 B：客户自建页面调用 `/api/cs5_6_equity/v1/`；字段定义和 JavaScript 示例见 `dashboard/docs/API_V1.md` 及 `dashboard/examples/client.mjs`。集成时先请求 runs 获取 ID。
 
 ## 4. 部署
 

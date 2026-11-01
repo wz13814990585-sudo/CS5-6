@@ -1,5 +1,7 @@
 # SafeCapital Dashboard 客户演示流程与网站接入说明
 
+> 1.3 版已改为客户深色 Strategy Lab 风格、顶部标签导航，并新增 Stocks & weights。新版逐步演示、指标口径与客户整合边界以 [Portfolio Neo 接入交接](PORTFOLIO_NEO_INTEGRATION.md) 第 1 节为准。以下原有输入/输出操作仍可使用。
+
 适用版本：Dashboard 1.2。整理日期：2026-11-01（澳大利亚悉尼）。
 
 本文可作为演示者的操作清单和讲解稿。建议演示 12–15 分钟，另留时间讨论客户的接入方式。示例数值已与当前本地服务核对；之后更换结果版本时，以页面实际数据为准。
@@ -283,20 +285,20 @@ api_origins = ""
 
 适用于客户希望使用自己的布局、组件和业务页面。
 
-客户首先请求 `GET /api/v1/runs`，读取 `default_run_id`，再以该 ID 查询数据。不要把本机运行目录名写死在客户代码中。
+客户首先请求 `GET /api/cs5_6_equity/v1/runs`，读取 `default_run_id`，再以该 ID 查询数据。不要把本机运行目录名写死在客户代码中。
 
 | 功能 | GET 接口路径 |
 |---|---|
-| 可用结果版本 | `/api/v1/runs` |
-| 输入目录、字段和覆盖范围 | `/api/v1/runs/{run_id}/inputs` |
-| 模型因子查询 | `/api/v1/runs/{run_id}/inputs/factors/rows?date=2026-08-28&q=ANF&scope=output` |
-| 价格查询 | `/api/v1/runs/{run_id}/inputs/prices/rows?date=2026-08-28&q=ANF&scope=output` |
-| 完整因子 CSV | `/api/v1/runs/{run_id}/inputs/factors/download` |
-| 完整价格 CSV | `/api/v1/runs/{run_id}/inputs/prices/download` |
-| 股票排名 | `/api/v1/runs/{run_id}/rankings?date=2026-08-28&q=ANF` |
-| 回测汇总与来源 | `/api/v1/runs/{run_id}/overview` |
-| 每周资金序列 | `/api/v1/runs/{run_id}/equity` |
-| 汇总 CSV | `/api/v1/runs/{run_id}/downloads/summary` |
+| 可用结果版本 | `/api/cs5_6_equity/v1/runs` |
+| 输入目录、字段和覆盖范围 | `/api/cs5_6_equity/v1/runs/{run_id}/inputs` |
+| 模型因子查询 | `/api/cs5_6_equity/v1/runs/{run_id}/inputs/factors/rows?date=2026-08-28&q=ANF&scope=output` |
+| 价格查询 | `/api/cs5_6_equity/v1/runs/{run_id}/inputs/prices/rows?date=2026-08-28&q=ANF&scope=output` |
+| 完整因子 CSV | `/api/cs5_6_equity/v1/runs/{run_id}/inputs/factors/download` |
+| 完整价格 CSV | `/api/cs5_6_equity/v1/runs/{run_id}/inputs/prices/download` |
+| 股票排名 | `/api/cs5_6_equity/v1/runs/{run_id}/rankings?date=2026-08-28&q=ANF` |
+| 回测汇总与来源 | `/api/cs5_6_equity/v1/runs/{run_id}/overview` |
+| 每周资金序列 | `/api/cs5_6_equity/v1/runs/{run_id}/equity` |
+| 汇总 CSV | `/api/cs5_6_equity/v1/runs/{run_id}/downloads/summary` |
 
 输入查询的 `scope=output` 表示与该次输出对齐，`scope=source` 表示完整源文件范围。查询使用 `page` 和 `page_size` 分页，页码从 1 开始，单页最多 100 条。`q` 是股票代码子串筛选，准确关联仍使用 `date + ticker`。
 

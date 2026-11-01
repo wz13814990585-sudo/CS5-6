@@ -215,4 +215,72 @@ export const english: Record<string, string> = {
   "SafeCapital · 策略研究工作台": "SafeCapital · Strategy Research Workspace",
   "SafeCapital 历史策略研究：真实模型排名、资金曲线与验证记录。":
     "SafeCapital historical strategy research: real model rankings, account curves and verification records.",
+  历史模拟: "Historical simulation",
+  模型股票策略: "Model-Based Stock Strategies",
+  股票与权重: "Stocks & weights",
+  基于模型的: "Model-Based",
+  股票策略: "Stock Strategies",
+  "探索模型选出的股票组合，查看其历史表现与风险。":
+    "Explore model-selected stock portfolios and inspect their historical performance and risk.",
+  年化收益: "Annualized return",
+  "完整区间 · 每年 52 周": "Full history · 52 weeks per year",
+  "初始研究资金 {value}": "Initial research capital {value}",
+  "历史模拟 · 独立股票池": "Historical simulation · Independent universe",
+  策略选中的股票: "Stocks selected by the strategy",
+  "查看历史信号对应的配置，区分目标权重与模拟成交后的实际权重。":
+    "Explore historical allocations. Compare target weights with simulated weights after execution.",
+  "暂时无法读取组合配置；其余研究结果仍可查看。":
+    "Allocation data is unavailable. Other research results remain accessible.",
+  "正在读取已验证的组合配置…": "Loading verified portfolio allocations…",
+  历史股票配置表: "Historical stock allocation",
+  模型排名: "Model rank",
+  目标权重: "Target weight",
+  实际权重: "Actual weight",
+  股数: "Shares",
+  查看排名: "View ranking",
+  "本周未选中股票，组合持有现金。":
+    "No stocks selected this week. The portfolio holds cash.",
+  现金权重: "Cash weight",
+  "配置时点：下一周开盘代理价成交后":
+    "Allocation: after execution at next-week open proxies",
+  "此表为最后持有期内的配置；回测结束时已清仓，不代表当前持仓。":
+    "This shows the final holding-period allocation. Positions were liquidated at the end of the backtest; these are not current holdings.",
+  "该日期没有组合回测记录。": "No portfolio backtest records for this date.",
+  "匹配的组合配置暂不可用，未用模型前五名替代。":
+    "Matching allocations are unavailable. Raw top-five model rankings are not substituted.",
+  一个明确的研究范围: "A clearly defined research scope",
+  训练股票池: "Training universe",
+  独立外部评估股票: "Separate external stocks",
+  当前信号可用股票: "Available on this signal date",
+  信号频率: "Signal frequency",
+  "仅股票，不包含 ETF；与客户页面的单一资产选择器独立。":
+    "Equities only, no ETFs. Independent of the client page’s single-asset selector.",
+  基准比较: "Benchmark comparison",
+  不可用: "Unavailable",
+  "未提供与本股票池、区间和交易假设一致的已验证基准序列。":
+    "No verified benchmark series matching this universe, period and execution assumptions is supplied.",
+  "与报告中的较短最终测试区间分开呈现。":
+    "Presented separately from the report’s shorter final-test period.",
+  "方法、假设与数据关系": "Methodology, assumptions & data relationships",
+  模型与执行: "Model & execution",
+  "三个冻结模型组件按周形成排名；使用可观察的过去 13 周非负收益过滤，再选择最多五只股票。":
+    "Three frozen model components rank stocks weekly. An observable trailing 13-week non-negative return filter is applied before selecting up to five stocks.",
+  "目标权重每只 20%；整数股、交易费用及现金约束会使实际权重略有差异。":
+    "Target weight is 20% per stock. Integer shares, fees and cash constraints can change actual weights.",
+  "使用下一周开盘与收盘代理价进行历史模拟，每次买入或卖出收取 10 bps；不表示真实成交。":
+    "Historical simulation uses next-week open and close proxies with 10 bps per buy or sell. These are not actual market fills.",
+  "年化约定：每年 52 周，(期末资金 / 初始资金)^(52 / 周数) − 1。":
+    "Annualization: 52 weeks per year, (final capital / initial capital)^(52 / weeks) − 1.",
+  数据边界与来源: "Data boundaries & provenance",
+  "完整训练股票池有 66 只，早期快照实际可用股票数随历史数据覆盖而变化；外部 40 只股票与训练股票不重叠。":
+    "The full training universe contains 66 stocks; availability in earlier snapshots varies with historical coverage. The 40 external stocks do not overlap with training stocks.",
+  "原结果未声明币种，金额沿用研究账户单位。财务数据的独立发布时间戳不可用，信号日期不等于发布时间。":
+    "The source does not declare a currency; amounts retain research account units. Independent financial publication timestamps are unavailable. Signal dates are not publication timestamps.",
+  "独立命名空间内的关系：模型 → 运行 → 周度信号 → 股票配置 → 回测指标。不会合并客户其他模块的本体或结果。":
+    "Relationships within this module: model → run → weekly signal → stock allocation → backtest metrics. The client’s other module ontologies and results remain separate.",
+  "配置从既有回测引擎离线导出，与原资金序列逐周核对；页面不会启动训练或实时预测。":
+    "Allocations are exported offline from the existing backtest engine and reconciled against every original weekly account value. The page does not start training or live predictions.",
+  原资金序列最大误差: "Maximum original account-series error",
+  独立账户核验: "Independent accounting checks",
+  "查看模块数据合同 JSON": "View module contract JSON",
 };

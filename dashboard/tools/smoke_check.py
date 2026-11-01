@@ -20,7 +20,7 @@ def check(url, expected=None):
             return response.read()
 
     def get(path):
-        return json.loads(read("api/v1/" + path))
+        return json.loads(read("api/cs5_6_equity/v1/" + path))
 
     assert get("health")["status"] == "ok"
     runs = get("runs")
@@ -30,6 +30,19 @@ def check(url, expected=None):
     equity = get(f"runs/{run_id}/equity")["rows"]
     assert len(equity) == overview["summary"]["weeks"]
     assert equity[-1]["end_capital"] == overview["summary"]["final_capital"]
+    portfolio = get(f"runs/{run_id}/portfolio")
+    assert portfolio["status"] == "success"
+    assert portfolio["module_id"] == "cs5_6_equity"
+    assert portfolio["metrics"]["final_capital"] == overview["summary"]["final_capital"]
+    allocation = portfolio["allocation"]
+    assert (
+        abs(
+            sum(row["actual_weight"] for row in allocation["rows"])
+            + allocation["cash_weight"]
+            - 1
+        )
+        < 1e-10
+    )
     date = overview["dates"][-1]
     ranking = get(f"runs/{run_id}/rankings?date={date}&page_size=100")
     assert len(ranking["rows"]) == ranking["total"] > 0
@@ -38,7 +51,7 @@ def check(url, expected=None):
     assert inputs["available"]
     for dataset in inputs["datasets"]:
         key = dataset["id"]
-        downloaded = read(f"api/v1/runs/{run_id}/inputs/{key}/download")
+        downloaded = read(f"api/cs5_6_equity/v1/runs/{run_id}/inputs/{key}/download")
         assert hashlib.sha256(downloaded).hexdigest() == dataset["sha256"]
         original = list(csv.DictReader(io.StringIO(downloaded.decode("utf-8-sig"))))
         assert len(original) == dataset["source_rows"]
@@ -58,7 +71,7 @@ def check(url, expected=None):
         ("predictions", "saved_model_predictions.csv"),
         ("manifest", "manifest.json"),
     ]:
-        downloaded = read(f"api/v1/runs/{run_id}/downloads/{kind}")
+        downloaded = read(f"api/cs5_6_equity/v1/runs/{run_id}/downloads/{kind}")
         if expected:
             assert downloaded == (Path(expected) / filename).read_bytes(), filename
         if kind == "summary":
@@ -76,7 +89,7 @@ def check(url, expected=None):
         assert read(script)
     assert b"iframe" in read("embed-example.html")
     try:
-        read("api/v1/runs/does-not-exist/overview")
+        read("api/cs5_6_equity/v1/runs/does-not-exist/overview")
         raise AssertionError("Missing run accepted")
     except HTTPError as exc:
         assert exc.code == 404
@@ -87,6 +100,8 @@ def check(url, expected=None):
         "prediction_rows": overview["run"]["prediction_rows"],
         "weeks": len(equity),
         "final_capital": overview["summary"]["final_capital"],
+        "module_id": portfolio["module_id"],
+        "allocation_status": allocation["status"],
         "input_datasets": [d["id"] for d in inputs["datasets"]],
         "input_rows_each": [d["source_rows"] for d in inputs["datasets"]],
     }

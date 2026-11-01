@@ -1,10 +1,10 @@
-# SafeCapital Dashboard V1.2
+# SafeCapital Dashboard V1.3
 
 当前重点是本地查看真实输入和输出，以及交付查询接口。Docker 和公网部署暂缓。先看 [本地输入输出使用指南](docs/LOCAL_IO.md) 与 [本次验收](docs/LOCAL_IO_VALIDATION.md)。
 
 **客户交付入口：**[客户演示操作与讲解稿](docs/CUSTOMER_DEMO_GUIDE.md) · [完整计划](docs/DEVELOPMENT_PLAN.md) · [客户安装与接入手册](docs/CUSTOMER_HANDOFF.md) · [API v1 合同](docs/API_V1.md) · [本次交付验收](docs/DELIVERY_VALIDATION.md)。
 
-支持 `--config dashboard/config.toml`，模板为 `dashboard/config.example.toml`。新集成使用 `/api/v1`，旧 `/api` 继续兼容。前端通过运行配置生成公开域名下的嵌入代码。
+支持 `--config dashboard/config.toml`，模板为 `dashboard/config.example.toml`。新集成使用 `/api/cs5_6_equity/v1`，旧 `/api/v1` 和 `/api` 继续兼容。前端通过运行配置生成公开域名下的嵌入代码。
 
 构建客户 ZIP（需要先构建前端）：
 
@@ -18,6 +18,9 @@
 
 ## 已实现
 
+- [Portfolio Neo 接入交接](docs/PORTFOLIO_NEO_INTEGRATION.md)：独立股票研究模块、客户风格、66/40 股票范围、真实选股权重、基准缺失说明、离线复算来源。
+- 独立 `/api/cs5_6_equity/v1/runs/{id}/portfolio` 合同，提供模型、股票池、配置、指标、假设、来源及成功/无数据/错误状态。
+
 - 顶部“中文 / English”切换界面语言，保留当前筛选与图表选择；刷新后记住语言。嵌入模式同样支持，链接可用 `?lang=en` 或 `?embed=1&lang=en` 指定语言。
 
 - 模型五个原始因子、历史回测价格浏览，日期/股票过滤与分页，完整输入下载。
@@ -28,7 +31,7 @@
 - 366 个信号日期可选；股票代码搜索、排名分页、三组件百分位与集成得分。
 - 历史结果版本选择、来源说明、运行时间和验证状态。
 - 原始排名、资金、汇总 CSV 和 manifest JSON 下载。
-- `/?embed=1` 隐藏外层导航与接入说明；`/embed-example.html` 提供可交互的 iframe 示例。
+- `/?embed=1` 保留模块导航、隐藏接入说明；`/embed-example.html` 提供可交互的 iframe 示例。
 - 窄屏布局、移动导航、加载 / 空搜索 / 请求失败状态。
 
 这是历史结果展示服务，不是实时选股、交易执行、任意数据上传或在线训练服务。排名是策略过滤前的结果，不等同于实际持仓。资金数值使用原始回测计价单位，页面不另行假定币种。
@@ -123,7 +126,7 @@ V1 不实现登录或客户 SSO，也不保存客户输入。若客户要求只�
 
 ## 部署包（当前暂缓）
 
-以下是之前准备的可选部署资料，不是当前本地使用的必要步骤。现有 Docker 配方只包含输出；如未来启用容器，需要补入并验收 V1.2 的输入文件。
+以下是之前准备的可选部署资料，不是当前本地使用的必要步骤。现有 Docker 配方只包含输出；如未来启用容器，需要补入并验收 V1.2 的输入文件与 V1.3 的模块快照。
 
 仓库根目录已有 `.dockerignore`，Dockerfile 仅打包 Web 服务、构建后前端及交付的真实验证结果。镜像不包含训练数据、模型依赖或本机 runs。
 
@@ -141,19 +144,19 @@ docker run --rm --name safecapital-dashboard \
 
 ## API
 
-所有接口只读。首先访问 `GET /api/v1/runs` 获取有效 ID，再使用该 ID：
+所有接口只读。首先访问 `GET /api/cs5_6_equity/v1/runs` 获取有效 ID，再使用该 ID：
 
 | 路径 | 响应 |
 |---|---|
-| `/api/v1/health` | 可用状态、有效与拒绝的结果数量；无结果时 503 |
-| `/api/v1/runs` | 结果列表及 `default_run_id` |
-| `/api/v1/runs/{id}/inputs` | 输入目录、字段、日期覆盖和哈希 |
-| `/api/v1/runs/{id}/inputs/{dataset}/rows` | factors/prices，支持 date、scope、q、page、page_size |
-| `/api/v1/runs/{id}/inputs/{dataset}/download` | 完整原始输入 CSV |
-| `/api/v1/runs/{id}/overview` | 指标、全部可选信号日期、来源与覆盖范围 |
-| `/api/v1/runs/{id}/equity` | 完整每周资金、收益与从初始资金起计算的历史回撤 |
-| `/api/v1/runs/{id}/rankings?date=2026-08-28&q=ANF&page=1&page_size=10` | 日期排名、股票代码过滤与分页；page_size 上限 100 |
-| `/api/v1/runs/{id}/downloads/{kind}` | 原始文件，字节与已验证快照相同 |
+| `/api/cs5_6_equity/v1/health` | 可用状态、有效与拒绝的结果数量；无结果时 503 |
+| `/api/cs5_6_equity/v1/runs` | 结果列表及 `default_run_id` |
+| `/api/cs5_6_equity/v1/runs/{id}/inputs` | 输入目录、字段、日期覆盖和哈希 |
+| `/api/cs5_6_equity/v1/runs/{id}/inputs/{dataset}/rows` | factors/prices，支持 date、scope、q、page、page_size |
+| `/api/cs5_6_equity/v1/runs/{id}/inputs/{dataset}/download` | 完整原始输入 CSV |
+| `/api/cs5_6_equity/v1/runs/{id}/overview` | 指标、全部可选信号日期、来源与覆盖范围 |
+| `/api/cs5_6_equity/v1/runs/{id}/equity` | 完整每周资金、收益与从初始资金起计算的历史回撤 |
+| `/api/cs5_6_equity/v1/runs/{id}/rankings?date=2026-08-28&q=ANF&page=1&page_size=10` | 日期排名、股票代码过滤与分页；page_size 上限 100 |
+| `/api/cs5_6_equity/v1/runs/{id}/downloads/{kind}` | 原始文件，字节与已验证快照相同 |
 
 `kind` 可为 `predictions`、`equity`、`summary`、`manifest`、`prediction-verification`、`backtest-verification`。不存在的结果或下载返回 404；非法日期/页码返回 422。服务器不暴露仓库文件路径，也不接受文件上传、任意路径下载或执行命令。
 

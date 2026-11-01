@@ -5,9 +5,9 @@
     "name": "SafeCapital_Final_FrozenTrees_RunFix_20261024.zip",
     "sha256": "64aa8bf7ec88621602b649cf0c2be0b1cf3b71dea9aaae515a1838c403e6af01"
   },
-  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not. Local Dashboard 1.2 adds identity-bound input browsing and query/download APIs, 30 web tests, local browser/HTTP acceptance and input-inclusive package checks. Docker and public deployment are deferred. Chinese/English UI switching adds six language tests, persistent language and URL preferences, and standalone/embed/mobile browser acceptance without changing model data or API contracts.",
+  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not. Local Dashboard 1.2 adds identity-bound input browsing and query/download APIs, 30 web tests, local browser/HTTP acceptance and input-inclusive package checks. Docker and public deployment are deferred. Chinese/English UI switching adds six language tests, persistent language and URL preferences, and standalone/embed/mobile browser acceptance without changing model data or API contracts. Portfolio Neo module 1.3 adds isolated cs5_6_equity API and client-style bilingual interface, reconciled offline holdings (two variants, 210 weeks each, original weekly error zero), 39 web tests, 6 language tests, desktop/mobile and local entry-card/iframe checks. 207 existing non-Dashboard file hashes are unchanged. Actual client-site integration, authentication, staging regression and production release require the client core team and are not claimed.",
   "checks": {
-    "python_syntax_files": 60,
+    "python_syntax_files": 63,
     "regression_tests_run": 87,
     "regression_tests_passed": 87,
     "regression_tests_skipped_for_windows_symlink_privilege": 0,
@@ -22,15 +22,20 @@
     "validation_platform": "macOS 14.5 arm64, Python 3.12.10, pinned requirements.txt",
     "validation_record": "docs/validation_results.json",
     "independent_accounting_checks": 9586,
-    "dashboard_tests_passed": 30,
+    "dashboard_tests_passed": 39,
     "dashboard_frontend_build_passed": true,
-    "dashboard_validation_record": "dashboard/docs/LOCAL_IO_VALIDATION.md",
-    "dashboard_version": "1.2.0",
+    "dashboard_validation_record": "dashboard/docs/PORTFOLIO_NEO_VALIDATION.md",
+    "dashboard_version": "1.3.0",
     "dashboard_clean_native_install_passed": true,
     "dashboard_clean_native_install_version": "1.1.0",
     "dashboard_input_package_roundtrip_passed": true,
     "dashboard_language_tests_passed": 6,
-    "dashboard_language_validation_record": "dashboard/docs/LANGUAGE_SUPPORT.md"
+    "dashboard_language_validation_record": "dashboard/docs/LANGUAGE_SUPPORT.md",
+    "dashboard_portfolio_snapshot_variants": 2,
+    "dashboard_portfolio_weeks_each": 210,
+    "dashboard_portfolio_maximum_weekly_error": 0.0,
+    "dashboard_portfolio_accounting_checks_each": 9586,
+    "dashboard_original_non_dashboard_files_unchanged": 207
   },
   "files": {
     ".dockerignore": {
@@ -146,8 +151,8 @@
       "bytes": 767
     },
     "dashboard/README.md": {
-      "sha256": "f357057f6e33e5cbb3c82ce568d227e7da2c698f9611a4af6415d67a406ab7e0",
-      "bytes": 10799
+      "sha256": "e20c206aa0cd4329c600ecf73223415d04c9fddea6694ac8eba7aacc17bef67b",
+      "bytes": 11339
     },
     "dashboard/compose.delivery.yaml": {
       "sha256": "98c8ad3e7a12bac3214712f621def214457ac7658726739b30d5f86e0baf13b5",
@@ -161,17 +166,25 @@
       "sha256": "df1beb4912d3a739cf931fde6efce949ca8d33245c3fd88407195ef30b2512e8",
       "bytes": 480
     },
+    "dashboard/data/cs5_6_equity/manifest.json": {
+      "sha256": "98db5c82c7c4e355347d17a70254fe81ea340636a95c7484b331e808953d2d05",
+      "bytes": 166
+    },
+    "dashboard/data/cs5_6_equity/portfolio.json": {
+      "sha256": "bc31a51a6c3c04729c1295fba8fd4b60f358de05faf491316294e3df31eec184",
+      "bytes": 892107
+    },
     "dashboard/docs/API_V1.md": {
-      "sha256": "1ba0c444205dc422ed7531ab7d67ed378eecaaa8c9e967f466c19c0b1d4904af",
-      "bytes": 6769
+      "sha256": "b19cb4ed132d75a054fa27eb15e72997f10eea00f1bdc91d74348a118b57ccfd",
+      "bytes": 6965
     },
     "dashboard/docs/CUSTOMER_DEMO_GUIDE.md": {
-      "sha256": "39e49ec16fe2847660dc69b21fa4d615dd362acdea0c68038d4878ff7ad9f4c9",
-      "bytes": 21203
+      "sha256": "376550fc85b54af0de71343c92088b0068075a80a6529d70b2f48492b9935b48",
+      "bytes": 21632
     },
     "dashboard/docs/CUSTOMER_HANDOFF.md": {
-      "sha256": "849ca4c3fe42e2d5ae382c8989a1f75ce825a4bf341e03bdb39620d3c9d78e50",
-      "bytes": 5873
+      "sha256": "c4a1ad8e40d3b6dca12913e5195f61938b7e574652e5d68cd91ff5e4cadb8f57",
+      "bytes": 6113
     },
     "dashboard/docs/DELIVERY_VALIDATION.md": {
       "sha256": "ddabfd4dc58ce73a3635decd39096e41ce2861b8ddab2b30fe39131a2e60d9e9",
@@ -186,12 +199,20 @@
       "bytes": 3366
     },
     "dashboard/docs/LOCAL_IO.md": {
-      "sha256": "00179cc6413eabe4b1266c3298e82d803791a11d3c26f9459b80f1034c3c9f0b",
-      "bytes": 5390
+      "sha256": "78addd00884165f0c007f6b3c067084ee409b709232dea402e11ff74730b1e8c",
+      "bytes": 5416
     },
     "dashboard/docs/LOCAL_IO_VALIDATION.md": {
       "sha256": "e0da654a3143d178e67dab05bf31f5cd83ca28e73c4ce26ce903d2fc67eeefff",
       "bytes": 2201
+    },
+    "dashboard/docs/PORTFOLIO_NEO_INTEGRATION.md": {
+      "sha256": "9b8d1845f21ff805152b8235dac05ee18b28e4e84c8b965c65d6ab95c77ed60b",
+      "bytes": 12734
+    },
+    "dashboard/docs/PORTFOLIO_NEO_VALIDATION.md": {
+      "sha256": "71853e0b5252cb33836be101d4525246c26c1f7b4e947b842be3267cd42c0faa",
+      "bytes": 3268
     },
     "dashboard/docs/VALIDATION.md": {
       "sha256": "d6265d00fb0c85b685637e3139c3c1808f2ac1dfe43476864010d26aad674ed9",
@@ -230,64 +251,104 @@
       "bytes": 552
     },
     "dashboard/docs/openapi.json": {
-      "sha256": "d256f92a9a84ffe487fba9490c1da2db98efbbf8f79c26286e084fd00eaed3f5",
-      "bytes": 41093
+      "sha256": "d96097fd6f23c0dd4eee1861026b8983ecbdd118214c18c5a3711e0a052f616b",
+      "bytes": 77517
+    },
+    "dashboard/docs/portfolio-neo-desktop.jpg": {
+      "sha256": "5e331bd422fba62aed1377374d1a67b9a8590e56b54f47c6dd624a362ab354b4",
+      "bytes": 85110
+    },
+    "dashboard/docs/portfolio-neo-entry.jpg": {
+      "sha256": "04bddf007ada8d2d1cc00c8fa1d059f8f47a7059955afef0f5a6c71131d83dfb",
+      "bytes": 68318
+    },
+    "dashboard/docs/portfolio-neo-holdings.jpg": {
+      "sha256": "9c5eb0d05a48ec0692153005ca0b4de498d09c3f92294fe65384a64881aa1a02",
+      "bytes": 73259
+    },
+    "dashboard/docs/portfolio-neo-mobile.jpg": {
+      "sha256": "102560dfb712de08c007dab055b467183549f83ba61cade9b44dd3ee8c715c84",
+      "bytes": 45078
     },
     "dashboard/examples/client.mjs": {
-      "sha256": "b0aea88b2ef98a36346fffbf6be0b260f9d481a53039f6ccd225d31c033fc7fa",
-      "bytes": 2191
+      "sha256": "e0649c1362bef99b4eee1467c1a0f27d38da89598a0de640916e42053a7a04b2",
+      "bytes": 2274
+    },
+    "dashboard/examples/cs5_6_equity/invalid-input.json": {
+      "sha256": "3db011c2b54c63750c0616f442a104eaffe438b11ec22e0e3a04891cddc24ebc",
+      "bytes": 481
+    },
+    "dashboard/examples/cs5_6_equity/no-data.json": {
+      "sha256": "a208707ef907c6ef5a50f3b4354d6d3ca0b289bf549daf4865d83efbab6ac57b",
+      "bytes": 11121
+    },
+    "dashboard/examples/cs5_6_equity/success.json": {
+      "sha256": "de7479017414967f07e81e3c8447d7361548270dc8ac48010a0b4b24b53ff2b0",
+      "bytes": 12955
+    },
+    "dashboard/examples/verify-module.mjs": {
+      "sha256": "f423f23b1126fe06bfec0ea0415ddb5bfe2f2ba167151713479bfa637b30ce1c",
+      "bytes": 1932
     },
     "dashboard/frontend/index.html": {
       "sha256": "0c11da7d77337ac996c1c26516567bd0a69f95984242f70e3a12ae0419667668",
       "bytes": 584
     },
     "dashboard/frontend/package-lock.json": {
-      "sha256": "fe91923b4b2e864c4002ad0c060924623a2a9899b9435ddd5d2251ad960c41d4",
+      "sha256": "9dd164ab753816ae58e8e08c33e3352ae9ecdd251ee0adad07448d99caf53e14",
       "bytes": 77168
     },
     "dashboard/frontend/package.json": {
-      "sha256": "775271858a309ad9448b557a3a4f5970c08197a27ffb8f72a52bf4d81b0ab209",
+      "sha256": "746453d93f1de16c42f25661d9c6c72e1f13d458750a744d07d7f6b35fff8925",
       "bytes": 553
     },
     "dashboard/frontend/public/embed-example.html": {
-      "sha256": "ccfd77c66cfb8209d6c4b0cdbe49659581dd58bad8454d394327adfadbd61a80",
-      "bytes": 1664
+      "sha256": "e64544e4dd8f2e570a532a4766f0e4e28ef92e67c94707273ede91e4e4546b77",
+      "bytes": 5014
     },
     "dashboard/frontend/public/embed-example.mjs": {
-      "sha256": "a0f54bf351b91f7a59edba5eb0c9f6f95e803d2195192494878c5955855ae334",
-      "bytes": 2198
+      "sha256": "162e7cede984e430ca18dadaf5ac511ed32ddbea78c291d651e48f95260fe269",
+      "bytes": 3807
     },
     "dashboard/frontend/public/favicon.svg": {
       "sha256": "df04d610ec7cfc1032c0e6f8c37342ed2a6fb3d20454da06771c0309da839daf",
       "bytes": 274
     },
     "dashboard/frontend/src/InputsPanel.tsx": {
-      "sha256": "b029ad9d8eb66289302a549182b2fc525f8a552b28dd80add7f4c1a4943d5f0f",
-      "bytes": 15626
+      "sha256": "5a869d138ffe299962b9bebab7b8b5bf9b595540abf623c4095aca894e7f46d9",
+      "bytes": 15641
+    },
+    "dashboard/frontend/src/PortfolioPanel.tsx": {
+      "sha256": "c86c494b1ce05dfd8a6dd2771844a3c890a1c0d193a726f3592579da97322e5f",
+      "bytes": 14025
+    },
+    "dashboard/frontend/src/client-theme.css": {
+      "sha256": "5d370d468c114ce37a62d9cbed4bff59e2c6dd6493785f5638b15803fbb56011",
+      "bytes": 15767
     },
     "dashboard/frontend/src/i18n-core.ts": {
-      "sha256": "ff2def89e5b9165145fbd52ea77d1895ca7981fb7e65b26f0263cb6e65f362e7",
-      "bytes": 1282
+      "sha256": "1d73e6210715469afdebf28ef812f2b75da02e00776900b4a45d115a54c3e5e0",
+      "bytes": 1283
     },
     "dashboard/frontend/src/i18n.tsx": {
       "sha256": "7da1edd2ccd9ebeb52d3fa80c48d24a2e26895a256765b7b99399fdb45e7888d",
       "bytes": 2557
     },
     "dashboard/frontend/src/main.tsx": {
-      "sha256": "fa8029d01b58a9d156a0228860fa3dad4955cee009e0fe4c4dcdf723f0739700",
-      "bytes": 42234
+      "sha256": "ff6f02a49f8ec7ed9a9329ccab0efda3a60a34675a412b72395194e17ae26723",
+      "bytes": 40145
     },
     "dashboard/frontend/src/messages.ts": {
-      "sha256": "83ea39654cf8f878e3fc50c5eca85c11c2cf01324196cbfa08e51221afe5a8cb",
-      "bytes": 13133
+      "sha256": "ec56aea7cd17e724be6ddd05a19dc5f28477f0a3ee214f712418a50137fcb483",
+      "bytes": 18711
     },
     "dashboard/frontend/src/styles.css": {
       "sha256": "d2d6a0a97af089648c0ce3ea2ad260eb13dc30f222c0ef3efe2a1a65f5a610e0",
       "bytes": 28203
     },
     "dashboard/frontend/tests/i18n.test.ts": {
-      "sha256": "260e7b3caf6df4e31c6e8a0e118488a27dff0fb64ba35e888ab6b375fdf6e684",
-      "bytes": 3357
+      "sha256": "3479eab5e8dfcdb030ca244631b65c3dd0d005e191615a22408e4eff1d983f15",
+      "bytes": 3396
     },
     "dashboard/frontend/tsconfig.json": {
       "sha256": "ce16c4ec7adb978cdfed0b3dc319eb36ea064bcbd821bb61deed380448534e65",
@@ -314,8 +375,8 @@
       "bytes": 61
     },
     "dashboard/server/app.py": {
-      "sha256": "e3a1e49bbcc4ab6797e7d6a198bc56abe2a156df5085e3a5ac2bb3d2d52dd35e",
-      "bytes": 11717
+      "sha256": "0edc2b1125b583285033aa0d7b6a5d0a80c752de63e822bdb8ec8d023d0ab39a",
+      "bytes": 12586
     },
     "dashboard/server/config.py": {
       "sha256": "d81d9b849c124e2ca841515b353804809b20fd463fce476818fbbe6f620862b3",
@@ -329,9 +390,13 @@
       "sha256": "169a6d14be974fedd55ecf6703916f855771f6917f63bcb247b993b08d4a59c9",
       "bytes": 7279
     },
+    "dashboard/server/portfolio.py": {
+      "sha256": "d796d242893d705b42cd97b131060733aca2748b03fc321459b82f3af1d8d2ee",
+      "bytes": 8165
+    },
     "dashboard/server/schemas.py": {
-      "sha256": "d39c2cfba5b698c993966d473c3c6c3677553966e53044549ec6ba2a44152a87",
-      "bytes": 3374
+      "sha256": "bb2113db356639d32f642e6b0554d1f0ae84dd01c9f1e33f8d268a4235288802",
+      "bytes": 4679
     },
     "dashboard/start.py": {
       "sha256": "def6cc33f9f530a91e9417346c70550d6ed4802fff8292adfa83ad428715ed88",
@@ -349,17 +414,25 @@
       "sha256": "8c20e23cfe88b716f611bc7ad8ec4afe4b48b160261a08ee98aaa83f546a6ea0",
       "bytes": 6800
     },
+    "dashboard/tests/test_portfolio.py": {
+      "sha256": "2b1cb21c1f8fd99ad4c5976cf6b331e5d1ea5090ea1655e5cef26063fb5a4bac",
+      "bytes": 7927
+    },
     "dashboard/tools/build_delivery.py": {
-      "sha256": "82b92a85f3b11af3f70ef11a4be16cde43dacda6acf03d153bab7c089989a4e5",
-      "bytes": 6790
+      "sha256": "0a7d95f248446c63df7687ca39399dd88d3d1ea8fdd11140a5cb909474535e36",
+      "bytes": 7068
+    },
+    "dashboard/tools/export_portfolio_snapshot.py": {
+      "sha256": "06c034edfe2ceeccd6a7a2493c4deee1eae763e9fefccbfbe1d50046ebd52ce4",
+      "bytes": 8049
     },
     "dashboard/tools/install_delivery.py": {
       "sha256": "50493a7e7dc20aad3f628f3dda0491ca91d671594484f62bb4ecb48a1adeaa5a",
       "bytes": 1093
     },
     "dashboard/tools/smoke_check.py": {
-      "sha256": "9f9e16036acd85773be96418677e87bf961e7723793843eab71ecef935a81d57",
-      "bytes": 4010
+      "sha256": "4268d2f0af42a95d92ea85d1c3e434e677643b1c84624dd527f2c1d365f07402",
+      "bytes": 4614
     },
     "dashboard/tools/verify_delivery.py": {
       "sha256": "0df92fdd1912da790291dc77c14b62469f7ac9c2d53ce017b50c05b64af559b2",

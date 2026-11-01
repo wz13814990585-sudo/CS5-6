@@ -1,8 +1,10 @@
 # SafeCapital API v1 合同
 
-本地基础地址：`http://127.0.0.1:8000/api/v1/`。仅提供 GET 查询和下载。API 主要版本固定为 v1；新增可选字段不改变主要版本，客户端应忽略未知字段。删除字段或改变字段含义需要新的主要版本。旧 `/api/...` 地址继续兼容，不作为新集成入口。
+本地基础地址：`http://127.0.0.1:8000/api/cs5_6_equity/v1/`。仅提供 GET 查询和下载。API 主要版本固定为 v1；新增可选字段不改变主要版本，客户端应忽略未知字段。删除字段或改变字段含义需要新的主要版本。旧 `/api/...` 地址继续兼容，不作为新集成入口。
 
 可导入接口定义：`openapi.json`；运行服务也提供 `/api/openapi.json`。在线 Swagger 地址 `/api/docs` 依赖外部 CDN；离线集成请使用本文件及 OpenAPI JSON。
+
+模块级 `portfolio` 合同、完整字段和成功/无数据/错误口径见 [Portfolio Neo 接入交接](PORTFOLIO_NEO_INTEGRATION.md)。旧 `/api/v1` 也保留为兼容别名。
 
 ## 接口顺序
 

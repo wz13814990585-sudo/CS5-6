@@ -2,7 +2,7 @@
 // Node: node dashboard/examples/client.mjs http://127.0.0.1:8000/
 export async function loadSafeCapital(baseURL) {
   const base = new URL(
-    "api/v1/",
+    "api/cs5_6_equity/v1/",
     baseURL.endsWith("/") ? baseURL : baseURL + "/",
   );
   async function get(path) {
@@ -20,6 +20,7 @@ export async function loadSafeCapital(baseURL) {
   const overview = await get(`runs/${id}/overview`);
   const date = overview.dates.at(-1);
   const rankings = await get(`runs/${id}/rankings?date=${date}&page_size=10`);
+  const portfolio = await get(`runs/${id}/portfolio`);
   const inputs = await get(`runs/${id}/inputs`);
   if (!inputs.available) throw new Error(inputs.reason);
   const ticker = rankings.rows[0].ticker;
@@ -41,6 +42,7 @@ export async function loadSafeCapital(baseURL) {
     input_prices: prices.rows.find(match) ?? null,
     output_ranking: rankings.rows.find(match),
     output_summary: overview.summary,
+    portfolio,
     downloads: {
       factors: new URL(`runs/${id}/inputs/factors/download`, base).href,
       prices: new URL(`runs/${id}/inputs/prices/download`, base).href,

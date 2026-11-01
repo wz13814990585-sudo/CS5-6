@@ -112,6 +112,8 @@ class ErrorDetail(Model):
 
 
 class ErrorResponse(Model):
+    status: Literal["error"] | None = None
+    module_id: Literal["cs5_6_equity"] | None = None
     error: ErrorDetail
     detail: str = Field(description="Compatibility message for legacy /api clients")
 
@@ -155,3 +157,46 @@ class InputRows(Model):
     page: int
     page_size: int
     rows: list[dict[str, str | float]]
+
+
+class Holding(Model):
+    ticker: str
+    stock_name: str
+    model_rank: int = Field(ge=1)
+    target_weight: float = Field(ge=0, le=1)
+    actual_weight: float = Field(ge=0, le=1)
+    shares: int = Field(ge=0)
+    execution_price_proxy: float = Field(gt=0)
+    market_value_at_open: float = Field(ge=0)
+
+
+class Allocation(Model):
+    status: Literal["available", "unavailable", "no_data"]
+    reason: str | None
+    signal_date: str
+    phase: Literal["after_rebalance_at_next_open_proxy"]
+    rows: list[Holding]
+    cash_weight: float | None = Field(default=None, ge=0, le=1)
+    cash: float | None = Field(default=None, ge=0)
+    post_trade_open_value: float | None = Field(default=None, gt=0)
+    liquidated_at_period_end: bool | None
+
+
+class PortfolioContract(Model):
+    module_id: Literal["cs5_6_equity"]
+    module_version: str
+    status: Literal["success", "partial", "no_data"]
+    data_mode: Literal["historical_simulation"]
+    run_id: str
+    model: dict
+    strategy: dict
+    universe: dict
+    signal_date: str
+    data_cutoff: dict
+    backtest: dict
+    metrics: dict[str, float]
+    units: dict
+    benchmark: dict
+    assumptions: dict
+    allocation: Allocation
+    provenance: dict
