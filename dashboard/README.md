@@ -1,4 +1,6 @@
-# SafeCapital Dashboard V1.1
+# SafeCapital Dashboard V1.2
+
+当前重点是本地查看真实输入和输出，以及交付查询接口。Docker 和公网部署暂缓。先看 [本地输入输出使用指南](docs/LOCAL_IO.md) 与 [本次验收](docs/LOCAL_IO_VALIDATION.md)。
 
 **客户交付入口：**[完整计划](docs/DEVELOPMENT_PLAN.md) · [客户安装与接入手册](docs/CUSTOMER_HANDOFF.md) · [API v1 合同](docs/API_V1.md) · [本次交付验收](docs/DELIVERY_VALIDATION.md)。
 
@@ -10,11 +12,15 @@
 .venv-dashboard/bin/python dashboard/tools/build_delivery.py
 ```
 
-默认输出到 `deliveries/`，包含预构建页面、服务端源码、完整依赖锁、最新验证通过的真实结果、配置、校验工具和安装说明。默认拒绝覆盖已有 ZIP；再次构建用 `--output` 指定新文件名。客户运行无需 Node.js 或模型环境。
+默认输出到 `deliveries/`，包含预构建页面、服务端源码、完整依赖锁、最新验证通过的真实结果、与结果匹配的两份输入 CSV 及配置/清单、配置、校验工具和安装说明。默认拒绝覆盖已有 ZIP；再次构建用 `--output` 指定新文件名。客户运行无需 Node.js 或模型环境。
 
 中文、只读的历史策略 Dashboard。React + TypeScript 前端，FastAPI 后端，同一个服务提供页面与 API。支持独立访问和 iframe 嵌入，无需客户网站使用相同的前端框架。
 
 ## 已实现
+
+- 模型五个原始因子、历史回测价格浏览，日期/股票过滤与分页，完整输入下载。
+- 完整源文件与当前输出覆盖范围分开显示；点击“查看输出”按日期和股票关联排名。
+- 输入查询地址复制、JSON 查看、字段说明和文件 SHA-256。
 
 - 真实回测总览、账户资金 / 每周收益 / 历史回撤曲线；切换全部、末 52 周、末 156 周。
 - 366 个信号日期可选；股票代码搜索、排名分页、三组件百分位与集成得分。
@@ -113,7 +119,9 @@ export SAFECAPITAL_EMBED_ORIGINS="https://client.example,https://www.client.exam
 
 V1 不实现登录或客户 SSO，也不保存客户输入。若客户要求只有登录用户可看，需要在反向代理或后续认证层同时保护页面、API 和下载；嵌入域名白名单不等同于访问认证。
 
-## 部署包
+## 部署包（当前暂缓）
+
+以下是之前准备的可选部署资料，不是当前本地使用的必要步骤。现有 Docker 配方只包含输出；如未来启用容器，需要补入并验收 V1.2 的输入文件。
 
 仓库根目录已有 `.dockerignore`，Dockerfile 仅打包 Web 服务、构建后前端及交付的真实验证结果。镜像不包含训练数据、模型依赖或本机 runs。
 
@@ -131,16 +139,19 @@ docker run --rm --name safecapital-dashboard \
 
 ## API
 
-所有接口只读。首先访问 `GET /api/runs` 获取有效 ID，再使用该 ID：
+所有接口只读。首先访问 `GET /api/v1/runs` 获取有效 ID，再使用该 ID：
 
 | 路径 | 响应 |
 |---|---|
-| `/api/health` | 可用状态、有效与拒绝的结果数量；无结果时 503 |
-| `/api/runs` | 结果列表及 `default_run_id` |
-| `/api/runs/{id}/overview` | 指标、全部可选信号日期、来源与覆盖范围 |
-| `/api/runs/{id}/equity` | 完整每周资金、收益与从初始资金起计算的历史回撤 |
-| `/api/runs/{id}/rankings?date=2026-08-28&q=ANF&page=1&page_size=10` | 日期排名、股票代码过滤与分页；page_size 上限 100 |
-| `/api/runs/{id}/downloads/{kind}` | 原始文件，字节与已验证快照相同 |
+| `/api/v1/health` | 可用状态、有效与拒绝的结果数量；无结果时 503 |
+| `/api/v1/runs` | 结果列表及 `default_run_id` |
+| `/api/v1/runs/{id}/inputs` | 输入目录、字段、日期覆盖和哈希 |
+| `/api/v1/runs/{id}/inputs/{dataset}/rows` | factors/prices，支持 date、scope、q、page、page_size |
+| `/api/v1/runs/{id}/inputs/{dataset}/download` | 完整原始输入 CSV |
+| `/api/v1/runs/{id}/overview` | 指标、全部可选信号日期、来源与覆盖范围 |
+| `/api/v1/runs/{id}/equity` | 完整每周资金、收益与从初始资金起计算的历史回撤 |
+| `/api/v1/runs/{id}/rankings?date=2026-08-28&q=ANF&page=1&page_size=10` | 日期排名、股票代码过滤与分页；page_size 上限 100 |
+| `/api/v1/runs/{id}/downloads/{kind}` | 原始文件，字节与已验证快照相同 |
 
 `kind` 可为 `predictions`、`equity`、`summary`、`manifest`、`prediction-verification`、`backtest-verification`。不存在的结果或下载返回 404；非法日期/页码返回 422。服务器不暴露仓库文件路径，也不接受文件上传、任意路径下载或执行命令。
 
@@ -156,6 +167,6 @@ npm --prefix dashboard/frontend run build
 .venv-dashboard/bin/python -m unittest discover -s dashboard/tests -v
 ```
 
-15 项接口与完整性测试覆盖真实数值、排名分页/搜索、原始下载、损坏文件、非有限数值、路径和符号链接越界、域名白名单及空结果状态。浏览器验收记录见 `docs/VALIDATION.md`。
+30 项接口与完整性测试覆盖真实数值、排名分页/搜索、原始下载、损坏文件、非有限数值、路径和符号链接越界、域名白名单及空结果状态。浏览器验收记录见 `docs/LOCAL_IO_VALIDATION.md`。
 
 参考：[FastAPI 静态文件](https://fastapi.tiangolo.com/tutorial/static-files/)、[Vite 相对部署路径](https://vite.dev/guide/build#relative-base)、[MDN 嵌入域名策略](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors)。

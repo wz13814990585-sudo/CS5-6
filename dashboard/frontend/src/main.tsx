@@ -31,6 +31,7 @@ import {
   X,
 } from "lucide-react";
 import "./styles.css";
+import InputsPanel from "./InputsPanel";
 
 type Run = {
   id: string;
@@ -135,6 +136,12 @@ function App() {
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [menu, setMenu] = useState(false);
+  const [section, setSection] = useState(window.location.hash || "#overview");
+  useEffect(() => {
+    const update = () => setSection(window.location.hash || "#overview");
+    window.addEventListener("hashchange", update);
+    return () => window.removeEventListener("hashchange", update);
+  }, []);
   const [tab, setTab] = useState<"end_capital" | "net_return" | "drawdown">(
     "end_capital",
   );
@@ -266,7 +273,8 @@ function App() {
             </div>
             <nav aria-label="主导航">
               <a
-                className="nav-link primary"
+                className={`nav-link ${section === "#overview" ? "primary" : ""}`}
+                aria-current={section === "#overview" ? "location" : undefined}
                 href="#overview"
                 onClick={() => setMenu(false)}
               >
@@ -275,7 +283,17 @@ function App() {
                 <ArrowUpRight size={14} />
               </a>
               <a
-                className="nav-link"
+                className={`nav-link ${section === "#inputs" ? "primary" : ""}`}
+                aria-current={section === "#inputs" ? "location" : undefined}
+                href="#inputs"
+                onClick={() => setMenu(false)}
+              >
+                <Layers3 size={18} />
+                输入数据
+              </a>
+              <a
+                className={`nav-link ${section === "#rankings" ? "primary" : ""}`}
+                aria-current={section === "#rankings" ? "location" : undefined}
                 href="#rankings"
                 onClick={() => setMenu(false)}
               >
@@ -283,7 +301,8 @@ function App() {
                 股票排名
               </a>
               <a
-                className="nav-link"
+                className={`nav-link ${section === "#results" ? "primary" : ""}`}
+                aria-current={section === "#results" ? "location" : undefined}
                 href="#results"
                 onClick={() => setMenu(false)}
               >
@@ -291,12 +310,15 @@ function App() {
                 验证与下载
               </a>
               <a
-                className="nav-link"
+                className={`nav-link ${section === "#integration" ? "primary" : ""}`}
+                aria-current={
+                  section === "#integration" ? "location" : undefined
+                }
                 href="#integration"
                 onClick={() => setMenu(false)}
               >
                 <Code2 size={18} />
-                网站接入
+                输入输出接口
               </a>
             </nav>
             <div className="sidebar-bottom">
@@ -310,7 +332,7 @@ function App() {
                 </span>
               </div>
               <div className="sidebar-footer">
-                SafeCapital Ensemble <span>1.1</span>
+                SafeCapital Ensemble <span>1.2</span>
               </div>
             </div>
           </aside>
@@ -344,7 +366,7 @@ function App() {
               <h1>
                 让策略表现，一目了然<span>.</span>
               </h1>
-              <p>从每周股票排名，到投资组合的完整历史表现。</p>
+              <p>查看真实输入因子与价格，对照模型排名和组合历史表现。</p>
             </div>
             <span className="history-badge">
               <Activity size={15} />
@@ -601,6 +623,15 @@ function App() {
                   </a>
                 </aside>
               </div>
+              <InputsPanel
+                runId={runId}
+                outputDates={overview.dates}
+                onViewOutput={(inputDate, ticker) => {
+                  setDate(inputDate);
+                  setSearch(ticker);
+                  setPage(1);
+                }}
+              />
               <section className="panel rankings-panel" id="rankings">
                 <div className="panel-heading">
                   <div>
@@ -892,8 +923,42 @@ function App() {
                 <section className="panel integration" id="integration">
                   <div>
                     <span className="eyebrow">BUILT TO CONNECT</span>
-                    <h2>一个模块，接入你的网站</h2>
-                    <p>嵌入模式保留全部研究内容，收起独立导航。</p>
+                    <h2>输入与输出，都有查询接口</h2>
+                    <p>
+                      直接读取现有输入和已验证结果，也可以嵌入完整 Dashboard。
+                    </p>
+                    <div className="io-links">
+                      <a
+                        href={api(`runs/${runId}/inputs`)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        输入清单 JSON <ArrowUpRight size={13} />
+                      </a>
+                      <a
+                        href={api(
+                          `runs/${runId}/rankings?date=${date}&page_size=10`,
+                        )}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        当前日期输出排名 <ArrowUpRight size={13} />
+                      </a>
+                      <a
+                        href={api(`runs/${runId}/overview`)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        输出汇总 JSON <ArrowUpRight size={13} />
+                      </a>
+                      <a
+                        href={new URL("api/docs", base).href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        完整 API 文档 <ArrowUpRight size={13} />
+                      </a>
+                    </div>
                     <div className="integration-actions">
                       <a
                         className="button secondary"

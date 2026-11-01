@@ -7,6 +7,7 @@ import logging
 import uuid
 from pathlib import Path
 from datetime import date as Date
+from typing import Literal
 
 from fastapi import APIRouter, FastAPI, HTTPException, Query
 from fastapi.exceptions import RequestValidationError
@@ -18,6 +19,7 @@ from fastapi.staticfiles import StaticFiles
 from .data import discover
 from .config import Settings, frame_sources, exact_origins
 from . import schemas
+from .inputs import load_source, bind
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -41,11 +43,23 @@ def create_app(
         for replay in app.state.runs.values():
             schemas.Overview.model_validate(replay.overview)
             schemas.Equity.model_validate({"rows": replay.equity})
+        app.state.inputs = {}
+        try:
+            source = load_source(root)
+        except (OSError, ValueError, KeyError, TypeError):
+            source = None
+        for run_id, replay in app.state.runs.items():
+            try:
+                if source is None:
+                    raise ValueError("Input files unavailable")
+                app.state.inputs[run_id] = bind(source, replay)
+            except (ValueError, KeyError, TypeError):
+                app.state.inputs[run_id] = None
         yield
 
     app = FastAPI(
         title="SafeCapital Dashboard API",
-        version="1.1.0",
+        version="1.2.0",
         lifespan=lifespan,
         docs_url="/api/docs",
         openapi_url="/api/openapi.json",
@@ -88,7 +102,11 @@ def create_app(
             405: "method_not_allowed",
             503: "no_verified_results",
         }.get(exc.status_code, "http_error")
-        return error_response(request, exc.status_code, code, str(exc.detail))
+        if isinstance(exc.detail, dict):
+            code, message = exc.detail["code"], exc.detail["message"]
+        else:
+            message = str(exc.detail)
+        return error_response(request, exc.status_code, code, message)
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(request, exc):
@@ -137,7 +155,7 @@ def create_app(
     @router.get("/config", response_model=schemas.PublicConfig)
     def config():
         return {
-            "app_version": "1.1.0",
+            "app_version": "1.2.0",
             "api_version": "v1",
             "public_url": settings.public_url,
             "data_mode": "historical_read_only",
@@ -216,6 +234,89 @@ def create_app(
             media_type="text/csv" if ext == "csv" else "application/json",
             headers={
                 "Content-Disposition": f'attachment; filename="safecapital-{run_id}-{kind}.{ext}"'
+            },
+        )
+
+    def get_inputs(run_id):
+        get_run(run_id)
+        inputs = app.state.inputs.get(run_id)
+        if inputs is None:
+            raise HTTPException(
+                503,
+                {
+                    "code": "inputs_unavailable",
+                    "message": "缺少与本次运行一致的输入文件，或输入校验未通过；输出仍可独立查看。",
+                },
+            )
+        return inputs
+
+    @router.get("/runs/{run_id}/inputs", response_model=schemas.InputCatalog)
+    def input_catalog(run_id: str):
+        get_run(run_id)
+        inputs = app.state.inputs.get(run_id)
+        if inputs is None:
+            return {
+                "available": False,
+                "reason": "缺少与本次运行一致的输入文件，或输入校验未通过；输出仍可独立查看。",
+                "run_id": run_id,
+                "datasets": [],
+                "model": None,
+            }
+        return inputs["catalog"]
+
+    @router.get(
+        "/runs/{run_id}/inputs/{dataset}/rows", response_model=schemas.InputRows
+    )
+    def input_rows(
+        run_id: str,
+        dataset: Literal["factors", "prices"],
+        date: Date | None = None,
+        scope: Literal["output", "source"] = "output",
+        q: str = Query("", max_length=30),
+        page: int = Query(1, ge=1),
+        page_size: int = Query(10, ge=1, le=100),
+    ):
+        inputs = get_inputs(run_id)
+        table = (
+            inputs["aligned"][dataset]
+            if scope == "output"
+            else inputs["source"].tables[dataset]
+        )
+        key = date.isoformat() if date else None
+        rows = [
+            r
+            for r in table
+            if (key is None or r["date"] == key)
+            and q.strip().upper() in r["ticker"].upper()
+        ]
+        start = (page - 1) * page_size
+        return {
+            "dataset": dataset,
+            "scope": scope,
+            "date": key,
+            "total": len(rows),
+            "page": page,
+            "page_size": page_size,
+            "rows": rows[start : start + page_size],
+        }
+
+    @router.get(
+        "/runs/{run_id}/inputs/{dataset}/download",
+        response_class=Response,
+        responses={
+            200: {
+                "description": "Complete original input CSV, including research label columns",
+                "content": {"text/csv": {}},
+            }
+        },
+    )
+    def input_download(run_id: str, dataset: Literal["factors", "prices"]):
+        inputs = get_inputs(run_id)
+        return Response(
+            inputs["source"].content[dataset],
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f'attachment; filename="safecapital-{run_id}-input-{dataset}.csv"'
             },
         )
 

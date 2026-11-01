@@ -6,6 +6,8 @@ SafeCapital presents a weekly stock-ranking research method and one selected ext
 
 ## Web Dashboard
 
+Version 1.2 focuses on local input/output browsing and read-only APIs. It shows the supplied factors and historical price inputs, links each row to its output ranking, and provides filtering, downloads and an executable client example. See the [local input/output guide](dashboard/docs/LOCAL_IO.md). Docker and public deployment are deferred.
+
 Customer handoff now includes a [complete implementation plan](dashboard/docs/DEVELOPMENT_PLAN.md), [installation/integration guide](dashboard/docs/CUSTOMER_HANDOFF.md), [API v1 contract](dashboard/docs/API_V1.md), and portable ZIP packaging with prebuilt frontend and a real verified result snapshot. See [delivery acceptance](dashboard/docs/DELIVERY_VALIDATION.md) for completed checks and target-environment limits.
 
 A read-only Chinese Dashboard now presents verified historical results with charts, date-filtered rankings and downloads. It supports standalone access and an iframe mode for customer websites. Start the prepared local installation with `.venv-dashboard/bin/python dashboard/start.py`; see [Dashboard setup and integration](dashboard/README.md) for first-time installation, deployment and API documentation. The dashboard has separate dependencies and does not run or replace the model workflows below.

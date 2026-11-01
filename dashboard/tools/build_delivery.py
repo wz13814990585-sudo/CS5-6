@@ -16,9 +16,10 @@ sys.path.insert(0, str(ROOT))
 from dashboard.server.data import discover, load_replay
 from dashboard.server.app import create_app
 from dashboard.server.config import Settings
+from dashboard.server.inputs import INPUT_FILES, load_source, bind
 from dashboard.tools.verify_delivery import verify
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 
 def build(output, result=None):
@@ -40,6 +41,8 @@ def build(output, result=None):
             if run_id == "delivered"
             else f"runs/{run_id}"
         )
+    inputs = load_source(ROOT)
+    bind(inputs, replay)
     output = Path(output).resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():
@@ -88,6 +91,10 @@ def build(output, result=None):
                 out.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(p, out)
         shutil.copytree(dist, dest / "dashboard/frontend/dist")
+        for key, name in INPUT_FILES.items():
+            path = dest / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(inputs.content[key])
         relative = "FINAL_OUTPUTS/01_saved_model_replay/verified_replay"
         target = dest / relative
         target.mkdir(parents=True)

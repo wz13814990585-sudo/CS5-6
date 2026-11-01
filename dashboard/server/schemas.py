@@ -114,3 +114,44 @@ class ErrorDetail(Model):
 class ErrorResponse(Model):
     error: ErrorDetail
     detail: str = Field(description="Compatibility message for legacy /api clients")
+
+
+class InputColumn(Model):
+    key: str
+    label: str
+    type: Literal["string", "number"]
+
+
+class InputDataset(Model):
+    id: Literal["factors", "prices"]
+    title: str
+    purpose: str
+    source_file: str
+    sha256: str
+    bytes: int
+    source_rows: int
+    source_dates: list[str]
+    output_aligned_rows: int
+    output_dates: list[str]
+    ticker_count: int
+    columns: list[InputColumn]
+    source_columns: list[str]
+    omitted_columns: list[str]
+
+
+class InputCatalog(Model):
+    available: bool
+    reason: str | None
+    run_id: str
+    datasets: list[InputDataset]
+    model: dict[str, str | int] | None
+
+
+class InputRows(Model):
+    dataset: Literal["factors", "prices"]
+    scope: Literal["output", "source"]
+    date: str | None
+    total: int
+    page: int
+    page_size: int
+    rows: list[dict[str, str | float]]

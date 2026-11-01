@@ -5,9 +5,9 @@
     "name": "SafeCapital_Final_FrozenTrees_RunFix_20261024.zip",
     "sha256": "64aa8bf7ec88621602b649cf0c2be0b1cf3b71dea9aaae515a1838c403e6af01"
   },
-  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not.",
+  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not. Local Dashboard 1.2 adds identity-bound input browsing and query/download APIs, 30 web tests, local browser/HTTP acceptance and input-inclusive package checks. Docker and public deployment are deferred.",
   "checks": {
-    "python_syntax_files": 58,
+    "python_syntax_files": 60,
     "regression_tests_run": 87,
     "regression_tests_passed": 87,
     "regression_tests_skipped_for_windows_symlink_privilege": 0,
@@ -22,11 +22,13 @@
     "validation_platform": "macOS 14.5 arm64, Python 3.12.10, pinned requirements.txt",
     "validation_record": "docs/validation_results.json",
     "independent_accounting_checks": 9586,
-    "dashboard_tests_passed": 23,
+    "dashboard_tests_passed": 30,
     "dashboard_frontend_build_passed": true,
-    "dashboard_validation_record": "dashboard/docs/DELIVERY_VALIDATION.md",
-    "dashboard_version": "1.1.0",
-    "dashboard_clean_native_install_passed": true
+    "dashboard_validation_record": "dashboard/docs/LOCAL_IO_VALIDATION.md",
+    "dashboard_version": "1.2.0",
+    "dashboard_clean_native_install_passed": true,
+    "dashboard_clean_native_install_version": "1.1.0",
+    "dashboard_input_package_roundtrip_passed": true
   },
   "files": {
     ".dockerignore": {
@@ -42,8 +44,8 @@
       "bytes": 1153
     },
     "CHANGELOG.md": {
-      "sha256": "22452a8da3ae66adbfc8af4489dd1b143eeef2a4420490b6b87d648170796406",
-      "bytes": 3957
+      "sha256": "a656d5fe15cb8860f3518484112143ee6d1218fbbcf5f7de3ee38d9698b453d7",
+      "bytes": 4200
     },
     "EXTERNAL_SCOPE.md": {
       "sha256": "39b8aefad9a255468ee72364bf49135805dc11b2d5f66fcb1f4e5629d3888680",
@@ -118,8 +120,8 @@
       "bytes": 2684
     },
     "README.md": {
-      "sha256": "2df613dc9969315179e2715793e24b373b2404a385388ca92d841dc081d0bb91",
-      "bytes": 14739
+      "sha256": "cdecb79447ec3373872083767ebd9d7a2b03791cc1aadebf5882ee7946d8810a",
+      "bytes": 15085
     },
     "backtesting/README.md": {
       "sha256": "bc8b471cfd549dd2c1595bfecdd44552c476e4dc0edd84990d7bfc1320b5d964",
@@ -142,8 +144,8 @@
       "bytes": 767
     },
     "dashboard/README.md": {
-      "sha256": "91fe2ad2611f2ddd8fecf393b1e9bd05d3734358902b0ce135a621f2ed6e792a",
-      "bytes": 9359
+      "sha256": "bd104f2b4714f1ff85a1fc5eeb2f82012a3aeef7e91cb98b01e1b060597180ce",
+      "bytes": 10441
     },
     "dashboard/compose.delivery.yaml": {
       "sha256": "98c8ad3e7a12bac3214712f621def214457ac7658726739b30d5f86e0baf13b5",
@@ -158,20 +160,28 @@
       "bytes": 480
     },
     "dashboard/docs/API_V1.md": {
-      "sha256": "9461cd0442a93d62a2c986b90e9aafdd824e49838023d43def454e736c988ad4",
-      "bytes": 4499
+      "sha256": "1ba0c444205dc422ed7531ab7d67ed378eecaaa8c9e967f466c19c0b1d4904af",
+      "bytes": 6769
     },
     "dashboard/docs/CUSTOMER_HANDOFF.md": {
-      "sha256": "71e5b5b8e6af138320ab74a004b6f7b911e27fbd774a3723758f4096bd91cb28",
-      "bytes": 5402
+      "sha256": "849ca4c3fe42e2d5ae382c8989a1f75ce825a4bf341e03bdb39620d3c9d78e50",
+      "bytes": 5873
     },
     "dashboard/docs/DELIVERY_VALIDATION.md": {
       "sha256": "ddabfd4dc58ce73a3635decd39096e41ce2861b8ddab2b30fe39131a2e60d9e9",
       "bytes": 2539
     },
     "dashboard/docs/DEVELOPMENT_PLAN.md": {
-      "sha256": "3e64cb6855dffc18d7a5c4d65707ff23fd84360ae75fb33089efe88db3c52a60",
-      "bytes": 2739
+      "sha256": "14e3028d302ac1152623289d7ef42000f7abc72492509595f8d789384f79a38e",
+      "bytes": 3578
+    },
+    "dashboard/docs/LOCAL_IO.md": {
+      "sha256": "6b4d233a5cbf0b1c8e26720587ffc189524b08e03a192108d15ecb6af1b7be93",
+      "bytes": 4873
+    },
+    "dashboard/docs/LOCAL_IO_VALIDATION.md": {
+      "sha256": "e0da654a3143d178e67dab05bf31f5cd83ca28e73c4ce26ce903d2fc67eeefff",
+      "bytes": 2201
     },
     "dashboard/docs/VALIDATION.md": {
       "sha256": "d6265d00fb0c85b685637e3139c3c1808f2ac1dfe43476864010d26aad674ed9",
@@ -193,28 +203,36 @@
       "sha256": "d4a4072e01790016cbe4ce3589e64431bf0223ba4479123aa6df56c2e4111749",
       "bytes": 3128
     },
+    "dashboard/docs/local-inputs-preview.jpg": {
+      "sha256": "6e3206de503c33075537c2ead863dfa2c62499bf14bd81cbdc416944cc6880cd",
+      "bytes": 87703
+    },
+    "dashboard/docs/local-io-tests.log": {
+      "sha256": "78cf71652588a2161529e810df27772c69d12b67b97bf95182da1302d98588a9",
+      "bytes": 4005
+    },
     "dashboard/docs/nginx.conf.example": {
       "sha256": "2f62a2875bc36537c01eb0eb5a7cb22e8094d99af8d70978152a942b1b432d11",
       "bytes": 552
     },
     "dashboard/docs/openapi.json": {
-      "sha256": "3c170f43c902aa07ec33020bd4135c47ea350afe44aa4ac9ed475bafecf611d7",
-      "bytes": 26591
+      "sha256": "d256f92a9a84ffe487fba9490c1da2db98efbbf8f79c26286e084fd00eaed3f5",
+      "bytes": 41093
     },
     "dashboard/examples/client.mjs": {
-      "sha256": "d17f6e5aa09c5bb4e70cf3ac3e50af1120fda82251e9d07cb8941003efca66ff",
-      "bytes": 1100
+      "sha256": "b0aea88b2ef98a36346fffbf6be0b260f9d481a53039f6ccd225d31c033fc7fa",
+      "bytes": 2191
     },
     "dashboard/frontend/index.html": {
       "sha256": "0c11da7d77337ac996c1c26516567bd0a69f95984242f70e3a12ae0419667668",
       "bytes": 584
     },
     "dashboard/frontend/package-lock.json": {
-      "sha256": "3d505555d713da378ecc7428490933f4220d1ec086b9edd464e253860a9fcdec",
+      "sha256": "fe91923b4b2e864c4002ad0c060924623a2a9899b9435ddd5d2251ad960c41d4",
       "bytes": 77168
     },
     "dashboard/frontend/package.json": {
-      "sha256": "767194b189caa3fab6002e5991bb8319a5639dd4bff7d66cc62aeeac0b24297e",
+      "sha256": "775271858a309ad9448b557a3a4f5970c08197a27ffb8f72a52bf4d81b0ab209",
       "bytes": 553
     },
     "dashboard/frontend/public/embed-example.html": {
@@ -225,13 +243,17 @@
       "sha256": "df04d610ec7cfc1032c0e6f8c37342ed2a6fb3d20454da06771c0309da839daf",
       "bytes": 274
     },
+    "dashboard/frontend/src/InputsPanel.tsx": {
+      "sha256": "a51ee95af33e8afd41f6b9ab276ecbae608abc3c61d810a2038b9dc90d8bd711",
+      "bytes": 14643
+    },
     "dashboard/frontend/src/main.tsx": {
-      "sha256": "a625e9a5569c36cecf4eb81c6965a610e1bfac4383950db942e9e5dbff3c11a2",
-      "bytes": 36319
+      "sha256": "6cd74a6310aa66fdeef10dbb17ed711fcb654fcff0c4f6ca8c468c4c60668b22",
+      "bytes": 39245
     },
     "dashboard/frontend/src/styles.css": {
-      "sha256": "c76b4e1b437f28dd41c7e315198447d6d65f31bea595b650e21d17a99ec87d22",
-      "bytes": 21478
+      "sha256": "9205d9823fb55b46f8979a2c125303351084cc3874ee9de4b15cf9a8985871e3",
+      "bytes": 26435
     },
     "dashboard/frontend/tsconfig.json": {
       "sha256": "ce16c4ec7adb978cdfed0b3dc319eb36ea064bcbd821bb61deed380448534e65",
@@ -258,8 +280,8 @@
       "bytes": 61
     },
     "dashboard/server/app.py": {
-      "sha256": "8d63fb045ad9d041fcc3760ea8ac51edfa448ac7e20f9ee2af44591dcc068cb6",
-      "bytes": 8204
+      "sha256": "e3a1e49bbcc4ab6797e7d6a198bc56abe2a156df5085e3a5ac2bb3d2d52dd35e",
+      "bytes": 11717
     },
     "dashboard/server/config.py": {
       "sha256": "d81d9b849c124e2ca841515b353804809b20fd463fce476818fbbe6f620862b3",
@@ -269,9 +291,13 @@
       "sha256": "68b870c8492bc5cce7123ae4fda28e288cde0d0a8024537c83466205e8ce2b27",
       "bytes": 7056
     },
+    "dashboard/server/inputs.py": {
+      "sha256": "169a6d14be974fedd55ecf6703916f855771f6917f63bcb247b993b08d4a59c9",
+      "bytes": 7279
+    },
     "dashboard/server/schemas.py": {
-      "sha256": "34b01ee6d9bf741a36cf2537456660e65fc95bba202e1ee10aa4fdb5a72642c7",
-      "bytes": 2535
+      "sha256": "d39c2cfba5b698c993966d473c3c6c3677553966e53044549ec6ba2a44152a87",
+      "bytes": 3374
     },
     "dashboard/start.py": {
       "sha256": "def6cc33f9f530a91e9417346c70550d6ed4802fff8292adfa83ad428715ed88",
@@ -281,21 +307,25 @@
       "sha256": "863969f08014e0b77ba74cfc47749c9a653359835992422db2b43e0a7c433c72",
       "bytes": 9041
     },
+    "dashboard/tests/test_inputs.py": {
+      "sha256": "1de1989da58da10784c1d875cff604bb129209aa21e0da55987b8af814e0d57a",
+      "bytes": 6199
+    },
     "dashboard/tests/test_integration.py": {
       "sha256": "8c20e23cfe88b716f611bc7ad8ec4afe4b48b160261a08ee98aaa83f546a6ea0",
       "bytes": 6800
     },
     "dashboard/tools/build_delivery.py": {
-      "sha256": "8053db066e1db396f3bb2fd5d4cdf461abab22ee33370f71af432fddbe5fe9d5",
-      "bytes": 6481
+      "sha256": "82b92a85f3b11af3f70ef11a4be16cde43dacda6acf03d153bab7c089989a4e5",
+      "bytes": 6790
     },
     "dashboard/tools/install_delivery.py": {
       "sha256": "50493a7e7dc20aad3f628f3dda0491ca91d671594484f62bb4ecb48a1adeaa5a",
       "bytes": 1093
     },
     "dashboard/tools/smoke_check.py": {
-      "sha256": "2f9508b3e20002b6048dd028dec12a5d7f0d6c4d1b9b4b9ea7a4d8b43abbc807",
-      "bytes": 2878
+      "sha256": "9f9e16036acd85773be96418677e87bf961e7723793843eab71ecef935a81d57",
+      "bytes": 4010
     },
     "dashboard/tools/verify_delivery.py": {
       "sha256": "0df92fdd1912da790291dc77c14b62469f7ac9c2d53ce017b50c05b64af559b2",

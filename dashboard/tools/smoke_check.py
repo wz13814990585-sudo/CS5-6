@@ -34,6 +34,24 @@ def check(url, expected=None):
     ranking = get(f"runs/{run_id}/rankings?date={date}&page_size=100")
     assert len(ranking["rows"]) == ranking["total"] > 0
     assert ranking["rows"][0]["ensemble_predicted_rank"] == 1
+    inputs = get(f"runs/{run_id}/inputs")
+    assert inputs["available"]
+    for dataset in inputs["datasets"]:
+        key = dataset["id"]
+        downloaded = read(f"api/v1/runs/{run_id}/inputs/{key}/download")
+        assert hashlib.sha256(downloaded).hexdigest() == dataset["sha256"]
+        original = list(csv.DictReader(io.StringIO(downloaded.decode("utf-8-sig"))))
+        assert len(original) == dataset["source_rows"]
+        sample_date = dataset["output_dates"][-1]
+        rows = get(f"runs/{run_id}/inputs/{key}/rows?date={sample_date}&page_size=100")
+        assert rows["total"] == len(rows["rows"]) > 0
+        source = {(row["date"], row["ticker"]): row for row in original}
+        for row in rows["rows"]:
+            raw = source[(row["date"], row["ticker"])]
+            for column in dataset["columns"]:
+                name = column["key"]
+                value = float(raw[name]) if column["type"] == "number" else raw[name]
+                assert row[name] == value
     for kind, filename in [
         ("summary", "backtest/summary.csv"),
         ("equity", "backtest/weekly_capital.csv"),
@@ -69,6 +87,8 @@ def check(url, expected=None):
         "prediction_rows": overview["run"]["prediction_rows"],
         "weeks": len(equity),
         "final_capital": overview["summary"]["final_capital"],
+        "input_datasets": [d["id"] for d in inputs["datasets"]],
+        "input_rows_each": [d["source_rows"] for d in inputs["datasets"]],
     }
 
 
