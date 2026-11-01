@@ -1,0 +1,18 @@
+# From repository root: docker compose -f dashboard/compose.yaml up --build -d
+services:
+  safecapital:
+    build:
+      context: ..
+      dockerfile: dashboard/Dockerfile
+    ports:
+      - "127.0.0.1:${SAFECAPITAL_PORT:-8000}:8000"
+    environment:
+      SAFECAPITAL_PUBLIC_URL: "${SAFECAPITAL_PUBLIC_URL:-}"
+      SAFECAPITAL_EMBED_ORIGINS: "${SAFECAPITAL_EMBED_ORIGINS:-}"
+      SAFECAPITAL_API_ORIGINS: "${SAFECAPITAL_API_ORIGINS:-}"
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true

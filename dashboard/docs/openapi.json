@@ -1,0 +1,1034 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SafeCapital Dashboard API",
+    "version": "1.1.0"
+  },
+  "paths": {
+    "/api/v1/config": {
+      "get": {
+        "summary": "Config",
+        "operationId": "config_api_v1_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicConfig"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs": {
+      "get": {
+        "summary": "Runs",
+        "operationId": "runs_api_v1_runs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Runs"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/overview": {
+      "get": {
+        "summary": "Overview",
+        "operationId": "overview_api_v1_runs__run_id__overview_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Overview"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/equity": {
+      "get": {
+        "summary": "Equity",
+        "operationId": "equity_api_v1_runs__run_id__equity_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Equity"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/rankings": {
+      "get": {
+        "summary": "Rankings",
+        "operationId": "rankings_api_v1_runs__run_id__rankings_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 30,
+              "default": "",
+              "title": "Q"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 10,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rankings"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/downloads/{kind}": {
+      "get": {
+        "summary": "Download",
+        "operationId": "download_api_v1_runs__run_id__downloads__kind__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exact original verified file bytes",
+            "content": {
+              "text/csv": {},
+              "application/json": {}
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Equity": {
+        "properties": {
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/EquityRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rows"
+        ],
+        "title": "Equity"
+      },
+      "EquityRow": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "start_capital": {
+            "type": "number",
+            "title": "Start Capital"
+          },
+          "end_capital": {
+            "type": "number",
+            "title": "End Capital"
+          },
+          "net_return": {
+            "type": "number",
+            "title": "Net Return"
+          },
+          "cash": {
+            "type": "number",
+            "title": "Cash"
+          },
+          "fees": {
+            "type": "number",
+            "title": "Fees"
+          },
+          "drawdown": {
+            "type": "number",
+            "title": "Drawdown",
+            "description": "Computed using all preceding history, including initial capital"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "start_capital",
+          "end_capital",
+          "net_return",
+          "cash",
+          "fees",
+          "drawdown"
+        ],
+        "title": "EquityRow"
+      },
+      "ErrorDetail": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Fields",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "request_id"
+        ],
+        "title": "ErrorDetail"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "description": "Compatibility message for legacy /api clients"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error",
+          "detail"
+        ],
+        "title": "ErrorResponse"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "verified_runs": {
+            "type": "integer",
+            "title": "Verified Runs"
+          },
+          "rejected_runs": {
+            "type": "integer",
+            "title": "Rejected Runs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "verified_runs",
+          "rejected_runs"
+        ],
+        "title": "Health"
+      },
+      "Overview": {
+        "properties": {
+          "run": {
+            "$ref": "#/components/schemas/Run"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          },
+          "dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Dates"
+          },
+          "prediction_first_date": {
+            "type": "string",
+            "title": "Prediction First Date"
+          },
+          "prediction_last_date": {
+            "type": "string",
+            "title": "Prediction Last Date"
+          },
+          "ticker_count": {
+            "type": "integer",
+            "title": "Ticker Count"
+          },
+          "ranking_notice": {
+            "type": "string",
+            "title": "Ranking Notice"
+          }
+        },
+        "type": "object",
+        "required": [
+          "run",
+          "summary",
+          "dates",
+          "prediction_first_date",
+          "prediction_last_date",
+          "ticker_count",
+          "ranking_notice"
+        ],
+        "title": "Overview"
+      },
+      "PublicConfig": {
+        "properties": {
+          "app_version": {
+            "type": "string",
+            "title": "App Version"
+          },
+          "api_version": {
+            "type": "string",
+            "const": "v1",
+            "title": "Api Version"
+          },
+          "public_url": {
+            "type": "string",
+            "title": "Public Url"
+          },
+          "data_mode": {
+            "type": "string",
+            "const": "historical_read_only",
+            "title": "Data Mode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "app_version",
+          "api_version",
+          "public_url",
+          "data_mode"
+        ],
+        "title": "PublicConfig"
+      },
+      "RankingRow": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "ticker": {
+            "type": "string",
+            "title": "Ticker"
+          },
+          "ensemble_predicted_rank": {
+            "type": "integer",
+            "title": "Ensemble Predicted Rank"
+          },
+          "ensemble_ranking_score": {
+            "type": "number",
+            "title": "Ensemble Ranking Score",
+            "description": "Mean of three weekly percentile scores; not a return forecast"
+          },
+          "model_1_percentile": {
+            "type": "number",
+            "title": "Model 1 Percentile"
+          },
+          "model_2_percentile": {
+            "type": "number",
+            "title": "Model 2 Percentile"
+          },
+          "model_3_percentile": {
+            "type": "number",
+            "title": "Model 3 Percentile"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date",
+          "ticker",
+          "ensemble_predicted_rank",
+          "ensemble_ranking_score",
+          "model_1_percentile",
+          "model_2_percentile",
+          "model_3_percentile"
+        ],
+        "title": "RankingRow"
+      },
+      "Rankings": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/RankingRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "total",
+          "page",
+          "page_size",
+          "rows"
+        ],
+        "title": "Rankings"
+      },
+      "Run": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "finished_utc": {
+            "type": "string",
+            "title": "Finished Utc"
+          },
+          "status": {
+            "type": "string",
+            "const": "passed",
+            "title": "Status"
+          },
+          "models_loaded": {
+            "type": "integer",
+            "title": "Models Loaded"
+          },
+          "prediction_rows": {
+            "type": "integer",
+            "title": "Prediction Rows"
+          },
+          "prediction_weeks": {
+            "type": "integer",
+            "title": "Prediction Weeks"
+          },
+          "backtest_weeks": {
+            "type": "integer",
+            "title": "Backtest Weeks"
+          },
+          "manifest_sha256": {
+            "type": "string",
+            "title": "Manifest Sha256"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "finished_utc",
+          "status",
+          "models_loaded",
+          "prediction_rows",
+          "prediction_weeks",
+          "backtest_weeks",
+          "manifest_sha256"
+        ],
+        "title": "Run"
+      },
+      "Runs": {
+        "properties": {
+          "runs": {
+            "items": {
+              "$ref": "#/components/schemas/Run"
+            },
+            "type": "array",
+            "title": "Runs"
+          },
+          "default_run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default Run Id"
+          },
+          "rejected_runs": {
+            "type": "integer",
+            "title": "Rejected Runs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "runs",
+          "default_run_id",
+          "rejected_runs"
+        ],
+        "title": "Runs"
+      },
+      "Summary": {
+        "properties": {
+          "initial_capital": {
+            "type": "number",
+            "title": "Initial Capital"
+          },
+          "final_capital": {
+            "type": "number",
+            "title": "Final Capital"
+          },
+          "total_return": {
+            "type": "number",
+            "title": "Total Return",
+            "description": "Decimal fraction, 0.10 means 10%"
+          },
+          "annualized_return": {
+            "type": "number",
+            "title": "Annualized Return"
+          },
+          "sharpe": {
+            "type": "number",
+            "title": "Sharpe"
+          },
+          "max_drawdown": {
+            "type": "number",
+            "title": "Max Drawdown"
+          },
+          "weeks": {
+            "type": "integer",
+            "title": "Weeks"
+          },
+          "first_signal": {
+            "type": "string",
+            "title": "First Signal"
+          },
+          "last_signal": {
+            "type": "string",
+            "title": "Last Signal"
+          },
+          "cost_bps": {
+            "type": "number",
+            "title": "Cost Bps"
+          },
+          "win_rate": {
+            "type": "number",
+            "title": "Win Rate"
+          },
+          "total_fees": {
+            "type": "number",
+            "title": "Total Fees"
+          },
+          "strategy": {
+            "type": "string",
+            "title": "Strategy"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "initial_capital",
+          "final_capital",
+          "total_return",
+          "annualized_return",
+          "sharpe",
+          "max_drawdown",
+          "weeks",
+          "first_signal",
+          "last_signal",
+          "cost_bps",
+          "win_rate",
+          "total_fees",
+          "strategy"
+        ],
+        "title": "Summary"
+      }
+    }
+  }
+}

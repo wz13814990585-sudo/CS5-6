@@ -3,75 +3,116 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
-import os
+import logging
+import uuid
 from pathlib import Path
-from urllib.parse import urlsplit
 from datetime import date as Date
 
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import Response
+from fastapi import APIRouter, FastAPI, HTTPException, Query
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from .data import discover
+from .config import Settings, frame_sources, exact_origins
+from . import schemas
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def frame_sources(raw: str) -> str:
-    values = ["'self'"]
-    for origin in raw.split(","):
-        origin = origin.strip()
-        if not origin:
-            continue
-        parsed = urlsplit(origin)
-        if (
-            parsed.scheme not in {"http", "https"}
-            or not parsed.hostname
-            or parsed.username
-            or parsed.password
-            or parsed.path
-            or parsed.query
-            or parsed.fragment
-            or any(c.isspace() for c in origin)
-            or any(c in origin for c in "*;'\\")
-        ):
-            raise ValueError(
-                "SAFECAPITAL_EMBED_ORIGINS requires comma-separated exact http(s) origins without trailing slashes"
-            )
-        _ = parsed.port  # Reject invalid port syntax.
-        values.append(origin)
-    return " ".join(values)
-
-
 def create_app(
-    root: Path = ROOT, explicit: Path | None = None, origins: str | None = None
+    root: Path = ROOT,
+    explicit: Path | None = None,
+    origins: str | None = None,
+    settings: Settings | None = None,
 ) -> FastAPI:
+    settings = settings or Settings.load()
+    settings.validate()
     ancestors = frame_sources(
-        origins if origins is not None else os.getenv("SAFECAPITAL_EMBED_ORIGINS", "")
+        origins if origins is not None else settings.embed_origins
     )
-    configured = explicit or (
-        Path(os.environ["SAFECAPITAL_RESULT_DIR"])
-        if os.getenv("SAFECAPITAL_RESULT_DIR")
-        else None
-    )
+    configured = explicit or settings.result_dir
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         app.state.runs, app.state.rejected = discover(root, configured)
+        for replay in app.state.runs.values():
+            schemas.Overview.model_validate(replay.overview)
+            schemas.Equity.model_validate({"rows": replay.equity})
         yield
 
     app = FastAPI(
         title="SafeCapital Dashboard API",
-        version="1.0.0",
+        version="1.1.0",
         lifespan=lifespan,
         docs_url="/api/docs",
         openapi_url="/api/openapi.json",
         redoc_url=None,
     )
 
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(exact_origins(settings.api_origins)),
+        allow_methods=["GET"],
+        allow_headers=["Accept"],
+        expose_headers=["Content-Disposition", "X-Request-ID"],
+        allow_credentials=False,
+    )
+    router = APIRouter(
+        responses={
+            status: {"model": schemas.ErrorResponse}
+            for status in (404, 405, 422, 500, 503)
+        }
+    )
+
+    def error_response(request, status, code, message, fields=None):
+        return JSONResponse(
+            status_code=status,
+            content={
+                "error": {
+                    "code": code,
+                    "message": message,
+                    "request_id": getattr(request.state, "request_id", ""),
+                    "fields": fields or [],
+                },
+                "detail": message,
+            },
+        )
+
+    @app.exception_handler(StarletteHTTPException)
+    async def http_error(request, exc):
+        code = {
+            404: "not_found",
+            405: "method_not_allowed",
+            503: "no_verified_results",
+        }.get(exc.status_code, "http_error")
+        return error_response(request, exc.status_code, code, str(exc.detail))
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_error(request, exc):
+        fields = [".".join(str(x) for x in e["loc"]) for e in exc.errors()]
+        return error_response(
+            request, 422, "invalid_request", "请求参数不符合接口约定", fields
+        )
+
     @app.middleware("http")
     async def headers(request, call_next):
-        response = await call_next(request)
+        request.state.request_id = uuid.uuid4().hex
+        try:
+            response = await call_next(request)
+        except Exception:
+            logging.getLogger("safecapital").exception(
+                "Request failed id=%s", request.state.request_id
+            )
+            response = error_response(
+                request,
+                500,
+                "internal_error",
+                "服务暂时不可用，请提供请求编号联系维护人员",
+            )
+        response.headers["X-Request-ID"] = request.state.request_id
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
             "img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; "
@@ -93,7 +134,16 @@ def create_app(
             raise HTTPException(404, "未找到校验通过的回放结果")
         return app.state.runs[run_id]
 
-    @app.get("/api/health")
+    @router.get("/config", response_model=schemas.PublicConfig)
+    def config():
+        return {
+            "app_version": "1.1.0",
+            "api_version": "v1",
+            "public_url": settings.public_url,
+            "data_mode": "historical_read_only",
+        }
+
+    @router.get("/health", response_model=schemas.Health)
     def health():
         if not app.state.runs:
             raise HTTPException(
@@ -105,7 +155,7 @@ def create_app(
             "rejected_runs": app.state.rejected,
         }
 
-    @app.get("/api/runs")
+    @router.get("/runs", response_model=schemas.Runs)
     def runs():
         items = [r.info for r in app.state.runs.values()]
         return {
@@ -114,15 +164,15 @@ def create_app(
             "rejected_runs": app.state.rejected,
         }
 
-    @app.get("/api/runs/{run_id}/overview")
+    @router.get("/runs/{run_id}/overview", response_model=schemas.Overview)
     def overview(run_id: str):
         return get_run(run_id).overview
 
-    @app.get("/api/runs/{run_id}/equity")
+    @router.get("/runs/{run_id}/equity", response_model=schemas.Equity)
     def equity(run_id: str):
         return {"rows": get_run(run_id).equity}
 
-    @app.get("/api/runs/{run_id}/rankings")
+    @router.get("/runs/{run_id}/rankings", response_model=schemas.Rankings)
     def rankings(
         run_id: str,
         date: Date,
@@ -146,7 +196,16 @@ def create_app(
             "rows": rows[start : start + page_size],
         }
 
-    @app.get("/api/runs/{run_id}/downloads/{kind}")
+    @router.get(
+        "/runs/{run_id}/downloads/{kind}",
+        response_class=Response,
+        responses={
+            200: {
+                "description": "Exact original verified file bytes",
+                "content": {"text/csv": {}, "application/json": {}},
+            }
+        },
+    )
     def download(run_id: str, kind: str):
         replay = get_run(run_id)
         if kind not in replay.downloads:
@@ -159,6 +218,9 @@ def create_app(
                 "Content-Disposition": f'attachment; filename="safecapital-{run_id}-{kind}.{ext}"'
             },
         )
+
+    app.include_router(router, prefix="/api/v1")
+    app.include_router(router, prefix="/api", include_in_schema=False)
 
     # Mount only built frontend assets; never expose the repository or arbitrary files.
     dist = root / "dashboard/frontend/dist"

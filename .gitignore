@@ -54,3 +54,7 @@ __MACOSX/
 .venv-dashboard/
 node_modules/
 dashboard/frontend/dist/
+
+# Local customer configuration and generated delivery archives
+/dashboard/config.toml
+/deliveries/

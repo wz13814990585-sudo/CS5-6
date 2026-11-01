@@ -2,6 +2,8 @@
 
 ## 2026-11-01
 
+- Added customer delivery 1.1: deployment configuration, versioned typed read-only API, separate iframe/CORS origins, portable prebuilt ZIP tooling, installation and checksum checks, and clean-environment HTTP acceptance. All 23 web tests passed; container runtime and customer-specific deployment remain unverified.
+
 - Added a standalone/embed React Dashboard and read-only FastAPI service for real verified replay results, including charts, date/search/pagination, exact file downloads, domain-scoped embedding, isolated dependencies and deployment guidance.
 
 - Corrected the training guide, root README and data guide to list the required daily adjusted-close input and describe checks of all labels, including final-week and gap-adjacent rows.

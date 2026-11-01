@@ -1,0 +1,6 @@
+.venv-dashboard/
+**/node_modules/
+**/__pycache__/
+.git/
+*.zip
+*.log

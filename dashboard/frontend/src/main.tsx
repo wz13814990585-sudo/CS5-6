@@ -86,7 +86,7 @@ type Rank = {
 };
 type Ranking = { rows: Rank[]; total: number };
 const base = new URL("./", window.location.href);
-const api = (path: string) => new URL(`api/${path}`, base).href;
+const api = (path: string) => new URL(`api/v1/${path}`, base).href;
 const download = (id: string, kind: string) =>
   api(`runs/${encodeURIComponent(id)}/downloads/${kind}`);
 const pct = (n: number, digits = 2) => `${(n * 100).toFixed(digits)}%`;
@@ -99,7 +99,7 @@ const time = (s: string) =>
   new Date(s).toLocaleString("zh-CN", { hour12: false });
 const embedded =
   new URLSearchParams(window.location.search).get("embed") === "1";
-const embeddedURL = new URL("?embed=1", base).href;
+const localEmbeddedURL = new URL("?embed=1", base).href;
 async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
   const res = await fetch(api(path), { signal });
   if (!res.ok)
@@ -120,6 +120,10 @@ function ErrorBox({ message, retry }: { message: string; retry?: () => void }) {
   );
 }
 function App() {
+  const [publicURL, setPublicURL] = useState("");
+  const embeddedURL = publicURL
+    ? new URL("?embed=1", publicURL).href
+    : localEmbeddedURL;
   const [runs, setRuns] = useState<Run[]>([]);
   const [runId, setRunId] = useState("");
   const [rejected, setRejected] = useState(0);
@@ -147,6 +151,11 @@ function App() {
   useEffect(() => {
     const controller = new AbortController();
     setError("");
+    get<{ public_url: string }>("config", controller.signal)
+      .then((c) =>
+        setPublicURL(c.public_url ? c.public_url.replace(/\/?$/, "/") : ""),
+      )
+      .catch(() => {});
     get<{ runs: Run[]; default_run_id: string | null; rejected_runs: number }>(
       "runs",
       controller.signal,
@@ -301,7 +310,7 @@ function App() {
                 </span>
               </div>
               <div className="sidebar-footer">
-                SafeCapital Ensemble <span>1.0</span>
+                SafeCapital Ensemble <span>1.1</span>
               </div>
             </div>
           </aside>
@@ -906,7 +915,7 @@ function App() {
                       </a>
                     </div>
                     <p className="integration-note">
-                      正式接入时，将地址换成部署域名，并在服务端允许客户域名。本机地址仅供当前设备预览。
+                      正式接入时，将地址换成部署域名，并在服务端允许客户域名。未配置公开域名时，代码中的本机地址仅供当前设备预览。
                     </p>
                   </div>
                   <div className="code-box">

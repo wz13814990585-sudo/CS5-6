@@ -1,4 +1,16 @@
-# SafeCapital Dashboard V1
+# SafeCapital Dashboard V1.1
+
+**客户交付入口：**[完整计划](docs/DEVELOPMENT_PLAN.md) · [客户安装与接入手册](docs/CUSTOMER_HANDOFF.md) · [API v1 合同](docs/API_V1.md) · [本次交付验收](docs/DELIVERY_VALIDATION.md)。
+
+支持 `--config dashboard/config.toml`，模板为 `dashboard/config.example.toml`。新集成使用 `/api/v1`，旧 `/api` 继续兼容。前端通过运行配置生成公开域名下的嵌入代码。
+
+构建客户 ZIP（需要先构建前端）：
+
+```bash
+.venv-dashboard/bin/python dashboard/tools/build_delivery.py
+```
+
+默认输出到 `deliveries/`，包含预构建页面、服务端源码、完整依赖锁、最新验证通过的真实结果、配置、校验工具和安装说明。默认拒绝覆盖已有 ZIP；再次构建用 `--output` 指定新文件名。客户运行无需 Node.js 或模型环境。
 
 中文、只读的历史策略 Dashboard。React + TypeScript 前端，FastAPI 后端，同一个服务提供页面与 API。支持独立访问和 iframe 嵌入，无需客户网站使用相同的前端框架。
 

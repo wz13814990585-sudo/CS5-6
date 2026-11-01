@@ -1,0 +1,13 @@
+services:
+  safecapital:
+    build: .
+    ports:
+      - "127.0.0.1:${SAFECAPITAL_PORT:-8000}:8000"
+    volumes:
+      - ./config.toml:/app/config.toml:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true

@@ -1,0 +1,11 @@
+# Copy to config.toml; use --config dashboard/config.toml (source checkout).
+# In the customer ZIP, use --config config.toml from the package root.
+host = "127.0.0.1"
+port = 8000
+# Dedicated origin, optional trailing slash. Empty uses current browser address.
+public_url = ""
+# Empty discovers verified results. Relative paths are based on this TOML file.
+result_dir = ""
+# Exact comma-separated origins; iframe and API access are independent.
+embed_origins = ""
+api_origins = ""
