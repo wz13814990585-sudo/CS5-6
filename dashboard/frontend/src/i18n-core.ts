@@ -1,7 +1,7 @@
 import { english } from "./messages.ts";
 
 export type Language = "zh" | "en";
-export const LANGUAGE_KEY = "safecapital.language";
+export const LANGUAGE_KEY = "cs5_6_equity.language";
 export function isLanguage(value: unknown): value is Language {
   return value === "zh" || value === "en";
 }

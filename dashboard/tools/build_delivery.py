@@ -18,8 +18,9 @@ from dashboard.server.app import create_app
 from dashboard.server.config import Settings
 from dashboard.server.inputs import INPUT_FILES, load_source, bind
 from dashboard.tools.verify_delivery import verify
+from dashboard.server.portfolio import load_archive, contract
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 
 def build(output, result=None):
@@ -42,7 +43,10 @@ def build(output, result=None):
             else f"runs/{run_id}"
         )
     inputs = load_source(ROOT)
-    bind(inputs, replay)
+    bound_inputs = bind(inputs, replay)
+    module_result = contract(replay, bound_inputs, load_archive(ROOT))
+    if module_result["status"] != "success":
+        raise ValueError("Package requires matching verified portfolio allocations")
     output = Path(output).resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():

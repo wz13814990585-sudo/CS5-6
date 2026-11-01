@@ -48,7 +48,8 @@ type Props = {
   onViewOutput: (date: string, ticker: string) => void;
 };
 const base = new URL("./", window.location.href);
-const endpoint = (path: string) => new URL(`api/v1/${path}`, base).href;
+const endpoint = (path: string) =>
+  new URL(`api/cs5_6_equity/v1/${path}`, base).href;
 async function read<T>(path: string, signal: AbortSignal): Promise<T> {
   const response = await fetch(endpoint(path), { signal });
   const body = await response.json();

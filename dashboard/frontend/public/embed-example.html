@@ -1,60 +1,186 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>客户网站 · SafeCapital 嵌入示例</title>
+    <title>CS5-6 · Integration preview</title>
     <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: #080f0e;
+        color: #e8f3ee;
+      }
+      * {
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
-        background: #edf0f4;
-        color: #283344;
-        font:
-          14px -apple-system,
-          BlinkMacSystemFont,
-          "PingFang SC",
-          sans-serif;
       }
       header {
-        background: #fff;
-        padding: 22px 4%;
-        border-bottom: 1px solid #dbe1e7;
+        padding: 22px max(24px, calc((100vw - 1250px) / 2));
         display: flex;
+        align-items: center;
         justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid #25392f;
+        background: #0a1411;
+        font-size: 13px;
+      }
+      header small {
+        display: block;
+        color: #82998f;
+        margin-top: 5px;
+        letter-spacing: 1.5px;
+        font-size: 9px;
       }
       main {
-        padding: 28px 3%;
-        max-width: 1440px;
+        max-width: 1300px;
+        padding: 48px 24px;
         margin: auto;
       }
+      .eyebrow {
+        color: #60cbaa;
+        letter-spacing: 2px;
+        font-size: 10px;
+        text-transform: uppercase;
+      }
+      h1 {
+        font-size: clamp(36px, 5vw, 64px);
+        letter-spacing: -2px;
+        font-weight: 550;
+        line-height: 1.08;
+        margin: 20px 0;
+      }
       p {
-        color: #647080;
+        max-width: 700px;
+        color: #91a59b;
         line-height: 1.8;
+        font-size: 14px;
+      }
+      .entry-card {
+        max-width: 760px;
+        margin-top: 36px;
+        padding: 28px;
+        background: linear-gradient(130deg, #15362a, #0e1915);
+        border: 1px solid #2e5744;
+        border-radius: 14px;
+      }
+      h2 {
+        font-size: 23px;
+        margin: 15px 0 8px;
+        letter-spacing: -0.5px;
+        font-weight: 550;
+      }
+      button {
+        font: inherit;
+        padding: 13px 20px;
+        border: 1px solid #69d6ae;
+        color: #08251b;
+        background: #67d7b2;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 12px;
+        font-weight: 600;
+      }
+      button:hover {
+        background: #8be9c8;
+      }
+      a {
+        color: #81d8ba;
+        text-underline-offset: 4px;
+      }
+      .preview-note {
+        margin-top: 24px;
+        font-size: 12px;
+      }
+      #module-container {
+        margin-top: 32px;
       }
       iframe {
         width: 100%;
         height: 1450px;
-        border: 1px solid #dce4de;
+        border: 1px solid #2d4639;
         border-radius: 14px;
-        background: #fff;
+        background: #080f0e;
       }
-      a {
-        color: #275c49;
+      footer {
+        margin-top: 30px;
+        border-top: 1px solid #25392f;
+        padding-top: 20px;
+        color: #82998f;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+      @media (max-width: 600px) {
+        main {
+          padding: 35px 16px;
+        }
+        header {
+          padding: 18px 16px;
+        }
+        .entry-card {
+          padding: 22px;
+        }
+        iframe {
+          height: 1200px;
+        }
       }
     </style>
   </head>
   <body>
     <header>
-      <strong id="site-label">客户网站 · 演示外壳</strong
-      ><a id="back-link" href="./">返回独立 Dashboard</a>
+      <div>
+        <strong>SafeCapital · Strategy Lab</strong
+        ><small id="site-label">CS5-6 INTEGRATION PREVIEW</small>
+      </div>
+      <a id="back-link" href="./?lang=en">Standalone Dashboard ↗</a>
     </header>
     <main>
-      <h1 id="module-title">投资研究模块</h1>
-      <p id="module-description">
-        下面是真正通过 iframe 嵌入的 SafeCapital 页面。此示例与 Dashboard
-        同源；跨域接入时请配置客户域名白名单。框内可以独立滚动、筛选日期和下载结果。
+      <span class="eyebrow">Portfolio Neo / Strategy Lab</span>
+      <h1 id="page-title">A dedicated space<br />for model-based research.</h1>
+      <p id="placement-note">
+        Proposed placement: add the entry below the Strategy Lab introduction,
+        alongside the existing strategy options. This local preview demonstrates
+        only the CS5-6 module.
       </p>
-      <iframe id="dashboard-frame" title="SafeCapital 历史策略研究"></iframe>
+      <section class="entry-card" aria-labelledby="module-title">
+        <span class="eyebrow">CS5-6 · Equity research</span>
+        <h2 id="module-title">Model-Based Stock Strategies</h2>
+        <p id="module-description">
+          Explore model-selected stock portfolios and inspect their historical
+          performance and risk.
+        </p>
+        <button
+          id="open-module"
+          aria-controls="module-container"
+          aria-expanded="false"
+        >
+          Explore strategies →
+        </button>
+      </section>
+      <p class="preview-note" id="isolation-note">
+        The portfolio has its own stock universe. It does not use or modify a
+        website-wide single-asset selector.
+      </p>
+      <section id="module-container" hidden>
+        <iframe
+          id="dashboard-frame"
+          title="CS5-6 historical stock research"
+          loading="lazy"
+        ></iframe>
+      </section>
+      <footer id="delivery-note">
+        This is a local integration example, not the client's live website.
+        Authentication, global navigation and other strategies remain the
+        responsibility of the core team. A client staging review is required
+        before release.
+      </footer>
     </main>
     <script type="module" src="./embed-example.mjs"></script>
   </body>

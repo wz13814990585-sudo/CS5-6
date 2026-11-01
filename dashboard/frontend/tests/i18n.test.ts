@@ -44,7 +44,11 @@ test("translations retain all placeholders and contain no untranslated Chinese",
   }
 });
 test("all Chinese copy in the React screens has an English catalog entry", () => {
-  for (const filename of ["main.tsx", "InputsPanel.tsx"]) {
+  for (const filename of [
+    "main.tsx",
+    "InputsPanel.tsx",
+    "PortfolioPanel.tsx",
+  ]) {
     const source = fs.readFileSync(
       new URL(`../src/${filename}`, import.meta.url),
       "utf8",
