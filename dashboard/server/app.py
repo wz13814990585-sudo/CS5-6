@@ -21,6 +21,7 @@ from .config import Settings, frame_sources, exact_origins
 from . import schemas
 from .inputs import load_source, bind
 from .portfolio import API_PREFIX, MODULE_ID, MODULE_VERSION, load_archive, contract
+from .watchlist import stock_catalog, inspect_stocks, export_stocks
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -337,6 +338,56 @@ def create_app(
             app.state.inputs.get(run_id),
             app.state.portfolio_archive,
             date.isoformat() if date else None,
+        )
+
+    @router.get("/runs/{run_id}/stocks", response_model=schemas.StockCatalog)
+    def stocks(run_id: str):
+        return stock_catalog(get_run(run_id), app.state.inputs.get(run_id))
+
+    def watchlist_result(run_id, date, tickers):
+        replay = get_run(run_id)
+        try:
+            return inspect_stocks(
+                replay,
+                app.state.inputs.get(run_id),
+                app.state.portfolio_archive,
+                date.isoformat(),
+                tickers,
+            )
+        except ValueError as exc:
+            raise HTTPException(
+                422, {"code": "unsupported_stocks", "message": str(exc)}
+            ) from exc
+
+    @router.get("/runs/{run_id}/watchlist", response_model=schemas.Watchlist)
+    def watchlist(
+        run_id: str, date: Date, tickers: str = Query(min_length=1, max_length=600)
+    ):
+        return watchlist_result(run_id, date, tickers)
+
+    @router.get(
+        "/runs/{run_id}/watchlist/download",
+        response_class=Response,
+        responses={
+            200: {
+                "description": "Date-specific watchlist inspection; no custom portfolio calculation",
+                "content": {"text/csv": {}, "application/json": {}},
+            }
+        },
+    )
+    def watchlist_download(
+        run_id: str,
+        date: Date,
+        tickers: str = Query(min_length=1, max_length=600),
+        format: Literal["csv", "json"] = "csv",
+    ):
+        result = watchlist_result(run_id, date, tickers)
+        return Response(
+            export_stocks(result, format),
+            media_type="text/csv" if format == "csv" else "application/json",
+            headers={
+                "Content-Disposition": f'attachment; filename="cs5_6_equity-watchlist-{date.isoformat()}.{format}"'
+            },
         )
 
     app.include_router(router, prefix=API_PREFIX)

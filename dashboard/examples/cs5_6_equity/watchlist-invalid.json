@@ -1,0 +1,11 @@
+{
+  "status": "error",
+  "module_id": "cs5_6_equity",
+  "error": {
+    "code": "unsupported_stocks",
+    "message": "Unsupported stocks: AAPL",
+    "request_id": "68fae56bf8f649ba91ad222c16965501",
+    "fields": []
+  },
+  "detail": "Unsupported stocks: AAPL"
+}

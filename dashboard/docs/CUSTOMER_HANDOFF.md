@@ -1,10 +1,12 @@
-# SafeCapital Web 1.3 — 从这里开始
+# SafeCapital Web 1.4 — 从这里开始
 
 本包为可独立运行的历史股票研究模块：网页、后端接口、已构建的前端、真实验证结果、与结果匹配的现有输入和文档。支持独立访问或嵌入客户网站；不需要整个训练工程。初始资金 100000，历史期末资金约 149330.61；请以包中真实 CSV 为准。
 
 当前优先使用本地原生启动，Docker 和公网部署暂缓。输入/输出操作见 `dashboard/docs/LOCAL_IO.md`，可交付接口定义为 `dashboard/docs/openapi.json`。
 
 本版客户需求、组合权重合同、范围/假设/缺失值与实际接入步骤见 [Portfolio Neo 交接](PORTFOLIO_NEO_INTEGRATION.md)（ZIP 根目录版本请打开 `dashboard/docs/PORTFOLIO_NEO_INTEGRATION.md`）。
+
+演示入口：启动后打开 `/?lang=zh#watchlist`，点击「载入演示示例」。新增关注股票、统一日期、详情、CSV/JSON 导出及接口见 `dashboard/docs/PRESENTATION_WATCHLIST.md`（文档目录内可打开 [关注股票演示](PRESENTATION_WATCHLIST.md)）。选择关注股票不会重新计算策略收益。
 
 ## 1. 安装与启动
 

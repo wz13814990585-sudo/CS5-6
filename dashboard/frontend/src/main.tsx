@@ -31,6 +31,8 @@ import {
 import "./styles.css";
 import InputsPanel from "./InputsPanel";
 import PortfolioPanel from "./PortfolioPanel";
+import WatchlistPanel from "./WatchlistPanel";
+import { readJSON } from "./api";
 import "./client-theme.css";
 import { LanguageProvider, LanguageSwitcher, useLanguage } from "./i18n";
 import { languageURL } from "./i18n-core";
@@ -101,14 +103,7 @@ const money = (n: number) =>
 const embedded =
   new URLSearchParams(window.location.search).get("embed") === "1";
 async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const res = await fetch(api(path), { signal });
-  if (!res.ok)
-    throw new Error(
-      res.status === 404
-        ? "未找到对应的结果，请重新选择。"
-        : "无法读取结果，请确认 Dashboard 服务正在运行。",
-    );
-  return res.json();
+  return readJSON<T>(api(path), signal);
 }
 function ErrorBox({ message, retry }: { message: string; retry?: () => void }) {
   const { t } = useLanguage();
@@ -152,9 +147,16 @@ function App() {
   );
   const [period, setPeriod] = useState("all");
   const [date, setDate] = useState("");
+  const [demoReset, setDemoReset] = useState(0);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [ranking, setRanking] = useState<Ranking | null>(null);
+  const [rankingResult, setRanking] = useState<{
+    key: string;
+    value: Ranking;
+  } | null>(null);
+  const rankingKey = `${runId}|${date}|${search}|${page}`;
+  const ranking =
+    rankingResult?.key === rankingKey ? rankingResult.value : null;
   const [rankingError, setRankingError] = useState("");
   const [rankingRetry, setRankingRetry] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -201,8 +203,9 @@ function App() {
       get<{ rows: Equity[] }>(`runs/${runId}/equity`, controller.signal),
     ])
       .then(([overview, equity]) => {
+        if (controller.signal.aborted) return;
         setBundle({ id: runId, overview, equity: equity.rows });
-        setDate(overview.dates.at(-1)!);
+        setDate(equity.rows.at(-1)!.date);
         setPage(1);
         setSearch("");
       })
@@ -224,7 +227,10 @@ function App() {
     });
     const timer = window.setTimeout(() => {
       get<Ranking>(`runs/${runId}/rankings?${params}`, controller.signal)
-        .then(setRanking)
+        .then((value) => {
+          if (!controller.signal.aborted)
+            setRanking({ key: rankingKey, value });
+        })
         .catch((e) => {
           if (e.name !== "AbortError") setRankingError(e.message);
         });
@@ -235,6 +241,25 @@ function App() {
     };
   }, [runId, date, search, page, bundle, rankingRetry]);
 
+  useEffect(() => {
+    if (embedded && window.parent !== window)
+      window.parent.postMessage(
+        { type: "cs5_6_equity:ready", version: "1.4.0" },
+        "*",
+      );
+  }, []);
+  function changeDate(value: string) {
+    setDate(value);
+    setPage(1);
+  }
+  function resetDemo(value?: string) {
+    setDate(value || bundle?.equity.at(-1)?.date || "");
+    setSearch("");
+    setPage(1);
+    setTab("end_capital");
+    setPeriod("all");
+    setDemoReset((n) => n + 1);
+  }
   const overview = bundle?.id === runId ? bundle.overview : null;
   const summary = overview?.summary;
   const allEquity = bundle?.equity ?? [];
@@ -272,7 +297,8 @@ function App() {
         </header>
         <nav className="module-tabs" aria-label={t("主导航")}>
           {[
-            ["overview", "模型股票策略"],
+            ["watchlist", "关注股票"],
+            ["performance", "组合表现"],
             ["allocation", "股票与权重"],
             ["inputs", "输入数据"],
             ["rankings", "股票排名"],
@@ -300,7 +326,9 @@ function App() {
                 <br />
                 <span>{t("股票策略")}</span>
               </h1>
-              <p>{t("探索模型选出的股票组合，查看其历史表现与风险。")}</p>
+              <p>
+                {t("从关注的股票出发，查看真实输入、模型排名与历史策略结果。")}
+              </p>
             </div>
             <span className="history-badge">
               <Activity size={15} />
@@ -344,6 +372,30 @@ function App() {
           )}
           {summary && overview && (
             <>
+              <WatchlistPanel
+                runId={runId}
+                date={date}
+                dates={allEquity.map((r) => r.date)}
+                onDateChange={changeDate}
+                onReset={() => resetDemo()}
+                onExample={resetDemo}
+              />
+              <div className="performance-context" id="performance">
+                <div>
+                  <span className="eyebrow">
+                    ORIGINAL STRATEGY · FULL BACKTEST
+                  </span>
+                  <h2>{t("原策略完整组合表现")}</h2>
+                  <p>
+                    {t(
+                      "以下指标覆盖原策略完整回测，不是关注股票组成的新组合收益。",
+                    )}
+                  </p>
+                </div>
+                <span>
+                  {summary.first_signal} → {summary.last_signal}
+                </span>
+              </div>
               <div className="metric-grid">
                 <Metric
                   label={t("年化收益")}
@@ -592,6 +644,8 @@ function App() {
               </div>
               <PortfolioPanel
                 runId={runId}
+                date={date}
+                onDateChange={changeDate}
                 onViewRanking={(signalDate, ticker) => {
                   setDate(signalDate);
                   setSearch(ticker);
@@ -599,7 +653,10 @@ function App() {
                 }}
               />
               <InputsPanel
+                key={`${runId}-${demoReset}`}
                 runId={runId}
+                sharedDate={date}
+                onDateChange={changeDate}
                 outputDates={overview.dates}
                 onViewOutput={(inputDate, ticker) => {
                   setDate(inputDate);
@@ -933,11 +990,19 @@ function App() {
                     </p>
                     <div className="io-links">
                       <a
-                        href={api(`runs/${runId}/portfolio`)}
+                        href={api(`runs/${runId}/portfolio?date=${date}`)}
                         target="_blank"
                         rel="noreferrer"
                       >
                         {t("查看模块数据合同 JSON")}
+                        <ArrowUpRight size={13} />
+                      </a>
+                      <a
+                        href={api(`runs/${runId}/stocks`)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {t("可关注股票清单 JSON")}
                         <ArrowUpRight size={13} />
                       </a>
                       <a

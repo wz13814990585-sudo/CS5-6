@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "./i18n";
+import { readJSON } from "./api";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -44,6 +45,8 @@ type InputRow = { date: string; ticker: string; stock_name: string } & Record<
 type Result = { rows: InputRow[]; total: number };
 type Props = {
   runId: string;
+  sharedDate: string;
+  onDateChange: (date: string) => void;
   outputDates: string[];
   onViewOutput: (date: string, ticker: string) => void;
 };
@@ -51,14 +54,12 @@ const base = new URL("./", window.location.href);
 const endpoint = (path: string) =>
   new URL(`api/cs5_6_equity/v1/${path}`, base).href;
 async function read<T>(path: string, signal: AbortSignal): Promise<T> {
-  const response = await fetch(endpoint(path), { signal });
-  const body = await response.json();
-  if (!response.ok)
-    throw new Error(body.error?.message || "暂时无法读取输入数据");
-  return body;
+  return readJSON<T>(endpoint(path), signal);
 }
 export default function InputsPanel({
   runId,
+  sharedDate,
+  onDateChange,
   outputDates,
   onViewOutput,
 }: Props) {
@@ -69,7 +70,10 @@ export default function InputsPanel({
   const [date, setDate] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [result, setResult] = useState<Result | null>(null);
+  const [resultState, setResult] = useState<{
+    query: string;
+    value: Result;
+  } | null>(null);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [copied, setCopied] = useState("");
@@ -80,7 +84,11 @@ export default function InputsPanel({
       ? info.output_dates
       : info.source_dates
     : [];
-  const selectedDate = date || dates.at(-1) || "";
+  const selectedDate =
+    scope === "source" ? date || dates.at(-1) || "" : sharedDate;
+  useEffect(() => {
+    setPage(1);
+  }, [selectedDate]);
   const params = new URLSearchParams({
     scope,
     date: selectedDate,
@@ -89,6 +97,7 @@ export default function InputsPanel({
     page_size: "10",
   });
   const query = `runs/${encodeURIComponent(runId)}/inputs/${dataset}/rows?${params}`;
+  const result = resultState?.query === query ? resultState.value : null;
   const downloadURL = endpoint(
     `runs/${encodeURIComponent(runId)}/inputs/${dataset}/download`,
   );
@@ -101,7 +110,9 @@ export default function InputsPanel({
     setSearch("");
     setPage(1);
     read<Catalog>(`runs/${encodeURIComponent(runId)}/inputs`, controller.signal)
-      .then(setCatalog)
+      .then((value) => {
+        if (!controller.signal.aborted) setCatalog(value);
+      })
       .catch((e) => {
         if (e.name !== "AbortError") setError(e.message);
       });
@@ -115,7 +126,9 @@ export default function InputsPanel({
     const timer = setTimeout(
       () =>
         read<Result>(query, controller.signal)
-          .then(setResult)
+          .then((value) => {
+            if (!controller.signal.aborted) setResult({ query, value });
+          })
           .catch((e) => {
             if (e.name !== "AbortError") setError(e.message);
           }),
@@ -289,10 +302,16 @@ export default function InputsPanel({
                 id="input-date"
                 value={selectedDate}
                 onChange={(e) => {
-                  setDate(e.target.value);
+                  if (scope === "source") setDate(e.target.value);
+                  else onDateChange(e.target.value);
                   setPage(1);
                 }}
               >
+                {!dates.includes(selectedDate) && selectedDate && (
+                  <option value={selectedDate}>
+                    {selectedDate} · {t("该日期无对齐数据")}
+                  </option>
+                )}
                 {[...dates].reverse().map((d) => (
                   <option key={d}>{d}</option>
                 ))}
@@ -312,6 +331,13 @@ export default function InputsPanel({
               />
             </label>
           </div>
+          <p className="input-date-scope">
+            {t(
+              scope === "source"
+                ? "完整源文件使用独立日期浏览；不会更改统一研究日期。"
+                : "此处与统一历史信号日期同步；切换日期会同步关注、排名和配置。",
+            )}
+          </p>
           <div className="table-scroll" aria-busy={!result}>
             <table aria-label={t("输入数据表")}>
               <thead>

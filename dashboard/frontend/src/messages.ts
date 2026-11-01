@@ -1,5 +1,113 @@
 /** UI copy only. API field names, original downloads and data values stay stable. */
 export const english: Record<string, string> = {
+  "可关注股票清单 JSON": "Supported stocks JSON",
+  关注股票: "Watchlist",
+  组合表现: "Performance",
+  "从关注的股票出发，查看真实输入、模型排名与历史策略结果。":
+    "Start with stocks you follow. Inspect real inputs, model rankings and historical strategy results.",
+  原策略完整组合表现: "Original strategy · full portfolio",
+  "以下指标覆盖原策略完整回测，不是关注股票组成的新组合收益。":
+    "These metrics cover the original strategy’s full backtest. They are not the returns of a new watchlist portfolio.",
+  该日期无对齐数据: "No aligned data for this date",
+  "完整源文件使用独立日期浏览；不会更改统一研究日期。":
+    "Full source files use an independent date filter; the shared research date stays unchanged.",
+  "此处与统一历史信号日期同步；切换日期会同步关注、排名和配置。":
+    "This date is shared with your watchlist, rankings and strategy allocation.",
+  回测区间外: "Outside backtest period",
+  已入选策略: "Selected",
+  未入选策略: "Not selected",
+  暂无法判断: "Unavailable",
+  该日期无配置: "No allocation data",
+  "已关注 {ticker}": "Following {ticker}",
+  "已移除 {ticker}": "Removed {ticker}",
+  "示例已载入：对照排名与策略入选情况。":
+    "Example loaded. Compare model rank with strategy selection.",
+  "已重置关注列表、日期和图表筛选。":
+    "Watchlist, date and chart filters reset.",
+  从你关注的股票开始: "Start with stocks you follow",
+  "选择股票，查看同一历史日期的输入、模型排名与策略配置。":
+    "Choose stocks to inspect inputs, model rankings and allocations on the same historical date.",
+  重置演示: "Reset demo",
+  载入演示示例: "Load demo example",
+  研究查看流程: "Research walkthrough",
+  选择关注股票: "Choose stocks",
+  查看输入与排名: "Inspect inputs & rankings",
+  查看原策略表现: "View original performance",
+  添加关注股票: "Add stocks to follow",
+  "搜索代码或公司名称，例如 SCL、Chipotle":
+    "Search ticker or company, e.g. SCL, Chipotle",
+  可关注的研究股票: "Supported research stocks",
+  "不在当前支持的股票列表中。请从研究股票池中选择，不会为未支持的股票生成结果。":
+    "No supported stock matches. Choose from the research universe; no results are generated for unsupported stocks.",
+  "找到 {count} 只股票；继续输入可缩小范围。":
+    "{count} stocks found. Keep typing to narrow the list.",
+  "仅查看本模块的 {count} 只外部评估股票；与客户网站的全局资产选择器独立。":
+    "Browse this module’s {count} external evaluation stocks, independently of the host site’s global asset selector.",
+  统一历史信号日期: "Shared historical signal date",
+  前一个研究周: "Previous research week",
+  后一个研究周: "Next research week",
+  "同步关注结果、持仓、排名和对齐输入。":
+    "Syncs watchlist results, holdings, rankings and aligned inputs.",
+  "正在读取可关注的股票…": "Loading supported stocks…",
+  "已关注 {count} 只": "Following {count} stocks",
+  "移除 {ticker}": "Remove {ticker}",
+  清空关注: "Clear watchlist",
+  "关注列表只改变查看范围，不重新计算组合。下方收益始终属于原策略完整组合。":
+    "Your watchlist changes what you inspect, without recalculating the portfolio. Returns below always describe the original strategy’s full portfolio.",
+  先选一只你想了解的股票: "Choose a stock to explore",
+  "或载入 SCL、TJX、CMG 示例，看看排名和实际入选有何不同。":
+    "Or load SCL, TJX and CMG to see how model rank differs from actual strategy selection.",
+  用真实示例开始: "Start with a real example",
+  我的关注结果: "Your watchlist results",
+  历史研究结果: "Historical research results",
+  "导出当前 CSV": "Export current CSV",
+  "导出 JSON": "Export JSON",
+  "正在按同一日期关联输入、排名和配置…":
+    "Matching inputs, rankings and allocations by date…",
+  关注股票研究结果: "Watchlist research results",
+  策略入选状态: "Strategy selection",
+  操作: "Action",
+  "查看 {ticker} 详情": "View {ticker} details",
+  查看详情: "View details",
+  "得分是当周的相对排名参考，不是预计收益。未入选与没有配置记录是两种不同状态。":
+    "Scores express relative weekly rankings, not expected returns. Not selected and no allocation data are different states.",
+  关注股票详情: "Stock research details",
+  "输入：五个原始因子": "Inputs · five raw factors",
+  "匹配的输入文件暂不可用。": "Matching input files are unavailable.",
+  "该股票在此日期没有对齐的因子记录。":
+    "No aligned factor record exists for this stock on this date.",
+  "因子以原始数值展示；模型使用同周股票百分位转换后的输入。":
+    "Factors are shown as raw values; model inputs use within-week stock percentile transforms.",
+  "输出：模型评价": "Outputs · model assessment",
+  当周模型排名: "Weekly model rank",
+  "模型组件 {n} 百分位": "Component {n} percentile",
+  "该股票在此日期没有保存的模型排名。":
+    "No saved model ranking exists for this stock on this date.",
+  "结果：策略配置": "Result · strategy allocation",
+  "这只股票没有进入当周保存的策略配置。排名靠前不保证入选。":
+    "This stock is absent from the saved weekly allocation. A high rank does not guarantee selection.",
+  "缺少此日期的已验证配置，不能判断是否入选。":
+    "A verified allocation is unavailable for this date; selection cannot be determined.",
+  "保存结果没有逐股过滤原因，因此不推断具体未入选理由。":
+    "The saved results contain no per-stock rejection reasons, so no specific reason is inferred.",
+  "权重为下一周开盘代理价调仓后的历史配置，包含整数股与现金约束。":
+    "Weights reflect historical rebalancing at next-week open proxies, with integer-share and cash constraints.",
+  "最后持有期结束时已清仓，展示的历史配置不代表当前持仓。":
+    "Positions were liquidated at the end of the final holding period. These historical allocations are not current holdings.",
+  查看回测价格与数据来源: "Backtest prices & provenance",
+  "价格是下一周开盘和收盘的历史回测代理价，不是当前行情或未来价格预测。":
+    "Prices are next-week open and close proxies used in the historical backtest, not live quotes or future price forecasts.",
+  "该日期的对齐回测价格不可用。":
+    "Aligned backtest prices are unavailable for this date.",
+  "金额沿用原研究账户单位，币种未声明。":
+    "Amounts retain the original research account units; currency is unspecified.",
+  "查看当前关注接口 JSON": "View current watchlist API JSON",
+  "请求超时，请检查本地服务后重试。":
+    "Request timed out. Check the local service and retry.",
+  "无法连接研究服务，请检查服务是否正在运行。":
+    "Unable to connect. Check that the research service is running.",
+  "服务返回了无法读取的数据，请重试。":
+    "The service returned unreadable data. Please retry.",
   "未找到对应的结果，请重新选择。":
     "Result not found. Please select another run.",
   "无法读取结果，请确认 Dashboard 服务正在运行。":

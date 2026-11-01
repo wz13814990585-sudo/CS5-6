@@ -200,3 +200,47 @@ class PortfolioContract(Model):
     assumptions: dict
     allocation: Allocation
     provenance: dict
+
+
+class Stock(Model):
+    ticker: str
+    stock_name: str | None
+
+
+class StockCatalog(Model):
+    module_id: Literal["cs5_6_equity"]
+    module_version: str
+    run_id: str
+    stocks: list[Stock]
+    backtest_dates: list[str]
+    ranking_dates: list[str]
+    default_date: str
+    watchlist_changes_strategy: Literal[False]
+
+
+class StockInspection(Stock):
+    factors_status: Literal["available", "unavailable", "no_data"]
+    factors: dict[str, float] | None
+    prices_status: Literal["available", "unavailable", "no_data"]
+    prices: dict[str, float] | None
+    ranking: RankingRow | None
+    selection_status: Literal["selected", "not_selected", "unavailable", "no_data"]
+    allocation: Holding | None
+    exclusion_reason: None = Field(
+        description="No saved per-stock exclusion explanation is available"
+    )
+
+
+class Watchlist(Model):
+    module_id: Literal["cs5_6_equity"]
+    module_version: str
+    run_id: str
+    signal_date: str
+    status: Literal["success", "partial", "no_data"]
+    data_mode: Literal["historical_simulation"]
+    requested_tickers: list[str]
+    supported_stock_count: int
+    watchlist_changes_strategy: Literal[False]
+    rows: list[StockInspection]
+    strategy_context: dict
+    provenance: dict

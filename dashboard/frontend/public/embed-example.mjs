@@ -10,6 +10,9 @@ let language = ["zh", "en"].includes(queryLanguage)
     ? "en"
     : "zh";
 let opened = false;
+let frameState = "idle";
+let frameTimer;
+const frame = document.getElementById("dashboard-frame");
 const copy = {
   en: {
     title: "CS5-6 · Integration preview",
@@ -28,6 +31,10 @@ const copy = {
     delivery:
       "This is a local integration example, not the client's live website. Authentication, global navigation and other strategies remain the responsibility of the core team. A client staging review is required before release.",
     frame: "CS5-6 historical stock research",
+    loading: "Loading the research module…",
+    failed:
+      "The module did not respond. Retry or open the standalone Dashboard. The rest of this page remains available.",
+    retry: "Retry module",
   },
   zh: {
     title: "CS5-6 · 接入预览",
@@ -44,6 +51,9 @@ const copy = {
     delivery:
       "这是本地接入示例，并非客户线上网站。登录认证、全局导航和其他策略由客户核心团队维护；上线前需要在客户测试环境中审核。",
     frame: "CS5-6 历史股票研究",
+    loading: "正在加载研究模块…",
+    failed: "模块未响应。请重试或打开独立 Dashboard；本页其他内容仍可使用。",
+    retry: "重新加载模块",
   },
 };
 function renderLanguage(value) {
@@ -66,19 +76,53 @@ function renderLanguage(value) {
   document.getElementById("open-module").textContent =
     c[opened ? "close" : "open"];
   document.getElementById("dashboard-frame").title = c.frame;
+  document.getElementById("module-status").hidden = frameState === "ready";
+  document.getElementById("module-status-text").textContent =
+    c[frameState === "failed" ? "failed" : "loading"];
+  document.getElementById("retry-module").hidden = frameState !== "failed";
+  document.getElementById("retry-module").textContent = c.retry;
+  document.getElementById("fallback-link").hidden = frameState !== "failed";
+  document.getElementById("fallback-link").textContent = c.back;
+  document.getElementById("fallback-link").href = "./?lang=" + value;
+  frame.hidden = frameState !== "ready";
   const url = new URL(location.href);
   url.searchParams.set("lang", value);
   history.replaceState(history.state, "", url.href);
 }
+function loadModule() {
+  clearTimeout(frameTimer);
+  frameState = "loading";
+  const src = new URL("./", location.href);
+  src.searchParams.set("embed", "1");
+  src.searchParams.set("lang", language);
+  src.searchParams.set("_embed_retry", String(Date.now()));
+  src.hash = "watchlist";
+  frame.src = src.href;
+  frameTimer = setTimeout(() => {
+    frameState = "failed";
+    renderLanguage(language);
+  }, 12000);
+  renderLanguage(language);
+}
+window.addEventListener("message", (event) => {
+  if (
+    event.origin !== location.origin ||
+    event.source !== frame.contentWindow ||
+    event.data?.type !== "cs5_6_equity:ready"
+  )
+    return;
+  clearTimeout(frameTimer);
+  frameState = "ready";
+  renderLanguage(language);
+});
+document.getElementById("retry-module").addEventListener("click", loadModule);
 document.getElementById("open-module").addEventListener("click", () => {
   opened = !opened;
   document.getElementById("module-container").hidden = !opened;
   document
     .getElementById("open-module")
     .setAttribute("aria-expanded", String(opened));
-  const frame = document.getElementById("dashboard-frame");
-  if (opened && !frame.getAttribute("src"))
-    frame.src = "./?embed=1&lang=" + language;
+  if (opened && frameState === "idle") loadModule();
   renderLanguage(language);
 });
 renderLanguage(language);

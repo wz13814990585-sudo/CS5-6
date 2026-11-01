@@ -47,6 +47,21 @@ def check(url, expected=None):
     ranking = get(f"runs/{run_id}/rankings?date={date}&page_size=100")
     assert len(ranking["rows"]) == ranking["total"] > 0
     assert ranking["rows"][0]["ensemble_predicted_rank"] == 1
+    stocks = get(f"runs/{run_id}/stocks")
+    assert len(stocks["stocks"]) == 40
+    watchlist = get(
+        f"runs/{run_id}/watchlist?date={portfolio['signal_date']}&tickers=SCL,TJX,CMG"
+    )
+    assert watchlist["status"] == "success"
+    assert watchlist["watchlist_changes_strategy"] is False
+    assert watchlist["strategy_context"]["metrics"] == portfolio["metrics"]
+    assert [r["ticker"] for r in watchlist["rows"]] == ["SCL", "TJX", "CMG"]
+    assert (
+        get(
+            f"runs/{run_id}/watchlist/download?date={portfolio['signal_date']}&tickers=SCL,TJX,CMG&format=json"
+        )
+        == watchlist
+    )
     inputs = get(f"runs/{run_id}/inputs")
     assert inputs["available"]
     for dataset in inputs["datasets"]:
@@ -102,6 +117,7 @@ def check(url, expected=None):
         "final_capital": overview["summary"]["final_capital"],
         "module_id": portfolio["module_id"],
         "allocation_status": allocation["status"],
+        "watchlist_status": watchlist["status"],
         "input_datasets": [d["id"] for d in inputs["datasets"]],
         "input_rows_each": [d["source_rows"] for d in inputs["datasets"]],
     }

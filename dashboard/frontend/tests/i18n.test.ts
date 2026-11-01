@@ -48,6 +48,8 @@ test("all Chinese copy in the React screens has an English catalog entry", () =>
     "main.tsx",
     "InputsPanel.tsx",
     "PortfolioPanel.tsx",
+    "WatchlistPanel.tsx",
+    "api.ts",
   ]) {
     const source = fs.readFileSync(
       new URL(`../src/${filename}`, import.meta.url),

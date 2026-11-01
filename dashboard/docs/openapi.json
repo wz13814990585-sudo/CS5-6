@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "SafeCapital Dashboard API",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "paths": {
     "/api/cs5_6_equity/v1/config": {
@@ -940,6 +940,296 @@
                   "$ref": "#/components/schemas/PortfolioContract"
                 }
               }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/cs5_6_equity/v1/runs/{run_id}/stocks": {
+      "get": {
+        "summary": "Stocks",
+        "operationId": "stocks_api_cs5_6_equity_v1_runs__run_id__stocks_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockCatalog"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/cs5_6_equity/v1/runs/{run_id}/watchlist": {
+      "get": {
+        "summary": "Watchlist",
+        "operationId": "watchlist_api_cs5_6_equity_v1_runs__run_id__watchlist_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            }
+          },
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600,
+              "title": "Tickers"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watchlist"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/cs5_6_equity/v1/runs/{run_id}/watchlist/download": {
+      "get": {
+        "summary": "Watchlist Download",
+        "operationId": "watchlist_download_api_cs5_6_equity_v1_runs__run_id__watchlist_download_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            }
+          },
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600,
+              "title": "Tickers"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "csv",
+                "json"
+              ],
+              "type": "string",
+              "default": "csv",
+              "title": "Format"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Date-specific watchlist inspection; no custom portfolio calculation",
+            "content": {
+              "text/csv": {},
+              "application/json": {}
             }
           },
           "404": {
@@ -1984,6 +2274,296 @@
           }
         }
       }
+    },
+    "/api/v1/runs/{run_id}/stocks": {
+      "get": {
+        "summary": "Stocks",
+        "operationId": "stocks_api_v1_runs__run_id__stocks_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockCatalog"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/watchlist": {
+      "get": {
+        "summary": "Watchlist",
+        "operationId": "watchlist_api_v1_runs__run_id__watchlist_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            }
+          },
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600,
+              "title": "Tickers"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watchlist"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/watchlist/download": {
+      "get": {
+        "summary": "Watchlist Download",
+        "operationId": "watchlist_download_api_v1_runs__run_id__watchlist_download_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            }
+          },
+          {
+            "name": "tickers",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600,
+              "title": "Tickers"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "csv",
+                "json"
+              ],
+              "type": "string",
+              "default": "csv",
+              "title": "Format"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Date-specific watchlist inspection; no custom portfolio calculation",
+            "content": {
+              "text/csv": {},
+              "application/json": {}
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Method Not Allowed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2908,6 +3488,204 @@
         ],
         "title": "Runs"
       },
+      "Stock": {
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "title": "Ticker"
+          },
+          "stock_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stock Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ticker",
+          "stock_name"
+        ],
+        "title": "Stock"
+      },
+      "StockCatalog": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "const": "cs5_6_equity",
+            "title": "Module Id"
+          },
+          "module_version": {
+            "type": "string",
+            "title": "Module Version"
+          },
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "stocks": {
+            "items": {
+              "$ref": "#/components/schemas/Stock"
+            },
+            "type": "array",
+            "title": "Stocks"
+          },
+          "backtest_dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Backtest Dates"
+          },
+          "ranking_dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Ranking Dates"
+          },
+          "default_date": {
+            "type": "string",
+            "title": "Default Date"
+          },
+          "watchlist_changes_strategy": {
+            "type": "boolean",
+            "const": false,
+            "title": "Watchlist Changes Strategy"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_id",
+          "module_version",
+          "run_id",
+          "stocks",
+          "backtest_dates",
+          "ranking_dates",
+          "default_date",
+          "watchlist_changes_strategy"
+        ],
+        "title": "StockCatalog"
+      },
+      "StockInspection": {
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "title": "Ticker"
+          },
+          "stock_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stock Name"
+          },
+          "factors_status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "unavailable",
+              "no_data"
+            ],
+            "title": "Factors Status"
+          },
+          "factors": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Factors"
+          },
+          "prices_status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "unavailable",
+              "no_data"
+            ],
+            "title": "Prices Status"
+          },
+          "prices": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prices"
+          },
+          "ranking": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RankingRow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selection_status": {
+            "type": "string",
+            "enum": [
+              "selected",
+              "not_selected",
+              "unavailable",
+              "no_data"
+            ],
+            "title": "Selection Status"
+          },
+          "allocation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Holding"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "exclusion_reason": {
+            "type": "null",
+            "title": "Exclusion Reason",
+            "description": "No saved per-stock exclusion explanation is available"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ticker",
+          "stock_name",
+          "factors_status",
+          "factors",
+          "prices_status",
+          "prices",
+          "ranking",
+          "selection_status",
+          "allocation",
+          "exclusion_reason"
+        ],
+        "title": "StockInspection"
+      },
       "Summary": {
         "properties": {
           "initial_capital": {
@@ -2982,6 +3760,90 @@
           "strategy"
         ],
         "title": "Summary"
+      },
+      "Watchlist": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "const": "cs5_6_equity",
+            "title": "Module Id"
+          },
+          "module_version": {
+            "type": "string",
+            "title": "Module Version"
+          },
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "signal_date": {
+            "type": "string",
+            "title": "Signal Date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "partial",
+              "no_data"
+            ],
+            "title": "Status"
+          },
+          "data_mode": {
+            "type": "string",
+            "const": "historical_simulation",
+            "title": "Data Mode"
+          },
+          "requested_tickers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Requested Tickers"
+          },
+          "supported_stock_count": {
+            "type": "integer",
+            "title": "Supported Stock Count"
+          },
+          "watchlist_changes_strategy": {
+            "type": "boolean",
+            "const": false,
+            "title": "Watchlist Changes Strategy"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/StockInspection"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "strategy_context": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Strategy Context"
+          },
+          "provenance": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_id",
+          "module_version",
+          "run_id",
+          "signal_date",
+          "status",
+          "data_mode",
+          "requested_tickers",
+          "supported_stock_count",
+          "watchlist_changes_strategy",
+          "rows",
+          "strategy_context",
+          "provenance"
+        ],
+        "title": "Watchlist"
       }
     }
   }
