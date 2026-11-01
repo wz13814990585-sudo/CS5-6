@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "environment": {
+    "python": "3.12.10",
+    "platform": "macOS-14.5-arm64-arm-64bit",
+    "packages": {
+      "numpy": "1.26.4",
+      "pandas": "2.2.2",
+      "scipy": "1.15.3",
+      "scikit-learn": "1.6.1",
+      "xgboost": "3.4.1",
+      "exchange-calendars": "4.13.2"
+    },
+    "random_seed": 5703,
+    "training_threads": 1,
+    "version": "ensemble-training-v1"
+  },
+  "processed_input_files": [
+    "data/reproducible/train66_corrected_complete.csv",
+    "data/reproducible/train_universe.csv",
+    "data/clean_basic_data.csv",
+    "external_validation/ensemble_ranker/inputs/test40.csv",
+    "external_validation/shared_inputs/inputs/test40_with_prices.csv"
+  ],
+  "tracked_runtime_files": 12
+}

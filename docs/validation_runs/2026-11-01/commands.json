@@ -1,0 +1,54 @@
+[
+  {
+    "name": "environment",
+    "command": [
+      ".venv/bin/python",
+      "-B",
+      "tools/check_environment.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.96
+  },
+  {
+    "name": "regression",
+    "command": [
+      ".venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "pipeline_tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.99
+  },
+  {
+    "name": "frozen_replay",
+    "command": [
+      ".venv/bin/python",
+      "-B",
+      "safecapital.py",
+      "--run-id",
+      "validation_20261101_replay"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 4.67
+  },
+  {
+    "name": "training_full",
+    "command": [
+      ".venv/bin/python",
+      "-B",
+      "safecapital.py",
+      "--retrain-v1",
+      "--profile",
+      "full",
+      "--run-id",
+      "validation_20261101_training"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 33.06
+  }
+]

@@ -1,0 +1,4 @@
+     window       strategy  weeks  annualized_return   sharpe  max_drawdown  final_capital
+FullHistory Top5_NoLoss13w    210            0.10439 0.543421     -0.248781  149330.608884
+Verification passed; maximum absolute metric error: 0.0
+Saved models replayed exactly; results: <project>/runs/validation_20261101_replay

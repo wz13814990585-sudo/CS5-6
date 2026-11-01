@@ -1,0 +1,14 @@
+{
+  "protocol": "processed-weekly-ensemble-training-v1",
+  "weeks": 521,
+  "training_rows": 27533,
+  "training_tickers": 66,
+  "first_signal": "2016-09-02",
+  "last_signal": "2026-08-21",
+  "source_sha256": "8db10fa3e7e3fa624e7ad2e74a1ad6f0a31967e605ceeb28b254bb7ca81c9f40",
+  "input_scope": "supplied processed weekly data",
+  "target_check": "every row: ln(daily adjusted close on label_end_date / weekly adjusted close); adjacent weekly closes also checked",
+  "target_reference": "data/clean_basic_data.csv",
+  "target_reference_sha256": "3ffda2638a8e51185f19f96236e108592d87ff065768b2d558ffc62233ead964",
+  "external_data_used": false
+}

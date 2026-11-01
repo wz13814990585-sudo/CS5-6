@@ -101,7 +101,7 @@ python safecapital.py --retrain-v1 --profile smoke
 python safecapital.py --retrain-v1 --profile full
 ```
 
-Choose one profile. V1 uses `data/reproducible/train66_corrected_complete.csv`: 66 stocks, 521 complete signal weeks. It validates weekly keys, factors and labels, constructs chronological windows of 156 / 52 / 52 weeks, fits the three components every 26 weeks, and saves JSON models. Each fitted model is reloaded and its predictions on the training matrix must match exactly. This is a serialization check, not an external performance evaluation.
+Choose one profile. V1 uses `data/reproducible/train66_corrected_complete.csv` (66 stocks, 521 complete signal weeks), `data/reproducible/train_universe.csv` (ticker validation), and `data/clean_basic_data.csv` (daily adjusted-close checks for every label, including final-week and gap-adjacent rows). All three files are required and hashed in the run manifest. It validates weekly keys, factors and labels, constructs chronological windows of 156 / 52 / 52 weeks, fits the three components every 26 weeks, and saves JSON models. Each fitted model is reloaded and its predictions on the training matrix must match exactly. This is a serialization check, not an external performance evaluation.
 
 Outputs are `prepare/train.csv`, `prepare/calendar.csv`, `prepare/data_audit.json`, `train/models/`, `train/model_manifest.json`, `manifest.json` and `run.log`. There are no external prediction, backtest or comparison stages. See [the training guide](docs/V1_RETRAINING.md).
 

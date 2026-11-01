@@ -1,0 +1,50 @@
+START prepare
+PASS prepare
+START train
+TRAIN Model1_v1_refit_0156: 5221 rows, 156 weeks
+TRAIN Model1_v1_refit_0182: 5845 rows, 156 weeks
+TRAIN Model1_v1_refit_0208: 6560 rows, 156 weeks
+TRAIN Model1_v1_refit_0234: 7307 rows, 156 weeks
+TRAIN Model1_v1_refit_0260: 8061 rows, 156 weeks
+TRAIN Model1_v1_refit_0286: 8801 rows, 156 weeks
+TRAIN Model1_v1_refit_0312: 9230 rows, 156 weeks
+TRAIN Model1_v1_refit_0338: 9433 rows, 156 weeks
+TRAIN Model1_v1_refit_0364: 9539 rows, 156 weeks
+TRAIN Model1_v1_refit_0390: 9604 rows, 156 weeks
+TRAIN Model1_v1_refit_0416: 9627 rows, 156 weeks
+TRAIN Model1_v1_refit_0442: 9640 rows, 156 weeks
+TRAIN Model1_v1_refit_0468: 9652 rows, 156 weeks
+TRAIN Model1_v1_refit_0494: 9704 rows, 156 weeks
+TRAIN Model1_v1_refit_0520: 9808 rows, 156 weeks
+TRAIN Model2_v1_refit_0156: 2042 rows, 52 weeks
+TRAIN Model2_v1_refit_0182: 2587 rows, 52 weeks
+TRAIN Model2_v1_refit_0208: 2899 rows, 52 weeks
+TRAIN Model2_v1_refit_0234: 3029 rows, 52 weeks
+TRAIN Model2_v1_refit_0260: 3120 rows, 52 weeks
+TRAIN Model2_v1_refit_0286: 3185 rows, 52 weeks
+TRAIN Model2_v1_refit_0312: 3211 rows, 52 weeks
+TRAIN Model2_v1_refit_0338: 3219 rows, 52 weeks
+TRAIN Model2_v1_refit_0364: 3208 rows, 52 weeks
+TRAIN Model2_v1_refit_0390: 3200 rows, 52 weeks
+TRAIN Model2_v1_refit_0416: 3208 rows, 52 weeks
+TRAIN Model2_v1_refit_0442: 3221 rows, 52 weeks
+TRAIN Model2_v1_refit_0468: 3236 rows, 52 weeks
+TRAIN Model2_v1_refit_0494: 3283 rows, 52 weeks
+TRAIN Model2_v1_refit_0520: 3364 rows, 52 weeks
+TRAIN Model3_v1_refit_0156: 2042 rows, 52 weeks
+TRAIN Model3_v1_refit_0182: 2587 rows, 52 weeks
+TRAIN Model3_v1_refit_0208: 2899 rows, 52 weeks
+TRAIN Model3_v1_refit_0234: 3029 rows, 52 weeks
+TRAIN Model3_v1_refit_0260: 3120 rows, 52 weeks
+TRAIN Model3_v1_refit_0286: 3185 rows, 52 weeks
+TRAIN Model3_v1_refit_0312: 3211 rows, 52 weeks
+TRAIN Model3_v1_refit_0338: 3219 rows, 52 weeks
+TRAIN Model3_v1_refit_0364: 3208 rows, 52 weeks
+TRAIN Model3_v1_refit_0390: 3200 rows, 52 weeks
+TRAIN Model3_v1_refit_0416: 3208 rows, 52 weeks
+TRAIN Model3_v1_refit_0442: 3221 rows, 52 weeks
+TRAIN Model3_v1_refit_0468: 3236 rows, 52 weeks
+TRAIN Model3_v1_refit_0494: 3283 rows, 52 weeks
+TRAIN Model3_v1_refit_0520: 3364 rows, 52 weeks
+PASS train
+RESULT passed <project>/runs/validation_20261101_training/manifest.json

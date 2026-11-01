@@ -15,9 +15,17 @@ Choose one profile: smoke fits the latest snapshot for each component (3 files);
 
 ## Data and method
 
-The only data inputs are `data/reproducible/train66_corrected_complete.csv` and `train_universe.csv`. They contain 66 training stocks and 521 signal weeks from 2016-09-02 through 2026-08-21. External stocks and price panels are not read by this workflow.
+The training demonstration requires three supplied files:
 
-Preparation validates keys, finite factors, the training universe, consecutive NYSE weeks and next-week labels where adjacent supplied adjusted closes are available. The last supplied target is part of the processed input contract; acquisition of its raw source is outside the reproduction boundary.
+| Input (project-relative) | Purpose |
+|---|---|
+| `data/reproducible/train66_corrected_complete.csv` | Weekly factors, adjusted closes and next-week labels for 66 training stocks across 521 signal weeks, 2016-09-02 through 2026-08-21 |
+| `data/reproducible/train_universe.csv` | Validate the 66 distinct training tickers |
+| `data/clean_basic_data.csv` | Daily adjusted-close reference for checking every training label, including the final week and rows before missing weekly observations |
+
+All three files enter the input identity recorded in the run manifest. The daily reference is restricted to training tickers during label verification. External test stocks and external execution-price panels are not used by this workflow.
+
+Preparation validates keys, finite factors, the training universe and consecutive NYSE weeks. It checks adjacent weekly returns where available, then verifies every target as `ln(daily adjusted close on label_end_date / weekly adjusted close)`. This includes the 16 rows before missing weekly observations and the final signal week. The daily file is already supplied; no raw-data acquisition is required.
 
 The component training windows are 156 / 52 / 52 weeks with chronological refits every 26 weeks. Training labels must be observable at the refit signal date. Factor values are ranked within each training week. The original component definitions and training implementation are in `external_validation/ensemble_ranker/code/ranker_core.py`. V1 uses one training thread and seed 5703.
 

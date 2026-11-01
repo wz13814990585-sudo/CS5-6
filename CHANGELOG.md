@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-01
+
+- Corrected the training guide, root README and data guide to list the required daily adjusted-close input and describe checks of all labels, including final-week and gap-adjacent rows.
+- Revalidated the current runtime on macOS in an isolated pinned-dependency environment: 87 regression tests, all 13,517 frozen predictions, the selected 210-week strategy, and all 45 newly fitted training-demonstration snapshots passed.
+- Added current command logs, input/source/output identities and numerical verification records. Preserved the October 26 Windows record separately and left original data, frozen models and delivered historical outputs unchanged.
+- Refreshed the release inventory for the documentation and validation evidence.
+
 ## 2026-10-29
 
 - Independent accounting now rebuilds each week's OPEN orders from ranks, prices, target weights and cash for Top5, Top10, Top5_RankWeighted and Top5_NoLoss13w, and requires the delivered orders to match exactly. A held position below its target is accepted only when remaining cash cannot fund one more share, so partial (for example half-size) positions are rejected.

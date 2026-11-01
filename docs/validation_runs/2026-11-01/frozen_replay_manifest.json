@@ -1,0 +1,21 @@
+{
+  "mode": "frozen_model_inference",
+  "attempt_id": "2e07a673efaf4229bf1c3d2ba9dd75d2",
+  "started_utc": "2026-11-01T05:59:43.491724+00:00",
+  "status": "passed",
+  "stage": "complete",
+  "models_loaded": 45,
+  "models_trained": 0,
+  "prediction_rows": 13517,
+  "prediction_weeks": 366,
+  "backtest_cases": 1,
+  "files": {
+    "backtest/README.md": "d5f342eb44c811521920dd7a12d2c1208d53bfd71cd2cd9c42c754cc2e21febf",
+    "backtest/summary.csv": "5b81cb1ac26cce33184cd9ff1c613f4c52182eefeee2601af7b6ecd4377c69bc",
+    "backtest/verification.json": "bfbe6274c9f0ed64222dea59d671961cc60dd79bbf956582bcb6952d869ce752",
+    "backtest/weekly_capital.csv": "4a4140c93b92e6e5d41700b16228df78f9e708faa2e0bf4c596fa30d9d650418",
+    "prediction_verification.json": "f849cfc0d2d15f2c6907e9944f7db8fd42cc5275fa2ca69cb721d3f150da9e19",
+    "saved_model_predictions.csv": "5f5b4b90377c8ef7bfe527c1ed1b530b0d8ce1a7e9ed9ac4550bae0af5b7cc2c"
+  },
+  "finished_utc": "2026-11-01T05:59:45.236645+00:00"
+}
