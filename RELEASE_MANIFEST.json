@@ -144,8 +144,8 @@
       "bytes": 767
     },
     "dashboard/README.md": {
-      "sha256": "bd104f2b4714f1ff85a1fc5eeb2f82012a3aeef7e91cb98b01e1b060597180ce",
-      "bytes": 10441
+      "sha256": "ecf0837d064cef652b7b5208b90bcb4e0ec05020f0a8ed9201929d8567cb61e4",
+      "bytes": 10506
     },
     "dashboard/compose.delivery.yaml": {
       "sha256": "98c8ad3e7a12bac3214712f621def214457ac7658726739b30d5f86e0baf13b5",
@@ -162,6 +162,10 @@
     "dashboard/docs/API_V1.md": {
       "sha256": "1ba0c444205dc422ed7531ab7d67ed378eecaaa8c9e967f466c19c0b1d4904af",
       "bytes": 6769
+    },
+    "dashboard/docs/CUSTOMER_DEMO_GUIDE.md": {
+      "sha256": "88d2ca7405d35b4b92ce295969572d7911912bdf1520adfde8eceb64911a7303",
+      "bytes": 20878
     },
     "dashboard/docs/CUSTOMER_HANDOFF.md": {
       "sha256": "849ca4c3fe42e2d5ae382c8989a1f75ce825a4bf341e03bdb39620d3c9d78e50",

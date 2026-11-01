@@ -2,7 +2,7 @@
 
 当前重点是本地查看真实输入和输出，以及交付查询接口。Docker 和公网部署暂缓。先看 [本地输入输出使用指南](docs/LOCAL_IO.md) 与 [本次验收](docs/LOCAL_IO_VALIDATION.md)。
 
-**客户交付入口：**[完整计划](docs/DEVELOPMENT_PLAN.md) · [客户安装与接入手册](docs/CUSTOMER_HANDOFF.md) · [API v1 合同](docs/API_V1.md) · [本次交付验收](docs/DELIVERY_VALIDATION.md)。
+**客户交付入口：**[客户演示操作与讲解稿](docs/CUSTOMER_DEMO_GUIDE.md) · [完整计划](docs/DEVELOPMENT_PLAN.md) · [客户安装与接入手册](docs/CUSTOMER_HANDOFF.md) · [API v1 合同](docs/API_V1.md) · [本次交付验收](docs/DELIVERY_VALIDATION.md)。
 
 支持 `--config dashboard/config.toml`，模板为 `dashboard/config.example.toml`。新集成使用 `/api/v1`，旧 `/api` 继续兼容。前端通过运行配置生成公开域名下的嵌入代码。
 
