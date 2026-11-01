@@ -6,7 +6,7 @@ import math
 from pathlib import Path
 
 MODULE_ID = "cs5_6_equity"
-MODULE_VERSION = "1.3.0"
+MODULE_VERSION = "1.4.0"
 API_PREFIX = "/api/cs5_6_equity/v1"
 
 

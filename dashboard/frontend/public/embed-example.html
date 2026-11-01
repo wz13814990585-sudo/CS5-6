@@ -102,6 +102,18 @@
       #module-container {
         margin-top: 32px;
       }
+      #module-status {
+        padding: 20px;
+        border: 1px solid #315847;
+        border-radius: 12px;
+        margin-bottom: 18px;
+      }
+      #module-status p {
+        margin-top: 0;
+      }
+      #retry-module {
+        margin-right: 20px;
+      }
       iframe {
         width: 100%;
         height: 1450px;
@@ -169,10 +181,21 @@
         website-wide single-asset selector.
       </p>
       <section id="module-container" hidden>
+        <div id="module-status" role="status" aria-live="polite">
+          <p id="module-status-text"></p>
+          <button id="retry-module" hidden></button>
+          <a
+            id="fallback-link"
+            href="./?lang=en"
+            target="_blank"
+            rel="noreferrer"
+            hidden
+          ></a>
+        </div>
         <iframe
           id="dashboard-frame"
           title="CS5-6 historical stock research"
-          loading="lazy"
+          loading="eager"
         ></iframe>
       </section>
       <footer id="delivery-note">

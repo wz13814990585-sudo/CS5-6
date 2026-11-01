@@ -1,0 +1,120 @@
+{
+  "module_id": "cs5_6_equity",
+  "module_version": "1.4.0",
+  "run_id": "delivered",
+  "signal_date": "2015-09-04",
+  "status": "no_data",
+  "data_mode": "historical_simulation",
+  "requested_tickers": [
+    "SCL",
+    "TJX",
+    "CMG"
+  ],
+  "supported_stock_count": 40,
+  "watchlist_changes_strategy": false,
+  "rows": [
+    {
+      "ticker": "SCL",
+      "stock_name": "STEPAN CO",
+      "factors_status": "no_data",
+      "factors": null,
+      "prices_status": "no_data",
+      "prices": null,
+      "ranking": null,
+      "selection_status": "no_data",
+      "allocation": null,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "TJX",
+      "stock_name": "TJX COMPANIES INC /DE/",
+      "factors_status": "no_data",
+      "factors": null,
+      "prices_status": "no_data",
+      "prices": null,
+      "ranking": null,
+      "selection_status": "no_data",
+      "allocation": null,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "CMG",
+      "stock_name": "CHIPOTLE MEXICAN GRILL INC",
+      "factors_status": "no_data",
+      "factors": null,
+      "prices_status": "no_data",
+      "prices": null,
+      "ranking": null,
+      "selection_status": "no_data",
+      "allocation": null,
+      "exclusion_reason": null
+    }
+  ],
+  "strategy_context": {
+    "strategy": {
+      "id": "Top5_NoLoss13w",
+      "signal_frequency": "weekly",
+      "maximum_stocks": 5,
+      "target_weight_per_stock": 0.2
+    },
+    "metrics_scope": "original_strategy_full_backtest",
+    "metrics": {
+      "annualized_return": 0.1043902627962429,
+      "total_return": 0.49330608884189986,
+      "max_drawdown": -0.24878123919912354,
+      "sharpe": 0.5434211006497096,
+      "initial_capital": 100000,
+      "final_capital": 149330.60888418998
+    },
+    "backtest": {
+      "start": "2022-08-26",
+      "end": "2026-08-28",
+      "weeks": 210,
+      "scope": "Common210",
+      "window": "FullHistory"
+    },
+    "allocation_status": "no_data",
+    "liquidated_at_period_end": null,
+    "units": {
+      "returns": "decimal_fraction",
+      "weights": "decimal_fraction",
+      "capital": "original_research_account_units",
+      "currency": null,
+      "currency_note": "The source result does not declare a currency code."
+    },
+    "assumptions": {
+      "annualization_periods_per_year": 52,
+      "annualized_return_formula": "(final_capital / initial_capital) ** (52 / weeks) - 1",
+      "cost_bps_per_side": 10,
+      "execution": "next_week_open_close_price_proxies",
+      "shares": "integer",
+      "filter": "nonnegative_observable_trailing_13_week_return",
+      "end_of_window_liquidation": true,
+      "guaranteed_future_return": false
+    }
+  },
+  "provenance": {
+    "run_manifest_sha256": "d14ee3b5010a373ceaf5af6c5afb707b6b58a61cbb64680ab59c6b498a64cd7a",
+    "source_hashes": {
+      "predictions": "db3c328811ad1f2bf0d0f302b03ff4d71a62bfe4d0b1e23aed24a7f5c1f0b0b0",
+      "equity": "3682c58ee164eda5a8bda15affeb37a86eb88b11a893015f6150279d4fd85e10",
+      "summary": "35d8b0e3e0e0e6de0464f4313b61617e9e4e3a635f7fd944683b862d5ba870e2"
+    },
+    "allocation_artifact_sha256": "bc31a51a6c3c04729c1295fba8fd4b60f358de05faf491316294e3df31eec184",
+    "research_engine_sha256": "0f29792808648f331fbae3c17ebe1f0dbd4d425b3e856429a9f35c85e5195d8b",
+    "training_file_sha256": "dc5daacfaea842690ca827eb3a14a2b98f77ce9a6d655e76f25d9d4003d95dbb",
+    "input_hashes": {
+      "factors": "8e43a5a4a91356fa34ba0e14419677d7cffcf13b99f135c5a7f82c74df1b2833",
+      "prices": "3ff2cbfd862ec7207157dc67675f5c4e28c5f7e9061ff8fa7fcfa24a134fdc39",
+      "configuration": "78abfc0ba65998bb68e7f07ecee4fe0cf83ab3c55f938dc83bd1b5bda9eeebba",
+      "manifest": "25e073f2d67d359a61c751c50f8ced010a38d8b07bd695027d13d5006dd02efe"
+    },
+    "allocation_verification": {
+      "status": "passed",
+      "maximum_weekly_error": 0.0,
+      "independent_accounting_checks": 9586,
+      "maximum_accounting_error": 2.842170943040401e-14
+    },
+    "derivation": "Offline export using the existing research execution engine; no model training or live predictions."
+  }
+}

@@ -19,8 +19,9 @@ from dashboard.server.config import Settings
 from dashboard.server.inputs import INPUT_FILES, load_source, bind
 from dashboard.tools.verify_delivery import verify
 from dashboard.server.portfolio import load_archive, contract
+from dashboard.server.watchlist import inspect_stocks
 
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 
 
 def build(output, result=None):
@@ -44,9 +45,17 @@ def build(output, result=None):
         )
     inputs = load_source(ROOT)
     bound_inputs = bind(inputs, replay)
-    module_result = contract(replay, bound_inputs, load_archive(ROOT))
+    archive = load_archive(ROOT)
+    module_result = contract(replay, bound_inputs, archive)
     if module_result["status"] != "success":
         raise ValueError("Package requires matching verified portfolio allocations")
+    watchlist = inspect_stocks(
+        replay, bound_inputs, archive, module_result["signal_date"], "SCL,TJX,CMG"
+    )
+    if watchlist["status"] != "success":
+        raise ValueError(
+            "Package requires complete watchlist demonstration inputs and outputs"
+        )
     output = Path(output).resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():

@@ -6,6 +6,8 @@
 
 模块级 `portfolio` 合同、完整字段和成功/无数据/错误口径见 [Portfolio Neo 接入交接](PORTFOLIO_NEO_INTEGRATION.md)。旧 `/api/v1` 也保留为兼容别名。
 
+1.4 新增股票目录、关注查询与当前选择导出，完整字段/状态定义见 [关注股票 API](PRESENTATION_WATCHLIST.md#给客户的新增只读-api)。
+
 ## 接口顺序
 
 1. GET `runs`，读取 `default_run_id`，不要把本机运行目录名写死。
@@ -26,6 +28,9 @@ node dashboard/examples/client.mjs http://127.0.0.1:8000/
 | `health` | status、verified_runs、rejected_runs；无结果返回 503 |
 | `config` | app_version、api_version、public_url、data_mode |
 | `runs` | runs 数组、default_run_id（无结果为 null）、rejected_runs |
+| `runs/{id}/stocks` | stocks、backtest_dates、ranking_dates、default_date |
+| `runs/{id}/watchlist?date=2026-08-28&tickers=SCL,TJX,CMG` | rows、selection_status、strategy_context、provenance；仅查看既有结果 |
+| `runs/{id}/watchlist/download?...&format=csv` | 当前日期/股票选择 CSV；format=json 为 JSON |
 | `runs/{id}/inputs` | available、reason、run_id、datasets、model |
 | `runs/{id}/inputs/{dataset}/rows` | dataset、scope、date、total、page、page_size、rows |
 | `runs/{id}/inputs/{dataset}/download` | 完整原始输入 CSV 字节 |
@@ -80,6 +85,7 @@ node dashboard/examples/client.mjs http://127.0.0.1:8000/
 |---|---|---|
 | 404 | not_found | 重新选择已有结果/日期，或修正下载种类 |
 | 405 | method_not_allowed | 仅使用 GET |
+| 422 | unsupported_stocks | 关注查询含不支持的股票或空选择；从 stocks 目录选择 |
 | 422 | invalid_request | 根据 fields 修正参数 |
 | 503 | no_verified_results | 展示暂无可用结果，联系维护人员 |
 | 503 | inputs_unavailable | 输入缺失或与当前回放不一致；检查 catalog.reason，输出可继续使用 |

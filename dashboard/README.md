@@ -1,4 +1,4 @@
-# SafeCapital Dashboard V1.3
+# SafeCapital Dashboard V1.4
 
 当前重点是本地查看真实输入和输出，以及交付查询接口。Docker 和公网部署暂缓。先看 [本地输入输出使用指南](docs/LOCAL_IO.md) 与 [本次验收](docs/LOCAL_IO_VALIDATION.md)。
 
@@ -17,6 +17,9 @@
 支持中英文切换的只读历史策略 Dashboard。React + TypeScript 前端，FastAPI 后端，同一个服务提供页面与 API。支持独立访问和 iframe 嵌入，无需客户网站使用相同的前端框架。
 
 ## 已实现
+
+- [Presentation 关注股票流程](docs/PRESENTATION_WATCHLIST.md)：代码/公司多选、统一历史日期、输入/排名/策略详情、示例重置和当前选择 CSV/JSON 导出；不改变原策略收益。
+- 新增 stocks/watchlist 查询接口、12 秒请求超时与重试、嵌入加载失败入口。验收见 [1.4 记录](docs/PRESENTATION_VALIDATION.md)。
 
 - [Portfolio Neo 接入交接](docs/PORTFOLIO_NEO_INTEGRATION.md)：独立股票研究模块、客户风格、66/40 股票范围、真实选股权重、基准缺失说明、离线复算来源。
 - 独立 `/api/cs5_6_equity/v1/runs/{id}/portfolio` 合同，提供模型、股票池、配置、指标、假设、来源及成功/无数据/错误状态。
@@ -122,7 +125,7 @@ export SAFECAPITAL_EMBED_ORIGINS="https://client.example,https://www.client.exam
 
 服务通过响应头 `Content-Security-Policy: frame-ancestors 'self' ...` 授权嵌入。客户自己的 CSP 也要在 `frame-src` 中允许 Dashboard 域名。反向代理不要额外设置冲突的 `X-Frame-Options: DENY/SAMEORIGIN`。iframe 内的页面与 API 同源，因此此方式不需要开放 API 的跨域 CORS。
 
-V1 不实现登录或客户 SSO，也不保存客户输入。若客户要求只有登录用户可看，需要在反向代理或后续认证层同时保护页面、API 和下载；嵌入域名白名单不等同于访问认证。
+V1 不实现登录或客户 SSO；关注列表只保存在当前浏览器，不保存到服务端。若客户要求只有登录用户可看，需要在反向代理或后续认证层同时保护页面、API 和下载；嵌入域名白名单不等同于访问认证。
 
 ## 部署包（当前暂缓）
 
@@ -150,6 +153,9 @@ docker run --rm --name safecapital-dashboard \
 |---|---|
 | `/api/cs5_6_equity/v1/health` | 可用状态、有效与拒绝的结果数量；无结果时 503 |
 | `/api/cs5_6_equity/v1/runs` | 结果列表及 `default_run_id` |
+| `/api/cs5_6_equity/v1/runs/{id}/stocks` | 支持股票、公司名及有效日期 |
+| `/api/cs5_6_equity/v1/runs/{id}/watchlist?date=2026-08-28&tickers=SCL,TJX,CMG` | 按日期关联当前选择的输入、排名与策略配置 |
+| `/api/cs5_6_equity/v1/runs/{id}/watchlist/download?date=2026-08-28&tickers=SCL,TJX,CMG&format=csv` | 当前选择 CSV；也支持 JSON |
 | `/api/cs5_6_equity/v1/runs/{id}/inputs` | 输入目录、字段、日期覆盖和哈希 |
 | `/api/cs5_6_equity/v1/runs/{id}/inputs/{dataset}/rows` | factors/prices，支持 date、scope、q、page、page_size |
 | `/api/cs5_6_equity/v1/runs/{id}/inputs/{dataset}/download` | 完整原始输入 CSV |
@@ -174,6 +180,6 @@ npm --prefix dashboard/frontend run build
 .venv-dashboard/bin/python -m unittest discover -s dashboard/tests -v
 ```
 
-30 项接口与完整性测试覆盖真实数值、排名分页/搜索、原始下载、损坏文件、非有限数值、路径和符号链接越界、域名白名单及空结果状态。浏览器验收记录见 `docs/LOCAL_IO_VALIDATION.md`。
+49 项接口与完整性测试覆盖真实数值、排名分页/搜索、原始下载、损坏文件、非有限数值、路径和符号链接越界、域名白名单及空结果状态。另有 12 项前端语言/搜索/超时测试，运行 `node --experimental-strip-types --test dashboard/frontend/tests/*.test.ts`。最新浏览器验收见 `docs/PRESENTATION_VALIDATION.md`。
 
 参考：[FastAPI 静态文件](https://fastapi.tiangolo.com/tutorial/static-files/)、[Vite 相对部署路径](https://vite.dev/guide/build#relative-base)、[MDN 嵌入域名策略](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors)。

@@ -7,6 +7,7 @@ import {
   Info,
 } from "lucide-react";
 import { useLanguage } from "./i18n";
+import { readJSON } from "./api";
 
 type AllocationRow = {
   ticker: string;
@@ -69,48 +70,49 @@ const pct = (value: number | null) =>
   value === null ? "—" : `${(value * 100).toFixed(2)}%`;
 export default function PortfolioPanel({
   runId,
+  date,
+  onDateChange,
   onViewRanking,
 }: {
   runId: string;
+  date: string;
+  onDateChange: (date: string) => void;
   onViewRanking: (date: string, ticker: string) => void;
 }) {
   const { t } = useLanguage();
-  const [date, setDate] = useState("");
   const [data, setData] = useState<Portfolio | null>(null);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setDate("");
     setData(null);
   }, [runId]);
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
-    setError(false);
-    fetch(
+    setError("");
+    readJSON<Portfolio>(
       api(
         `runs/${encodeURIComponent(runId)}/portfolio${date ? `?date=${date}` : ""}`,
       ),
-      { signal: controller.signal },
+      controller.signal,
     )
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Unavailable");
-        return response.json();
-      })
       .then((value) => {
+        if (controller.signal.aborted) return;
         setData(value);
         setLoading(false);
       })
       .catch((e) => {
         if (e.name !== "AbortError") {
-          setError(true);
+          setError(e.message);
           setLoading(false);
         }
       });
     return () => controller.abort();
   }, [runId, date, retry]);
-  const current = data?.run_id === runId ? data : null;
+  const current =
+    data?.run_id === runId && data.signal_date === date ? data : null;
+  const knownDates = data?.run_id === runId ? data.backtest.dates : [];
   return (
     <section id="allocation" className="portfolio-section">
       <div className="section-caption">
@@ -133,7 +135,7 @@ export default function PortfolioPanel({
           </div>
           {error ? (
             <div role="alert" className="error">
-              {t("暂时无法读取组合配置；其余研究结果仍可查看。")}
+              {t("暂时无法读取组合配置；其余研究结果仍可查看。")} {t(error)}
               <button onClick={() => setRetry((n) => n + 1)}>
                 {t("重试")}
               </button>
@@ -144,14 +146,21 @@ export default function PortfolioPanel({
                 <label htmlFor="allocation-date">{t("信号日期")}</label>
                 <select
                   id="allocation-date"
-                  value={date || current?.signal_date || ""}
-                  onChange={(e) => setDate(e.target.value)}
-                  disabled={!current}
+                  value={date}
+                  onChange={(e) => onDateChange(e.target.value)}
+                  disabled={!knownDates.length}
                 >
-                  {current?.backtest.dates
+                  {!knownDates.includes(date) && date && (
+                    <option value={date}>
+                      {date} · {t("回测区间外")}
+                    </option>
+                  )}
+                  {knownDates
                     .slice()
                     .reverse()
-                    .map((d) => <option key={d}>{d}</option>)}
+                    .map((d) => (
+                      <option key={d}>{d}</option>
+                    ))}
                 </select>
                 <span>{current?.strategy.id || "Top5_NoLoss13w"}</span>
               </div>
