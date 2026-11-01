@@ -4,6 +4,10 @@ SafeCapital presents a weekly stock-ranking research method and one selected ext
 
 **Reproduction in this project starts from the supplied processed weekly data. Raw data acquisition and reconstruction are outside the scope of this delivery.** The supplied data is the defined starting point for the research, model-training demonstration and strategy replay. No additional raw-data collection is required for these workflows.
 
+## Web Dashboard
+
+A read-only Chinese Dashboard now presents verified historical results with charts, date-filtered rankings and downloads. It supports standalone access and an iframe mode for customer websites. Start the prepared local installation with `.venv-dashboard/bin/python dashboard/start.py`; see [Dashboard setup and integration](dashboard/README.md) for first-time installation, deployment and API documentation. The dashboard has separate dependencies and does not run or replace the model workflows below.
+
 ## Two clearly separated workflows
 
 | Workflow | Purpose | Command |

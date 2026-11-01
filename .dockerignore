@@ -1,0 +1,14 @@
+# Only the web module and the verified shipped replay are needed for this image.
+**
+!dashboard/
+!dashboard/**
+!FINAL_OUTPUTS/
+!FINAL_OUTPUTS/01_saved_model_replay/
+!FINAL_OUTPUTS/01_saved_model_replay/verified_replay/
+!FINAL_OUTPUTS/01_saved_model_replay/verified_replay/**
+dashboard/frontend/node_modules/
+dashboard/frontend/dist/
+**/__pycache__/
+**/.env*
+**/*.pem
+**/*.key

@@ -49,3 +49,8 @@ __MACOSX/
 
 # Deliberately retain frozen CSV inputs/predictions, saved model JSON files,
 # research/*/results/, reports/ and FINAL_OUTPUTS/ as delivery evidence.
+
+# Dashboard build and local environment
+.venv-dashboard/
+node_modules/
+dashboard/frontend/dist/

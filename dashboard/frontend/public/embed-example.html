@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>客户网站 · SafeCapital 嵌入示例</title>
+    <style>
+      body {
+        margin: 0;
+        background: #edf0f4;
+        color: #283344;
+        font:
+          14px -apple-system,
+          BlinkMacSystemFont,
+          "PingFang SC",
+          sans-serif;
+      }
+      header {
+        background: #fff;
+        padding: 22px 4%;
+        border-bottom: 1px solid #dbe1e7;
+        display: flex;
+        justify-content: space-between;
+      }
+      main {
+        padding: 28px 3%;
+        max-width: 1440px;
+        margin: auto;
+      }
+      p {
+        color: #647080;
+        line-height: 1.8;
+      }
+      iframe {
+        width: 100%;
+        height: 1450px;
+        border: 1px solid #dce4de;
+        border-radius: 14px;
+        background: #fff;
+      }
+      a {
+        color: #275c49;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>客户网站 · 演示外壳</strong><a href="./">返回独立 Dashboard</a>
+    </header>
+    <main>
+      <h1>投资研究模块</h1>
+      <p>
+        下面是真正通过 iframe 嵌入的 SafeCapital 页面。此示例与 Dashboard
+        同源；跨域接入时请配置客户域名白名单。框内可以独立滚动、筛选日期和下载结果。
+      </p>
+      <iframe src="./?embed=1" title="SafeCapital 历史策略研究"></iframe>
+    </main>
+  </body>
+</html>
