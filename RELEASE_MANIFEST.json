@@ -216,6 +216,10 @@
       "sha256": "71853e0b5252cb33836be101d4525246c26c1f7b4e947b842be3267cd42c0faa",
       "bytes": 3268
     },
+    "dashboard/docs/PRESENTATION_SCRIPT_ZH_EN.md": {
+      "sha256": "c6b0f4d1476a693e7a76bac755d1e807865adc7693007ab5bb2328b8fabcd0ab",
+      "bytes": 34518
+    },
     "dashboard/docs/PRESENTATION_VALIDATION.md": {
       "sha256": "9d7f2226b844adaedfed24af8c11da00f8e0601667752e9fce114eeefb08e72a",
       "bytes": 4991
