@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release_date": "2026-11-02",
+  "release_date": "2026-11-03",
   "source_archive": {
     "name": "SafeCapital_Final_FrozenTrees_RunFix_20261024.zip",
     "sha256": "64aa8bf7ec88621602b649cf0c2be0b1cf3b71dea9aaae515a1838c403e6af01"
@@ -53,8 +53,8 @@
       "bytes": 1153
     },
     "CHANGELOG.md": {
-      "sha256": "b0a7b34242d7fc16cf2fd7ce593e6a556f71ba0989a57978af9f7d428b13b307",
-      "bytes": 4400
+      "sha256": "cf86b8f26f15af94bd0541d5073babbe261a726246bf50badf11d49c086d1adc",
+      "bytes": 4959
     },
     "EXTERNAL_SCOPE.md": {
       "sha256": "39b8aefad9a255468ee72364bf49135805dc11b2d5f66fcb1f4e5629d3888680",
@@ -129,8 +129,12 @@
       "bytes": 2684
     },
     "README.md": {
-      "sha256": "cdecb79447ec3373872083767ebd9d7a2b03791cc1aadebf5882ee7946d8810a",
-      "bytes": 15085
+      "sha256": "07f4701ef6c549579128e7e00aac012575780dd6be41857e1a68fc995465b5b9",
+      "bytes": 15545
+    },
+    "START_HERE.md": {
+      "sha256": "61c6ffbad7ea998b54e83072fb9d22726856cb3e1a42d234f0b676255408a27f",
+      "bytes": 15682
     },
     "backtesting/README.md": {
       "sha256": "bc8b471cfd549dd2c1595bfecdd44552c476e4dc0edd84990d7bfc1320b5d964",
@@ -153,8 +157,8 @@
       "bytes": 767
     },
     "dashboard/README.md": {
-      "sha256": "f63b7532b23d8cb60288c9f5687ea466f20fe6ad93a7b435580052b26d94c7da",
-      "bytes": 12260
+      "sha256": "da4e3600a48c51e0fa36397f6ef8da4b7289e66f51b211f28a1bb62be1b1c5ff",
+      "bytes": 13065
     },
     "dashboard/compose.delivery.yaml": {
       "sha256": "98c8ad3e7a12bac3214712f621def214457ac7658726739b30d5f86e0baf13b5",
@@ -180,13 +184,21 @@
       "sha256": "01a592edc25a858f027d34f0610222f046eb050466470696c230106eae026858",
       "bytes": 7566
     },
+    "dashboard/docs/CLIENT_SUBMISSION_EN.md": {
+      "sha256": "c96f1c07ae0705aa3e63a8823e66c9494ca329fd917a4002721ca1d57023111b",
+      "bytes": 2741
+    },
     "dashboard/docs/CUSTOMER_DEMO_GUIDE.md": {
       "sha256": "45241bb5b6200b067bca9604dfc185dcfea46d10fff3268687bd6baa81a22fff",
       "bytes": 21626
     },
     "dashboard/docs/CUSTOMER_HANDOFF.md": {
-      "sha256": "d82102d7f219b73b2e73b565753b9d8e384dc211c303a00f06fd9e8dfc8ef5ae",
-      "bytes": 6450
+      "sha256": "ab80187d39f2dacd14dba2835651df732b643b0e8e00832ad497463611721026",
+      "bytes": 8075
+    },
+    "dashboard/docs/DELIVERY_BUILD.md": {
+      "sha256": "074a639bd72da43a07301176319c0bda15fe402828e5f1a9e086e7555df3dd46",
+      "bytes": 4447
     },
     "dashboard/docs/DELIVERY_VALIDATION.md": {
       "sha256": "ddabfd4dc58ce73a3635decd39096e41ce2861b8ddab2b30fe39131a2e60d9e9",
@@ -217,8 +229,8 @@
       "bytes": 3268
     },
     "dashboard/docs/PRESENTATION_SCRIPT_ZH_EN.md": {
-      "sha256": "c6b0f4d1476a693e7a76bac755d1e807865adc7693007ab5bb2328b8fabcd0ab",
-      "bytes": 34518
+      "sha256": "416329abd435e675df0b01df03fc1998c9bbb65926c135be0bcab25a588594ed",
+      "bytes": 34950
     },
     "dashboard/docs/PRESENTATION_VALIDATION.md": {
       "sha256": "9d7f2226b844adaedfed24af8c11da00f8e0601667752e9fce114eeefb08e72a",
@@ -493,8 +505,8 @@
       "bytes": 10591
     },
     "dashboard/tools/build_delivery.py": {
-      "sha256": "7436ab6051887a64661f60d01184ed736b941cec7e86a0ea8a4824862b55bf3b",
-      "bytes": 7425
+      "sha256": "bfaee9a9414d733c2bb219e1f32a6b5f8800a4e359a997df2fda0ef8772d5aba",
+      "bytes": 7451
     },
     "dashboard/tools/export_portfolio_snapshot.py": {
       "sha256": "06c034edfe2ceeccd6a7a2493c4deee1eae763e9fefccbfbe1d50046ebd52ce4",
@@ -1262,5 +1274,9 @@
     ],
     "verification_change": "independent verifier now reconstructs the trailing 13-week loss filter and selected names",
     "description_update": "Clarified V1 as Retrained Ensemble and standalone Ranker comparison; identifiers and numerical data unchanged."
+  },
+  "dashboard_delivery_revision": {
+    "date": "2026-11-03",
+    "scope": "English and Chinese installation/handoff documentation, portable presentation startup, English Web-package entry guide. Functional version remains 1.4.0; no model/data changes. Final archive-specific installation checks are recorded in the companion delivery validation report."
   }
 }

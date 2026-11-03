@@ -17,18 +17,17 @@ Choose stocks → inspect inputs → explain rankings and actual allocations →
 
 ### 启动和打开页面 / Start and open the Dashboard
 
-如果页面已经正常显示，保持现有服务运行即可。否则，在项目目录打开终端：
+如果页面已经正常显示，保持现有服务运行即可。否则，先按包根目录 `START_HERE.md` 完成安装，再在解压后的项目根目录（含 `dashboard` 文件夹）打开终端：
 
-If the page already works, leave the existing service running. Otherwise, open a terminal in the project directory:
+If the page already works, leave the existing service running. Otherwise, complete the installation in the package's root `START_HERE.md`, then open a terminal in the extracted project root (the directory containing `dashboard`):
 
 ```bash
-cd '/Users/april/Desktop/USYD 2026s2/5703/5703前端版本/SafeCapital_ensemble_external'
 .venv-dashboard/bin/python dashboard/start.py
 ```
 
-保持终端运行。提前打开以下页面，主讲时保留 Dashboard，其他页作为备用。
+运行包若修改了配置，在启动命令末尾加 `--config config.toml`。Windows 使用 `.\.venv-dashboard\Scripts\python.exe dashboard/start.py`。保持终端运行。提前打开以下页面，主讲时保留 Dashboard，其他页作为备用。
 
-Keep the terminal running. Open these pages beforehand, using the Dashboard as the main presentation tab.
+For a Web package with customised configuration, append `--config config.toml`. On Windows use `.\.venv-dashboard\Scripts\python.exe dashboard/start.py`. Keep the terminal running. Open these pages beforehand, using the Dashboard as the main presentation tab.
 
 | 页面 / Page | 地址 / Link | 用途 / Purpose |
 |---|---|---|

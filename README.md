@@ -6,11 +6,13 @@ SafeCapital presents a weekly stock-ranking research method and one selected ext
 
 ## Web Dashboard
 
-Version 1.2 focuses on local input/output browsing and read-only APIs. It shows the supplied factors and historical price inputs, links each row to its output ranking, and provides filtering, downloads and an executable client example. See the [local input/output guide](dashboard/docs/LOCAL_IO.md). Docker and public deployment are deferred.
+**Client delivery / start here:** [English installation and handoff guide](START_HERE.md) · [Chinese installation guide](dashboard/docs/CUSTOMER_HANDOFF.md) · [English submission message](dashboard/docs/CLIENT_SUBMISSION_EN.md). Choose the complete source ZIP or the prebuilt Web package before following installation commands. No API key is required for the delivered Dashboard or supplied-data replay.
+
+Version 1.4 provides a Chinese/English Dashboard with stock watchlists, shared historical dates, factor and ranking details, actual strategy selections and weights, charts, CSV/JSON exports, and read-only APIs. Watchlist selections do not change the original strategy or its return. See the [local input/output guide](dashboard/docs/LOCAL_IO.md). Docker and public deployment are deferred.
 
 Customer handoff now includes a [complete implementation plan](dashboard/docs/DEVELOPMENT_PLAN.md), [installation/integration guide](dashboard/docs/CUSTOMER_HANDOFF.md), [API v1 contract](dashboard/docs/API_V1.md), and portable ZIP packaging with prebuilt frontend and a real verified result snapshot. See [delivery acceptance](dashboard/docs/DELIVERY_VALIDATION.md) for completed checks and target-environment limits.
 
-A read-only Chinese Dashboard now presents verified historical results with charts, date-filtered rankings and downloads. It supports standalone access and an iframe mode for customer websites. Start the prepared local installation with `.venv-dashboard/bin/python dashboard/start.py`; see [Dashboard setup and integration](dashboard/README.md) for first-time installation, deployment and API documentation. The dashboard has separate dependencies and does not run or replace the model workflows below.
+A read-only Chinese/English Dashboard presents verified historical results with charts, date-filtered rankings and downloads. It supports standalone access and an iframe mode for customer websites. Start the prepared local installation with `.venv-dashboard/bin/python dashboard/start.py`; see [Dashboard setup and integration](dashboard/README.md) for first-time installation, deployment and API documentation. The dashboard has separate dependencies and does not run or replace the model workflows below.
 
 ## Two clearly separated workflows
 

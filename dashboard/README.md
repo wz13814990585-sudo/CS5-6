@@ -1,5 +1,7 @@
 # SafeCapital Dashboard V1.4
 
+**最终交付与首次安装：** [English START HERE](../START_HERE.md) · [中文安装说明](docs/CUSTOMER_HANDOFF.md) · [英文提交说明](docs/CLIENT_SUBMISSION_EN.md)。先确认自己使用的是完整源码 ZIP 还是预构建 Web 运行包，两者的安装命令不同。当前 Dashboard 和随附数据的冻结回放无需 API Key。
+
 当前重点是本地查看真实输入和输出，以及交付查询接口。Docker 和公网部署暂缓。先看 [本地输入输出使用指南](docs/LOCAL_IO.md) 与 [本次验收](docs/LOCAL_IO_VALIDATION.md)。
 
 **客户交付入口：**[客户演示操作与讲解稿](docs/CUSTOMER_DEMO_GUIDE.md) · [完整计划](docs/DEVELOPMENT_PLAN.md) · [客户安装与接入手册](docs/CUSTOMER_HANDOFF.md) · [API v1 合同](docs/API_V1.md) · [本次交付验收](docs/DELIVERY_VALIDATION.md)。
@@ -12,7 +14,7 @@
 .venv-dashboard/bin/python dashboard/tools/build_delivery.py
 ```
 
-默认输出到 `deliveries/`，包含预构建页面、服务端源码、完整依赖锁、最新验证通过的真实结果、与结果匹配的两份输入 CSV 及配置/清单、配置、校验工具和安装说明。默认拒绝覆盖已有 ZIP；再次构建用 `--output` 指定新文件名。客户运行无需 Node.js 或模型环境。
+默认输出到 `deliveries/`，包含预构建页面、服务端源码、完整依赖锁、最新验证通过的真实结果、与结果匹配的两份输入 CSV 及配置/清单、配置、校验工具和英文 START_HERE 安装说明。默认拒绝覆盖已有 ZIP；再次构建用 `--output` 指定新文件名。客户运行无需 Node.js 或模型环境。打包工具需要 Git checkout 和已安装的 Dashboard 依赖；从 GitHub 下载的无 `.git` 源码 ZIP 可直接按下文安装运行，无需执行此打包工具。正式交付构建方法见 [打包说明](docs/DELIVERY_BUILD.md)。
 
 支持中英文切换的只读历史策略 Dashboard。React + TypeScript 前端，FastAPI 后端，同一个服务提供页面与 API。支持独立访问和 iframe 嵌入，无需客户网站使用相同的前端框架。
 
@@ -58,7 +60,7 @@
 
 ## 新电脑首次安装
 
-要求 Python 3.12、Node.js 22 LTS 和 npm。Dashboard 使用独立环境，不需要安装 XGBoost 或重新运行模型。
+本节适用于 **源码 ZIP / Git checkout**：要求 Python 3.12、Node.js 22 或满足前端依赖要求的更高版本、npm。Dashboard 使用独立环境，不需要安装 XGBoost 或重新运行模型。预构建 Web 运行包请按包根目录 `START_HERE.md` 的 Web package 部分安装，不需要 Node.js。
 
 macOS / Linux，项目根目录：
 

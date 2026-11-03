@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-03 — Dashboard 1.4 delivery documentation
+
+- Added an English client entry guide and submission template, with separate full-source and prebuilt-Web installation paths, API-key requirements, integration configuration, and scope limits.
+- Updated the root Dashboard overview to 1.4 and made the bilingual presentation startup instructions portable.
+- Included the English entry guide in Web packaging and documented commit-based source/Web packaging and fresh-environment acceptance. No model, data, strategy, or Dashboard feature changes.
+
 ## 2026-11-01
 
 - Added Chinese/English Dashboard switching, persistent language preference, language-specific embed links and translated input/output views while preserving active filters and API data contracts.

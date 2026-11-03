@@ -126,7 +126,7 @@ def build(output, result=None):
             "dashboard/tools/verify_delivery.py": "verify_delivery.py",
             "dashboard/tools/smoke_check.py": "smoke_check.py",
             "dashboard/config.example.toml": "config.toml",
-            "dashboard/docs/CUSTOMER_HANDOFF.md": "START_HERE.md",
+            "START_HERE.md": "START_HERE.md",
             "dashboard/compose.delivery.yaml": "compose.yaml",
             "dashboard/Dockerfile.delivery": "Dockerfile",
             "dashboard/.dockerignore.delivery": ".dockerignore",
@@ -151,6 +151,7 @@ def build(output, result=None):
         record = {
             "schema_version": 1,
             "version": VERSION,
+            "delivery_revision": "2026-11-03",
             "created_utc": datetime.now(timezone.utc).isoformat(),
             "source_commit": subprocess.check_output(
                 ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
