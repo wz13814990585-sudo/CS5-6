@@ -1,19 +1,21 @@
 # SafeCapital — client delivery and installation guide
 
-**Team:** CS5-6 · **Dashboard version:** 1.4.0 · **Delivery revision:** 2026-11-03-en
+**English** | [中文](START_HERE.zh-CN.md)
+
+**Team:** CS5-6 · **Dashboard version:** 1.4.0 · **Delivery revision:** 2026-11-03-language-switch
 
 This delivery provides **Model-Based Stock Strategies**, an independent research module for Portfolio Neo / Strategy Lab. It includes an English-first Dashboard (with optional Chinese), read-only input/output APIs, and verified historical results. The Dashboard runs locally or inside an iframe. Integration into the client's live website is a separate step requiring the client's hosting and authentication arrangements.
 
 **API keys: none are required to run the delivered Dashboard or replay the supplied frozen research results.** Installation downloads dependencies. The Dashboard uses the supplied local data; it does not call a live market-data or AI service.
 
-English is the initial UI language and the primary language of all client guides. An explicit URL or saved Chinese preference is still respected; use `?lang=en` to force English for a presentation. API display labels and error messages are English. Source-repository README files include complete English and Chinese versions; the repository root README contains the full navigation index.
+English is the initial UI language and the primary language of all client guides. An explicit URL or saved Chinese preference is still respected; use `?lang=en` to force English for a presentation. API display labels and error messages are English. All 22 README groups have separate English and Chinese pages. Use the links at the top to switch pages; only one language is shown at a time. The repository root README contains the full navigation index. This installation guide uses the same page-switching format.
 
 ## 1. Choose your package
 
 | Package | Contents | Requirements to start the Dashboard |
 |---|---|---|
-| `SafeCapital-Source-1.4.0-20261103-en.zip` | Complete tracked project: research code, supplied datasets, saved models, reports, Dashboard source, and documentation | 64-bit Python 3.12, Node.js 22 or later supported by the frontend dependencies, and npm; build the frontend once |
-| `SafeCapital-Web-1.4.0-20261103-en.zip` | Dashboard source **and prebuilt frontend**, matching inputs, verified results, module snapshots, installation tools, and documentation | 64-bit Python 3.12; no Node.js, model libraries, or model training required |
+| `SafeCapital-Source-1.4.0-20261103-language-switch.zip` | Complete tracked project: research code, supplied datasets, saved models, reports, Dashboard source, and documentation | 64-bit Python 3.12, Node.js 22 or later supported by the frontend dependencies, and npm; build the frontend once |
+| `SafeCapital-Web-1.4.0-20261103-language-switch.zip` | Dashboard source **and prebuilt frontend**, matching inputs, verified results, module snapshots, installation tools, and documentation | 64-bit Python 3.12; no Node.js, model libraries, or model training required |
 
 Use the **Web package** for the quickest evaluation. Use the **Source package** for complete code review and research reproduction. The Web package does not contain the full model-training project and does not replace the source delivery.
 

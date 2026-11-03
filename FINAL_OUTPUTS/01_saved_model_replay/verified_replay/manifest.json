@@ -10,12 +10,13 @@
   "prediction_weeks": 366,
   "backtest_cases": 1,
   "files": {
-    "backtest/README.md": "4b322ea27f98f6f805beab629122e638387ad0c883549fa8f9d2bba735080de6",
+    "backtest/README.md": "525a23fa855c638fd5df27c7ddaa491b148e41b57251f67462f363dca72c9920",
     "backtest/summary.csv": "35d8b0e3e0e0e6de0464f4313b61617e9e4e3a635f7fd944683b862d5ba870e2",
     "backtest/verification.json": "442f290b12aad24e8c0c8bc0511521837b2292af3e5a05fa52894b242ede6548",
     "backtest/weekly_capital.csv": "3682c58ee164eda5a8bda15affeb37a86eb88b11a893015f6150279d4fd85e10",
     "prediction_verification.json": "f310bbcd2e532fcefc199ef4f5ae7bb6c0c21f4bdb080e5855bdf7dc9dd7c473",
-    "saved_model_predictions.csv": "db3c328811ad1f2bf0d0f302b03ff4d71a62bfe4d0b1e23aed24a7f5c1f0b0b0"
+    "saved_model_predictions.csv": "db3c328811ad1f2bf0d0f302b03ff4d71a62bfe4d0b1e23aed24a7f5c1f0b0b0",
+    "backtest/README.zh-CN.md": "1858d1ba86180e9a03fe11380d284f277b65c1f2d23da30afd3c7712674d0a65"
   },
   "finished_utc": "2026-10-26T05:41:53.757351+00:00",
   "documentation_revisions": [
@@ -26,6 +27,17 @@
       "previous_file_sha256": "67176c267ddcba5314705113c4b2a440f5aac64513fd7ed18db10d7595d1f27a",
       "previous_manifest_sha256": "d14ee3b5010a373ceaf5af6c5afb707b6b58a61cbb64680ab59c6b498a64cd7a",
       "original_source_commit": "dbb56d3878a4a48ec5b2cb071d68ca3d267812b1"
+    },
+    {
+      "date": "2026-11-03",
+      "change": "Split README into separate English and Chinese pages with reciprocal language links. Numerical artifacts are unchanged; no inference, training or backtest rerun.",
+      "paths": [
+        "backtest/README.md",
+        "backtest/README.zh-CN.md"
+      ],
+      "previous_english_file_sha256": "4b322ea27f98f6f805beab629122e638387ad0c883549fa8f9d2bba735080de6",
+      "previous_manifest_sha256": "c1a33cd7e66aedc133edca1ffeec216244cfd2880a91f80ab2d7f12978c769e1",
+      "previous_source_commit": "3a2ceaaeda529251c219018af519e07697116511"
     }
   ]
 }

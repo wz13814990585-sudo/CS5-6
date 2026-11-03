@@ -1,5 +1,7 @@
 # Client handoff — installation and integration
 
+**English** | [中文](CUSTOMER_HANDOFF.zh-CN.md)
+
 Dashboard 1.4.0, English-first delivery revision 2026-11-03. The complete English guide is [START_HERE.md](../../START_HERE.md) at the root of either package. This file is an English quick reference for existing documentation links.
 
 ## Select the correct installation path

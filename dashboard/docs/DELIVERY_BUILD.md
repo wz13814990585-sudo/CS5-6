@@ -2,7 +2,7 @@
 
 This is a maintainer guide, not a client installation step. Clients should start with the root `START_HERE.md`.
 
-Dashboard version remains **1.4.0**; **2026-11-03-en** identifies the English-first delivery revision. No research data or model behavior is changed. Use a clean Git checkout with Python 3.12 Dashboard dependencies and Node.js/npm installed. The source ZIP intentionally has no `.git`; building a Web package requires a checkout, while running the source Dashboard does not.
+Dashboard version remains **1.4.0**; **2026-11-03-language-switch** identifies the language-switch delivery revision. No research data or model behavior is changed. Use a clean Git checkout with Python 3.12 Dashboard dependencies and Node.js/npm installed. The source ZIP intentionally has no `.git`; building a Web package requires a checkout, while running the source Dashboard does not.
 
 ## Prepare the source
 
@@ -20,15 +20,15 @@ The working tree must be clean for the final build. Record the full commit SHA w
 ```bash
 npm --prefix dashboard/frontend ci
 npm --prefix dashboard/frontend run build
-.venv-dashboard/bin/python dashboard/tools/build_delivery.py --result FINAL_OUTPUTS/01_saved_model_replay/verified_replay --output deliveries/SafeCapital-Web-1.4.0-20261103-en.zip
+.venv-dashboard/bin/python dashboard/tools/build_delivery.py --result FINAL_OUTPUTS/01_saved_model_replay/verified_replay --output deliveries/SafeCapital-Web-1.4.0-20261103-language-switch.zip
 ```
 
-The explicit `--result` selects the tracked delivered replay rather than a developer's newer local `runs/` folder. The package manifest records the clean source commit. Build into a new output filename if one already exists; the tool refuses to overwrite archives. The Web package includes the root English `START_HERE.md`, the latest presentation script, examples, locked dependencies, verified result bytes, matched inputs, and prebuilt frontend.
+The explicit `--result` selects the tracked delivered replay rather than a developer's newer local `runs/` folder. The package manifest records the clean source commit. Build into a new output filename if one already exists; the tool refuses to overwrite archives. The Web package includes the root English `START_HERE.md`, all 22 README language pairs, paired installation guides, latest presentation script, examples, locked dependencies, verified result bytes, matched inputs, and prebuilt frontend.
 
 ## Export the complete source ZIP
 
 ```bash
-git archive --format=zip --prefix=SafeCapital-Source-1.4.0-20261103-en/ --output=deliveries/SafeCapital-Source-1.4.0-20261103-en.zip HEAD
+git archive --format=zip --prefix=SafeCapital-Source-1.4.0-20261103-language-switch/ --output=deliveries/SafeCapital-Source-1.4.0-20261103-language-switch.zip HEAD
 ```
 
 This exports committed files, including datasets, saved models, and reports, without local environments, ignored files, or Git history. The source commit is also stored in the ZIP comment by Git. Use the same commit for both packages. Record SHA-256 and byte size for both archives in companion files.

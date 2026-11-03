@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-03 — Separate language pages
+
+- Replaced stacked bilingual README sections with 22 English/Chinese page pairs. English README files are the defaults; each page links directly to its counterpart. Both root indexes list every pair.
+- Added separate Chinese installation and customer-handoff pages with matching commands and reciprocal language navigation. Dashboard UI language switching remains unchanged.
+- Updated portable packaging to include all 44 README pages, both installation guides and linked reference documents, with a matching-language runtime note in each root README.
+- Refreshed documentation-only provenance and integrity records. Numeric results, model weights and datasets remain unchanged; this is not a new research run.
+
 ## 2026-11-03 — Bilingual README documentation
 
 - Added complete Chinese versions to all 22 repository README documents while preserving their English content first, commands, metric definitions and limitations.
