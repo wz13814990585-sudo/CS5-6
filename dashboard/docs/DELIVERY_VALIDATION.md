@@ -1,33 +1,24 @@
-# 客户交付版 1.1 验收记录
+# Customer delivery 1.1 — historical validation
 
-日期：2026-11-01。环境：macOS 14.5 arm64，Python 3.12.10，Node.js 25.2.1。
+Date: 2026-11-01. Environment: macOS 14.5 arm64, Python 3.12.10, Node.js 25.2.1. English translation of the original acceptance record. For the latest archive-specific results use the companion final delivery report; translation does not rerun historical checks.
 
-## 已完成的计划
+## Implemented and checked
 
-1. 保留真实历史结果的展示、查询、下载和嵌入。
-2. TOML 配置、环境变量及 CLI 优先级、相对结果路径、非法配置拒绝启动。
-3. `/api/v1` 响应模型、OpenAPI、统一错误和请求编号；旧 `/api` 兼容。API 的 CORS 与 iframe 域名分别配置。
-4. 原生安装工具、源码/交付包两套 Compose、HTTPS 代理配置参考、更新与回滚说明。
-5. 自动生成 ZIP：已构建前端、服务端、真实结果、源码、配置、接口文档、安装/校验/验收工具和 SHA256 清单。
-6. 实际解压至与仓库无关的临时目录，通过 Python 3.12 创建全新环境，使用 pip 从锁定依赖安装。没有安装 pandas 或 XGBoost；启动不需要 Node.js。
+- Historical result browsing, queries, downloads and embedding retained.
+- TOML/environment/CLI configuration precedence, relative result paths and rejection of invalid settings.
+- Typed `/api/v1` contract, OpenAPI, unified errors/request IDs and compatible `/api`; distinct CORS and iframe origins.
+- Native installer, source/delivery Compose references, proxy configuration, updates and rollback guidance.
+- ZIP containing built frontend, server/source, real snapshot, locked dependencies, offline contract, install/verify/smoke tools and SHA-256 manifest.
+- Extraction outside the repository followed by a fresh Python 3.12 environment and installation from pinned dependencies. No pandas/XGBoost and no Node.js needed for runtime.
 
-## 自动验收
+## Results
 
-- 23 项 Dashboard/API/配置/完整性测试全部通过（原有 15 项 + 新增 8 项）。
-- TypeScript 检查和 Vite 生产构建通过。
-- 源码版、交付版 `docker compose config` 均通过解析。
-- 交付包所有文件通过 SHA256 和字节数检查。
-- 从仓库之外的工作目录启动解压后的服务，执行独立 HTTP 验收通过：13,517 条预测、210 周回测、期末资金 149330.60888418998。
-- HTTP 验收检查首页与脚本资源、健康状态、日期排名、概要与账户一致性、4 类下载与包中原始文件逐字节一致，以及 404 错误合同。
-- JavaScript 客户示例运行成功，读取真实期末资金和最新信号日期首名 SCL。
-- OpenAPI JSON 由当前响应模型导出，包含 v1 路径、响应字段和错误模型。
+All 23 web tests passed, as did TypeScript/Vite builds and both Compose configuration parses. This established configuration validity only, not container runtime. Package hashes and sizes verified. The extracted server passed HTTP acceptance from an independent working directory: 13,517 predictions, 210 weeks, final capital 149330.60888418998.
 
-测试日志见 `integration-tests.log`。原模型源码、数据和冻结权重未修改；其已有 87 项回归的验证记录保持独立。
+The smoke check covered page/script assets, health, rankings, account/summary consistency, four original downloads byte-for-byte and the 404 error contract. The JS example returned actual final capital and latest leader SCL. OpenAPI was generated from current response models. Logs: [integration-tests.log](integration-tests.log).
 
-## 浏览器验收
+The browser displayed real metrics and delivered provenance; searching, downloads and iframe examples worked. Prior mobile/cross-origin evidence is in [V1 validation](VALIDATION.md). Original research files/models were unchanged; their 87-test record was maintained separately.
 
-解压服务页面成功显示真实指标、日期排名及其来源为随包交付结果。前端下载使用 `/api/v1`；股票搜索与 iframe 示例正常。主项目本地服务已切换到新 API 版本。原页面的手机布局、跨域 iframe 验收见 `VALIDATION.md`。
+## Remaining limits
 
-## 仍需目标环境完成
-
-本机 Docker daemon 未启动，因此仅验证 Compose 配置，未验证镜像构建/容器运行。Windows、Linux 原生运行、客户公网域名/HTTPS、客户登录和站点 CSP 尚未实际接入。以上不是已完成的部署结果。第一版为只读历史研究模块，不能据此声称实时数据分析或交易功能已交付。
+Docker daemon was unavailable, so image/container startup was not tested. Windows/Linux native runtime, client HTTPS/domains/login and client CSP were not integrated. The module was read-only historical research, not live analysis or trading. Original screenshots remain in Git history; [current English screenshots](LANGUAGE_SUPPORT.md#screenshots) illustrate the latest UI rather than version 1.1.

@@ -36,6 +36,19 @@ class RealResultsTests(unittest.TestCase):
         self.assertAlmostEqual(result["summary"]["total_return"], 0.49330608884189986)
         self.assertEqual(self.client.get("/api/health").status_code, 200)
 
+    def test_api_display_text_is_english(self):
+        overview = self.client.get(self.prefix + "/overview").json()
+        inputs = self.client.get(self.prefix + "/inputs").json()
+        error = self.client.get(self.prefix + "/rankings?date=invalid")
+        self.assertEqual(error.status_code, 422)
+        self.assertEqual(inputs["datasets"][0]["title"], "Model factor inputs")
+        self.assertEqual(
+            error.json()["error"]["message"],
+            "Request parameters do not match the API contract.",
+        )
+        for payload in (overview, inputs, error.json()):
+            self.assertNotRegex(json.dumps(payload, ensure_ascii=False), r"[\u3400-\u9fff]")
+
     def test_equity_and_derived_drawdown_match_summary(self):
         rows = self.client.get(self.prefix + "/equity").json()["rows"]
         summary = self.client.get(self.prefix + "/overview").json()["summary"]

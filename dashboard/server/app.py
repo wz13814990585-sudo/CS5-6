@@ -123,7 +123,7 @@ def create_app(
     async def validation_error(request, exc):
         fields = [".".join(str(x) for x in e["loc"]) for e in exc.errors()]
         return error_response(
-            request, 422, "invalid_request", "请求参数不符合接口约定", fields
+            request, 422, "invalid_request", "Request parameters do not match the API contract.", fields
         )
 
     @app.middleware("http")
@@ -139,7 +139,7 @@ def create_app(
                 request,
                 500,
                 "internal_error",
-                "服务暂时不可用，请提供请求编号联系维护人员",
+                "Service temporarily unavailable. Contact the maintainer with the request ID.",
             )
         response.headers["X-Request-ID"] = request.state.request_id
         response.headers["Content-Security-Policy"] = (
@@ -160,7 +160,7 @@ def create_app(
 
     def get_run(run_id):
         if run_id not in app.state.runs:
-            raise HTTPException(404, "未找到校验通过的回放结果")
+            raise HTTPException(404, "No matching verified replay found.")
         return app.state.runs[run_id]
 
     @router.get("/config", response_model=schemas.PublicConfig)
@@ -176,7 +176,7 @@ def create_app(
     def health():
         if not app.state.runs:
             raise HTTPException(
-                503, "没有可用的已验证结果，请运行默认流程后重启 Dashboard"
+                503, "No verified results available. Run the default workflow and restart the Dashboard."
             )
         return {
             "status": "ok",
@@ -212,7 +212,7 @@ def create_app(
         replay = get_run(run_id)
         key = date.isoformat()
         if key not in replay.rankings:
-            raise HTTPException(404, "该日期没有预测记录，请选择可用信号日期")
+            raise HTTPException(404, "No predictions for this date. Select an available signal date.")
         rows = [
             r for r in replay.rankings[key] if q.strip().upper() in r["ticker"].upper()
         ]
@@ -256,7 +256,7 @@ def create_app(
                 503,
                 {
                     "code": "inputs_unavailable",
-                    "message": "缺少与本次运行一致的输入文件，或输入校验未通过；输出仍可独立查看。",
+                    "message": "Matching input files are missing or failed verification. Verified outputs are still available.",
                 },
             )
         return inputs
@@ -268,7 +268,7 @@ def create_app(
         if inputs is None:
             return {
                 "available": False,
-                "reason": "缺少与本次运行一致的输入文件，或输入校验未通过；输出仍可独立查看。",
+                "reason": "Matching input files are missing or failed verification. Verified outputs are still available.",
                 "run_id": run_id,
                 "datasets": [],
                 "model": None,

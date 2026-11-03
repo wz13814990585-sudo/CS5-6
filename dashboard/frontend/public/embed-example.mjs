@@ -6,9 +6,9 @@ try {
 const queryLanguage = new URLSearchParams(location.search).get("lang");
 let language = ["zh", "en"].includes(queryLanguage)
   ? queryLanguage
-  : saved === "en"
-    ? "en"
-    : "zh";
+  : saved === "zh"
+    ? "zh"
+    : "en";
 let opened = false;
 let frameState = "idle";
 let frameTimer;

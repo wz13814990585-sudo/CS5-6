@@ -9,8 +9,8 @@ Hi Burak and team,
 Please find our final **CS5-6 — Model-Based Stock Strategies** delivery for Portfolio Neo / Strategy Lab:
 
 - **Demonstration video:** [attach the recorded video or insert its accessible link]
-- **Complete source ZIP:** `SafeCapital-Source-1.4.0-20261103.zip`
-- **Prebuilt Dashboard package:** `SafeCapital-Web-1.4.0-20261103.zip`
+- **Complete source ZIP:** `SafeCapital-Source-1.4.0-20261103-en.zip`
+- **Prebuilt Dashboard package:** `SafeCapital-Web-1.4.0-20261103-en.zip`
 - **Repository:** https://github.com/wz13814990585-sudo/CS5-6
 - **Final source commit / published version:** [insert the commit from DELIVERY_SUMMARY.json and its GitHub link after publication]
 - **Setup guide:** `START_HERE.md` inside either ZIP. The final validation report and SHA-256 checksums accompany the packages.

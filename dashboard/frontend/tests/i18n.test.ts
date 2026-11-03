@@ -9,8 +9,9 @@ test("URL overrides saved preference; unsupported values fall back safely", () =
   assert.equal(chooseLanguage("?embed=1&lang=en", "zh"), "en");
   assert.equal(chooseLanguage("?lang=zh", "en"), "zh");
   assert.equal(chooseLanguage("?lang=fr", "en"), "en");
-  assert.equal(chooseLanguage("", null), "zh");
-  assert.equal(chooseLanguage("?lang=bad", "bad"), "zh");
+  assert.equal(chooseLanguage("", null), "en");
+  assert.equal(chooseLanguage("?lang=bad", "bad"), "en");
+  assert.equal(chooseLanguage("", "zh"), "zh");
 });
 test("language links retain embed mode, unrelated parameters and anchors", () => {
   const url = new URL(
@@ -76,6 +77,16 @@ test("all Chinese copy in the React screens has an English catalog entry", () =>
   }
 });
 test("backend labels, unavailable inputs and network failures render in either language", () => {
+  assert.equal(
+    translate("en", "Local historical replay"),
+    "Local historical replay",
+  );
+  assert.equal(translate("zh", "Local historical replay"), "本地历史回放");
+  assert.equal(translate("zh", "Model factor inputs"), "模型因子输入");
+  assert.equal(
+    translate("zh", "Request parameters do not match the API contract."),
+    "请求参数不符合接口约定",
+  );
   assert.equal(translate("en", "本地历史回放"), "Local historical replay");
   assert.equal(translate("en", "模型因子输入"), "Model factor inputs");
   const message =

@@ -15,16 +15,16 @@ INPUT_FILES = {
     "manifest": "external_validation/ensemble_ranker/saved_models_manifest.json",
 }
 LABELS = {
-    "date": "信号日期",
-    "ticker": "股票代码",
-    "stock_name": "公司名称",
-    "revenue_growth_yoy": "营收同比增长",
-    "operating_profitability": "经营盈利能力",
-    "cashflow_to_assets": "现金流 / 资产",
-    "debt_to_assets": "负债 / 资产",
-    "asset_growth_yoy": "资产同比增长",
-    "buy_price": "下一周开盘代理价",
-    "sell_price": "下一周收盘代理价",
+    "date": "Signal date",
+    "ticker": "Ticker",
+    "stock_name": "Company name",
+    "revenue_growth_yoy": "Revenue growth YoY",
+    "operating_profitability": "Operating profitability",
+    "cashflow_to_assets": "Cash flow / assets",
+    "debt_to_assets": "Debt / assets",
+    "asset_growth_yoy": "Asset growth YoY",
+    "buy_price": "Next-week open proxy",
+    "sell_price": "Next-week close proxy",
 }
 
 
@@ -134,13 +134,13 @@ def bind(source: InputSource, replay) -> dict:
     for key, title, purpose in [
         (
             "factors",
-            "模型因子输入",
-            "原始因子按同周股票转换为百分位后输入模型；研究标签不参与预测。",
+            "Model factor inputs",
+            "Raw factors are converted to within-week stock percentiles before entering the model. Research labels are not used for prediction.",
         ),
         (
             "prices",
-            "回测价格输入",
-            "下一周开盘/收盘代理价用于历史模拟；更早日期也可能用于 13 周过滤回看。",
+            "Backtest price inputs",
+            "Next-week open/close price proxies are used for historical simulation. Earlier dates may also support the 13-week lookback filter.",
         ),
     ]:
         rows = source.tables[key]

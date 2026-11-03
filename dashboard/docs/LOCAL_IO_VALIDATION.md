@@ -1,24 +1,19 @@
-# 本地输入输出版 1.2 验收
+# Local input/output 1.2 — historical validation
 
-2026-11-01；macOS 14.5 arm64、Python 3.12.10、Node.js 25.2.1。当前范围为读取现有输入及历史输出；Docker 与公网部署暂缓。
+2026-11-01; macOS 14.5 arm64, Python 3.12.10, Node.js 25.2.1. Scope: existing inputs and historical outputs; Docker/public deployment deferred. English translation of the original record, not a new execution claim.
 
-## 自动检查
+## Automated checks
 
-- 30 项 Dashboard 测试全部通过，包括原有 23 项和新增 7 项输入测试；摘要日志见 local-io-tests.log。
-- TypeScript 类型检查和 Vite 生产构建通过。
-- HTTP 验收核对两份输入下载的 SHA-256、各 17,353 条记录、查询数值与下载原文件一致，输出与本机回放原文件逐字节一致。预测 13,517 条、回测 210 周、期末资金 149330.60888418998。
-- 输入测试覆盖源文件与输出范围、准确因子值、标签排除、分页/搜索、非法参数、原始下载、缺失输入以及与回放身份不匹配的拒绝。
-- JavaScript 客户示例实际返回最近日期的 SCL：同日因子、价格、排名第 1、集成得分约 0.925 及回测汇总。
-- 打包工具更新为 1.2；将输入两份 CSV、模型配置和清单与验证结果一起打包。临时 ZIP 解压到独立目录后，文件校验、首页、输入目录/查询和输出汇总通过（使用当前 Web Python 环境，未重复创建全新环境）。1.1 的干净安装记录另见 DELIVERY_VALIDATION.md。
-- OpenAPI 由当前代码导出，新增输入目录、查询和下载合同。
+- 30 Dashboard tests passed: the earlier 23 plus seven input tests. Log: [local-io-tests.log](local-io-tests.log).
+- TypeScript and Vite build passed.
+- HTTP checks verified both input download hashes, 17,353 rows each, queried values against the original input files, and output bytes against the local replay: 13,517 predictions, 210 backtest weeks, final capital 149330.60888418998.
+- Input coverage included full/output scopes, exact factors, label exclusion, pagination/search, invalid parameters, original downloads, missing inputs and identity mismatch rejection.
+- The JavaScript example returned latest SCL factors/prices/rank 1/score about 0.925 and backtest summary.
+- Packaging 1.2 included both inputs, configuration and manifest with the result. A temporary ZIP extracted separately passed file, page, input-query and summary checks using the existing Web environment; it did not repeat a fresh installation. Version 1.1's fresh install is documented separately.
+- OpenAPI included the input catalog/query/download contracts.
 
-## 浏览器检查
+## Browser checks
 
-- 桌面真实输入表、因子/价格切换、日期和股票筛选正常。
-- ANF 2026-08-28 输入行点击“查看输出”，跳转到相同日期和股票的第 30 名，集成得分 0.3417。
-- 完整源文件范围可选 2015-09-04，明确标注不在预测区间；默认输出范围与源文件范围分别计数。
-- 复制接口地址与当前日期、股票、范围和页码一致。
-- 390px 窄屏无整页水平溢出，输入搜索正常，表格在自身区域内横向滚动；输出链接固定在右侧。
-- 浏览器未记录 warning/error。输入区预览见 local-inputs-preview.jpg。
+Real factor/price tables, date/ticker filtering and source/output scopes worked. ANF 2026-08-28 View output linked to rank 30 / score 0.3417. Full source allowed 2015-09-04 with an outside-prediction-range label. Copied URLs matched date, stock, scope and page. At 390px, there was no page-wide overflow; tables scrolled locally and output links stayed accessible. No browser warning/error was recorded.
 
-本次没有修改模型、原始数据或历史输出，也没有增加上传、实时推理、训练或交易流程。原模型的 87 项回归与计算验收为此前独立记录，不宣称本次重新执行。
+Models, inputs and historical outputs were unchanged. No upload, live inference, training or trading flow was added. The earlier research regression/computation record was not rerun for this step. Historical screenshots remain in Git history; see [current English illustrations](LANGUAGE_SUPPORT.md#screenshots).

@@ -80,18 +80,18 @@ export function LanguageSwitcher() {
       aria-label={t("语言 / Language")}
     >
       <button
-        lang="zh-CN"
-        aria-pressed={language === "zh"}
-        onClick={() => setLanguage("zh")}
-      >
-        中文
-      </button>
-      <button
         lang="en"
         aria-pressed={language === "en"}
         onClick={() => setLanguage("en")}
       >
         English
+      </button>
+      <button
+        lang="zh-CN"
+        aria-pressed={language === "zh"}
+        onClick={() => setLanguage("zh")}
+      >
+        中文
       </button>
     </div>
   );

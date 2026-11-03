@@ -124,7 +124,7 @@ def load_replay(folder: Path, run_id: str, delivered: bool = False) -> Replay:
     datetime.fromisoformat(finished.replace("Z", "+00:00"))
     info = {
         "id": run_id,
-        "label": "随项目交付的验证结果" if delivered else "本地历史回放",
+        "label": "Verified results included with the project" if delivered else "Local historical replay",
         "finished_utc": finished,
         "status": "passed",
         "models_loaded": manifest["models_loaded"],
@@ -140,7 +140,7 @@ def load_replay(folder: Path, run_id: str, delivered: bool = False) -> Replay:
         "prediction_first_date": min(rankings),
         "prediction_last_date": max(rankings),
         "ticker_count": len({r["ticker"] for r in predictions}),
-        "ranking_notice": "策略过滤前的模型排名，不是实际持仓或买卖指令。",
+        "ranking_notice": "Model rankings before strategy filtering; not actual holdings or trading instructions.",
     }
     downloads = {kind: verified[name] for kind, name in DOWNLOADS.items()}
     downloads["manifest"] = manifest_bytes

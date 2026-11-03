@@ -1,45 +1,49 @@
-# Dashboard 中英文切换
+# English-first delivery and optional Chinese interface
 
-日期：2026-11-01。适用于当前 Dashboard 1.2 双语构建。
+Client revision: 2026-11-03; Dashboard 1.4.0. English is the primary documentation, API display language and initial UI language. Chinese is an optional UI preference, not the first-visit default.
 
-## 使用方式
+## Behavior
 
-- 点击页面顶部的“中文 / English”，立即切换界面语言；嵌入模式顶部也保留此入口。
-- 语言切换保留当前结果版本、日期、股票搜索、输入范围、分页及图表选择，不触发数据重新计算。
-- 浏览器记住语言选择。URL 参数优先于浏览器记忆；没有设置时默认为中文。
-- 直接分享中文地址 `http://127.0.0.1:8000/?lang=zh` 或英文地址 `http://127.0.0.1:8000/?lang=en`。
-- 英文嵌入地址为 `/?embed=1&lang=en`，中文为 `/?embed=1&lang=zh`。“复制代码”和嵌入预览链接会使用当前语言。
-- 浏览器限制本地存储时，当前页面仍可切换，分享或刷新时使用链接中的 lang 参数。
+- The language selector lists English first. It remains available in embedded mode.
+- Priority: valid URL `lang` parameter → valid saved browser preference → English. Invalid/missing settings fall back to English. A user who explicitly chose Chinese keeps that preference; use `?lang=en` for an English presentation link.
+- Switching preserves the run, historical date, stocks, searches, scope, pagination and chart choices. It does not rerun calculations.
+- Share `/?lang=en` or `/?lang=zh`; iframe links use `/?embed=1&lang=en` or `zh`. Copied embed code retains the selected language.
+- If storage is unavailable, switching still works; the URL retains the selected language. The example shell follows the language of its same-origin iframe.
+- Initial HTML lang/title/description and the no-preference host page are English, including before React finishes loading.
 
-覆盖范围包括导航、指标、曲线说明、因子和价格字段说明、来源和验证状态、排名、下载按钮、接口说明、加载/空结果/错误提示以及无障碍标签。运行时间按所选语言格式显示；股票代码、日期键和数值不变。
+Coverage includes navigation, metrics/charts, factor/price labels, provenance/status, rankings, allocations, watchlists, downloads, integration guidance, loading/empty/error states and accessibility text. Dates/numbers follow display locale, while raw identifiers/values stay unchanged.
 
-API 字段名、API 原始响应、CSV 下载与模型结果保持原始合同。Swagger 页面和已有 Markdown 研究文档没有增加语言切换。
+## API and files
 
-## 客户演示与交付
+API human-readable labels, notices, reasons and errors are English. The optional Chinese UI translates canonical English backend display text through the same catalog. Structured field names, codes, status enums, numerical outputs and original CSV/model/report bytes remain stable. English docs explain errors; no language query is required for API use.
 
-客户演示时可以先选择语言，再按 [演示流程](CUSTOMER_DEMO_GUIDE.md) 操作。示例网站外壳会使用链接指定的语言，并跟随同源 iframe 中的语言选择更新文字。
+All primary Markdown guides, installation instructions, API docs, plans and historical validation records are English. The primary speaking script is [PRESENTATION_SCRIPT_EN.md](PRESENTATION_SCRIPT_EN.md). The compatible `PRESENTATION_SCRIPT_ZH_EN.md` begins with the complete English script and contains a collapsed optional bilingual reference. Chinese text in localization source/tests and that optional reference is deliberate secondary-language content.
 
-当前双语交付包使用新文件名 `deliveries/SafeCapital-Web-1.2.0-bilingual.zip`，保留之前的 1.2.0 包。目录位于项目根目录；生成包不存入 Git。重新打包时需指定新的 --output，避免覆盖已有文件。
+The research PDF, Word guide and workbook text were audited for language without changing their values. Original computed data and trained model artifacts are not translated. Current screenshots are captured from the English UI. Earlier screenshot files remain available in Git history, preventing old Chinese-only illustrations from becoming the client's default evidence.
 
-## 验收记录
+## Maintenance and checks
 
-- 6 项语言测试通过：URL/浏览器偏好优先级、无效值回退、嵌入链接保留、参数插值、翻译覆盖及错误消息。
-- TypeScript 类型检查、Vite 生产构建通过。
-- 实际 HTTP 验收通过：输入文件校验、13,517 条预测、210 周回测、期末资金 149330.60888418998；页面资源与嵌入脚本可读取。
-- 浏览器中英文切换后，ANF 的输入日期 2026-08-21 和查询 URL 保持一致；对应输出仍为第 29 名、集成得分 0.3833。
-- 图表选中“末 52 周”和“历史回撤”后切换语言，选择保留。
-- 刷新以及重新进入不带 lang 的首页，保留英文偏好；带 lang 的地址覆盖该偏好。
-- 英文嵌入代码含 `embed=1&lang=en`；真实 iframe 加载英文页面。框内键盘切换中文后，示例外壳同步更新，未重新加载 iframe。
-- 390px 窄屏检查通过：语言按钮可用、股票搜索保留、整页无水平溢出。
-- 最终英文页面未记录浏览器 warning/error。预览见 english-dashboard-preview.jpg。
-
-嵌入示例的脚本使用独立同源模块，以符合现有 script-src 安全策略。模型、输入文件及历史输出未修改。
-
-语言测试命令（本次使用 Node.js 25.2.1，需要已安装前端依赖）：
+The catalog is `dashboard/frontend/src/messages.ts`; language resolution/link rules are in `i18n-core.ts` / `i18n.tsx`. Chinese source keys are internal localization identifiers paired with English text. API strings are canonical English; reverse lookup supports the optional Chinese interface. Add copy to the catalog when adding UI features.
 
 ```bash
-node --test dashboard/frontend/tests/i18n.test.ts
+node --experimental-strip-types --test dashboard/frontend/tests/*.test.ts
 npm --prefix dashboard/frontend run build
+.venv-dashboard/bin/python -m unittest discover -s dashboard/tests -v
 ```
 
-翻译文本集中在 `dashboard/frontend/src/messages.ts`；语言状态与链接规则在 i18n.tsx / i18n-core.ts。新增文字时同步补充英文，覆盖测试会检查两个主要页面中的中文文案。
+Tests cover default/URL/saved preference rules, placeholders, translated copy, English backend labels in both UI languages, query timeouts and watchlist behavior. The companion English-first delivery report records fresh archive installation and live browser/API checks.
+
+## Historical bilingual validation
+
+The initial 2026-11-01 bilingual build passed six language tests, TypeScript/Vite, HTTP input/output checks and real iframe interaction. ANF at 2026-08-21 remained rank 29 / score 0.3833 across switching; Last 52 weeks / Drawdown choices remained. Refresh retained English; URL choices overrode storage. A 390px check had no page overflow and no final browser warning/error. That initial release defaulted to Chinese; the current revision intentionally changes the fallback to English. These are separate dated validations.
+
+## Screenshots
+
+Current English illustrations, captured for this client revision:
+
+- [Watchlist](client-watchlist-en.png)
+- [TJX details](client-details-en.png)
+- [Mobile view](client-mobile-en.png)
+- [Local embedding example](client-embed-en.png)
+
+These screenshots are saved evidence, not live data or client production deployment.

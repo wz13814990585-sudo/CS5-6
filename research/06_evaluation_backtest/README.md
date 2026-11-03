@@ -56,5 +56,3 @@ Complete output of every run (`outputs/`, about 126 MB, created when it runs): `
 ## Reporting reference for original research results
 
 For the model metrics quoted in the project report, the original delivered result tables in each model's `research/02_ridge/results/`, `research/03_random_forest/results/`, `research/04_xgboost/results/` and `research/05_xgboost_ranker/results/` directory take precedence. The unified evaluation in `research/06_evaluation_backtest/results/` is retained separately as the evaluation of its archived rerun predictions; it does not supersede the original delivered tables or establish reproduction of their differing metrics. This reporting convention does not change the separate frozen external Ensemble replay.
-
-报告中的模型指标以各模型目录内的原始交付结果表为准；统一评估目录中的结果作为其保存的重跑预测对应的核验记录单独保留，不替代原交付结果，也不表示已复现原交付中存在差异的指标。此说明不改变独立的外部集成模型冻结回放结果。

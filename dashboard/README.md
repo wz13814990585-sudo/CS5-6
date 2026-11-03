@@ -1,70 +1,47 @@
-# SafeCapital Dashboard V1.4
+# SafeCapital Dashboard 1.4 — English-first delivery
 
-**最终交付与首次安装：** [English START HERE](../START_HERE.md) · [中文安装说明](docs/CUSTOMER_HANDOFF.md) · [英文提交说明](docs/CLIENT_SUBMISSION_EN.md)。先确认自己使用的是完整源码 ZIP 还是预构建 Web 运行包，两者的安装命令不同。当前 Dashboard 和随附数据的冻结回放无需 API Key。
+Start with the [English installation and handoff guide](../START_HERE.md). It distinguishes the full **Source ZIP** from the prebuilt **Web ZIP**. No API key is needed for the delivered Dashboard or supplied-data replay. The initial interface is English; Chinese remains an optional language. Explicit URL choices and saved preferences take precedence over the default.
 
-当前重点是本地查看真实输入和输出，以及交付查询接口。Docker 和公网部署暂缓。先看 [本地输入输出使用指南](docs/LOCAL_IO.md) 与 [本次验收](docs/LOCAL_IO_VALIDATION.md)。
+## What the module does
 
-**客户交付入口：**[客户演示操作与讲解稿](docs/CUSTOMER_DEMO_GUIDE.md) · [完整计划](docs/DEVELOPMENT_PLAN.md) · [客户安装与接入手册](docs/CUSTOMER_HANDOFF.md) · [API v1 合同](docs/API_V1.md) · [本次交付验收](docs/DELIVERY_VALIDATION.md)。
+The React/TypeScript frontend and FastAPI backend serve an independent, read-only historical stock research module. It supports standalone access, iframe embedding and namespaced APIs. It does not train models, accept arbitrary uploads, run a new backtest, fetch live prices or execute trades.
 
-支持 `--config dashboard/config.toml`，模板为 `dashboard/config.example.toml`。新集成使用 `/api/cs5_6_equity/v1`，旧 `/api/v1` 和 `/api` 继续兼容。前端通过运行配置生成公开域名下的嵌入代码。
+- Select multiple stocks by ticker or company name from the 40 external evaluation stocks. Inspect five raw factors, model ranks/scores, component percentiles, strategy selection and actual weights together.
+- Share a historical date across watchlist, allocation, rankings and output-aligned inputs; browse the complete input source on an independent date.
+- Load/reset a reproducible SCL/TJX/CMG example and export the current selection as CSV or JSON. Watchlist preferences do not change the original portfolio or its returns.
+- View original full-backtest account value, weekly return and drawdown; inspect all history, the final 52 weeks or final 156 weeks. Headline metrics always describe the full 210-week backtest.
+- Browse 366 model signal dates, ranking pagination/search, verified run versions and provenance. Download original predictions, weekly capital, summary and verification files without rewriting their bytes.
+- Switch English/Chinese while preserving active filters. Use `?lang=en` or `?lang=zh` to override a saved preference; embed mode accepts the same parameters.
+- Handle loading, no-data and API errors, with request timeouts/retry and an iframe failure fallback. Missing values remain unavailable, not zero.
 
-构建客户 ZIP（需要先构建前端）：
+The portfolio module has an independent `cs5_6_equity` namespace. It preserves the 66-stock training / disjoint 40-stock external research scope, weekly signals, verified actual holdings and declared execution assumptions. A verified market benchmark and currency are unavailable. Raw model ranks are before strategy filtering and are not holdings.
 
-```bash
-.venv-dashboard/bin/python dashboard/tools/build_delivery.py
-```
+## Local access
 
-默认输出到 `deliveries/`，包含预构建页面、服务端源码、完整依赖锁、最新验证通过的真实结果、与结果匹配的两份输入 CSV 及配置/清单、配置、校验工具和英文 START_HERE 安装说明。默认拒绝覆盖已有 ZIP；再次构建用 `--output` 指定新文件名。客户运行无需 Node.js 或模型环境。打包工具需要 Git checkout 和已安装的 Dashboard 依赖；从 GitHub 下载的无 `.git` 源码 ZIP 可直接按下文安装运行，无需执行此打包工具。正式交付构建方法见 [打包说明](docs/DELIVERY_BUILD.md)。
-
-支持中英文切换的只读历史策略 Dashboard。React + TypeScript 前端，FastAPI 后端，同一个服务提供页面与 API。支持独立访问和 iframe 嵌入，无需客户网站使用相同的前端框架。
-
-## 已实现
-
-- [Presentation 关注股票流程](docs/PRESENTATION_WATCHLIST.md)：代码/公司多选、统一历史日期、输入/排名/策略详情、示例重置和当前选择 CSV/JSON 导出；不改变原策略收益。
-- 新增 stocks/watchlist 查询接口、12 秒请求超时与重试、嵌入加载失败入口。验收见 [1.4 记录](docs/PRESENTATION_VALIDATION.md)。
-
-- [Portfolio Neo 接入交接](docs/PORTFOLIO_NEO_INTEGRATION.md)：独立股票研究模块、客户风格、66/40 股票范围、真实选股权重、基准缺失说明、离线复算来源。
-- 独立 `/api/cs5_6_equity/v1/runs/{id}/portfolio` 合同，提供模型、股票池、配置、指标、假设、来源及成功/无数据/错误状态。
-
-- 顶部“中文 / English”切换界面语言，保留当前筛选与图表选择；刷新后记住语言。嵌入模式同样支持，链接可用 `?lang=en` 或 `?embed=1&lang=en` 指定语言。
-
-- 模型五个原始因子、历史回测价格浏览，日期/股票过滤与分页，完整输入下载。
-- 完整源文件与当前输出覆盖范围分开显示；点击“查看输出”按日期和股票关联排名。
-- 输入查询地址复制、JSON 查看、字段说明和文件 SHA-256。
-
-- 真实回测总览、账户资金 / 每周收益 / 历史回撤曲线；切换全部、末 52 周、末 156 周。
-- 366 个信号日期可选；股票代码搜索、排名分页、三组件百分位与集成得分。
-- 历史结果版本选择、来源说明、运行时间和验证状态。
-- 原始排名、资金、汇总 CSV 和 manifest JSON 下载。
-- `/?embed=1` 保留模块导航、隐藏接入说明；`/embed-example.html` 提供可交互的 iframe 示例。
-- 窄屏布局、移动导航、加载 / 空搜索 / 请求失败状态。
-
-这是历史结果展示服务，不是实时选股、交易执行、任意数据上传或在线训练服务。排名是策略过滤前的结果，不等同于实际持仓。资金数值使用原始回测计价单位，页面不另行假定币种。
-
-## 在当前 Mac 上启动
-
-在项目根目录运行（已安装独立环境并完成前端构建）：
+After installation, start from the extracted project root:
 
 ```bash
 .venv-dashboard/bin/python dashboard/start.py
 ```
 
-保持终端运行，浏览器打开：
+For the prebuilt Web package, append `--config config.toml`. On Windows use `.\.venv-dashboard\Scripts\python.exe` instead. Keep the terminal open and stop with Ctrl+C. Append `--port 8001` if port 8000 is occupied.
 
-- 独立页面：<http://127.0.0.1:8000/>
-- 嵌入模式：<http://127.0.0.1:8000/?embed=1>
-- 模拟客户页面：<http://127.0.0.1:8000/embed-example.html>
-- API 文档：<http://127.0.0.1:8000/api/docs>
+- [Dashboard](http://127.0.0.1:8000/?lang=en#watchlist)
+- [Embedded mode](http://127.0.0.1:8000/?embed=1&lang=en)
+- [Example host page](http://127.0.0.1:8000/embed-example.html?lang=en)
+- [API documentation](http://127.0.0.1:8000/api/docs)
+- [OpenAPI JSON](http://127.0.0.1:8000/api/openapi.json)
 
-按 Ctrl+C 停止。端口冲突时添加 `--port 8001`，然后用新的端口访问。地址 `127.0.0.1` 只在当前电脑可访问，不是客户可访问的公网地址。
+Localhost is only accessible on the computer running the service; it is not a public customer URL. The API documentation UI uses an external CDN; the local Dashboard and OpenAPI JSON do not need a live data service.
 
-## 新电脑首次安装
+## First installation from source
 
-本节适用于 **源码 ZIP / Git checkout**：要求 Python 3.12、Node.js 22 或满足前端依赖要求的更高版本、npm。Dashboard 使用独立环境，不需要安装 XGBoost 或重新运行模型。预构建 Web 运行包请按包根目录 `START_HERE.md` 的 Web package 部分安装，不需要 Node.js。
+Requirements: 64-bit Python 3.12 and Node.js/npm compatible with the pinned frontend dependencies (Node.js 22 or later supported version). Use a fresh extraction and run from the project root. The Dashboard environment is independent of the research environment.
 
-macOS / Linux，项目根目录：
+macOS / Linux:
 
 ```bash
+python3.12 tools/check_release.py
 python3.12 -m venv .venv-dashboard
 .venv-dashboard/bin/python -m pip install -r dashboard/requirements.txt
 npm --prefix dashboard/frontend ci
@@ -72,9 +49,10 @@ npm --prefix dashboard/frontend run build
 .venv-dashboard/bin/python dashboard/start.py
 ```
 
-Windows PowerShell，项目根目录：
+Windows PowerShell:
 
 ```powershell
+py -3.12 tools/check_release.py
 py -3.12 -m venv .venv-dashboard
 .\.venv-dashboard\Scripts\python.exe -m pip install -r dashboard/requirements.txt
 npm --prefix dashboard/frontend ci
@@ -82,106 +60,37 @@ npm --prefix dashboard/frontend run build
 .\.venv-dashboard\Scripts\python.exe dashboard/start.py
 ```
 
-模型原有的 `.venv` 和 `requirements.txt` 保持独立。Python 的完整运行依赖锁定在本目录 `requirements.txt`；前端使用 `package-lock.json` 锁定。
+For the prebuilt Web ZIP use its root `verify_delivery.py` / `install.py` instead; it needs no Node.js. Those root scripts are not present in the Source ZIP. Full instructions, configuration and troubleshooting are in [START_HERE](../START_HERE.md).
 
-## 结果来源与更新
+## Results and updates
 
-启动时扫描项目 `runs/` 下的冻结回放，以及随仓库交付的 `FINAL_OUTPUTS/01_saved_model_replay/verified_replay/`。仅接受 `mode=frozen_model_inference`、`status=passed`、`stage=complete` 的记录，核对清单中的全部文件 SHA-256、预测/回测校验状态、行数和日期覆盖。训练记录不参与展示。存在损坏的回放时跳过并显示数量；没有有效记录时返回不可用状态，不生成假数据。
+Startup scans `runs/` and the tracked `FINAL_OUTPUTS/01_saved_model_replay/verified_replay/`. Only completed `frozen_model_inference` runs with passed verification, matching file hashes, row counts and coverage are accepted. Training runs are not served. Corrupt runs are skipped and counted; if no valid result exists, the service reports unavailable rather than generating data.
 
-本机默认选择最新验证通过的回放（当前为 `saved_ensemble_20261101T062202_638390Z`）。新克隆的仓库没有本地 runs 时，使用随项目交付的真实历史结果。两份结果的数值一致，但运行日期和文件哈希不同，页面会显示实际来源。
+A development checkout selects its latest valid replay. A fresh source/Web package uses the included `delivered` result. The local run and delivered replay have equal numerical results but different run timestamps and file identities. Always obtain the actual ID through `/api/cs5_6_equity/v1/runs`.
 
-服务将已验证结果保存在内存中，下载与图表始终读取同一份快照。新增回放后**重启 Dashboard**才会加载；刷新浏览器不会重新扫描磁盘。
+Verified results and downloads are held in the same in-memory snapshot. Restart after changing disk data; browser refresh does not rescan it. To select a specific complete replay, use `result_dir` in TOML or `SAFECAPITAL_RESULT_DIR`. Invalid explicit configuration fails rather than silently substituting another run. Hash verification establishes file consistency, not a third-party digital signature.
 
-若只想提供指定的一次结果，可配置绝对路径：
+## APIs and integration
 
-```bash
-export SAFECAPITAL_RESULT_DIR="/absolute/path/to/verified/replay"
-.venv-dashboard/bin/python dashboard/start.py
-```
+New clients use **`/api/cs5_6_equity/v1`**. `/api/v1` and `/api` are compatibility aliases. All business endpoints are read-only GET. Start with `runs`, then query `stocks`, `watchlist`, `inputs`, `portfolio`, `overview`, `equity`, `rankings` or downloads for that run. Human-readable API labels/reasons are English; identifiers, numerical values and original downloads remain stable. The optional Chinese UI translates those display labels locally.
 
-指定目录无效时启动失败，不会替换成其他回放。清单哈希校验检查文件一致性，不是独立的第三方签名；原计算程序负责数值验证。
+See [API contract](docs/API_V1.md), [watchlist API](docs/PRESENTATION_WATCHLIST.md), [OpenAPI](docs/openapi.json) and [integration handoff](docs/PORTFOLIO_NEO_INTEGRATION.md).
 
-## 接入客户网站
+For iframe use, host on a dedicated HTTPS origin, configure exact `embed_origins`, and have the client allow the module in its `frame-src` CSP. The module uses `frame-ancestors`; avoid conflicting proxy X-Frame-Options headers. iframe API requests are same-origin. A different-origin client frontend calling JSON directly needs its exact origin in `api_origins`.
 
-建议将本服务部署在独立 HTTPS 域名，例如 `https://research.example.com/`。客户增加一个页面，放入：
+No login/SSO is implemented. An embed/CORS allowlist is not authentication. If required, the client gateway must protect pages, APIs and downloads together. Client hosting, domain, authentication, staging regression and production release are separate responsibilities. Docker and public deployment remain deferred; old Docker recipes are reference material and are not a validated route for the current input/portfolio package.
 
-```html
-<iframe
-  src="https://research.example.com/?embed=1"
-  title="SafeCapital 历史策略研究"
-  width="100%"
-  height="1400"
-  style="border:0; border-radius:16px"
-  loading="lazy">
-</iframe>
-```
+## Development, packaging and evidence
 
-框内自带滚动；客户可以按页面空间调整高度。首次接入不依赖跨域消息或自动高度脚本。如果客户额外加 `sandbox` 属性，需要允许脚本、同源与下载，否则相关功能会受限。
-
-本服务默认只允许同源嵌入。部署时指定客户站点的**精确 origin**（协议、域名及必要端口，无路径或尾部斜线），可用逗号分隔多个域名：
-
-```bash
-export SAFECAPITAL_EMBED_ORIGINS="https://client.example,https://www.client.example"
-.venv-dashboard/bin/python dashboard/start.py --host 0.0.0.0
-```
-
-服务通过响应头 `Content-Security-Policy: frame-ancestors 'self' ...` 授权嵌入。客户自己的 CSP 也要在 `frame-src` 中允许 Dashboard 域名。反向代理不要额外设置冲突的 `X-Frame-Options: DENY/SAMEORIGIN`。iframe 内的页面与 API 同源，因此此方式不需要开放 API 的跨域 CORS。
-
-V1 不实现登录或客户 SSO；关注列表只保存在当前浏览器，不保存到服务端。若客户要求只有登录用户可看，需要在反向代理或后续认证层同时保护页面、API 和下载；嵌入域名白名单不等同于访问认证。
-
-## 部署包（当前暂缓）
-
-以下是之前准备的可选部署资料，不是当前本地使用的必要步骤。现有 Docker 配方只包含输出；如未来启用容器，需要补入并验收 V1.2 的输入文件与 V1.3 的模块快照。
-
-仓库根目录已有 `.dockerignore`，Dockerfile 仅打包 Web 服务、构建后前端及交付的真实验证结果。镜像不包含训练数据、模型依赖或本机 runs。
-
-```bash
-docker build -f dashboard/Dockerfile -t safecapital-dashboard .
-docker run --rm --name safecapital-dashboard \
-  -p 127.0.0.1:8000:8000 \
-  -e SAFECAPITAL_EMBED_ORIGINS="https://client.example" \
-  safecapital-dashboard
-```
-
-在主机上用 Nginx / 客户现有网关为它提供 HTTPS。示例见 `docs/nginx.conf.example`。容器只运行已完成结果的展示服务，使用非 root 用户。若需要特定新结果，可只读挂载其完整目录并设置 `SAFECAPITAL_RESULT_DIR`。
-
-目前已验证原生 macOS 启动；本机 Docker daemon 未启动，尚未实测容器构建和启动，部署前应执行上述两条命令验收。Windows 和客户实际域名/登录系统也需要目标环境验收。
-
-## API
-
-所有接口只读。首先访问 `GET /api/cs5_6_equity/v1/runs` 获取有效 ID，再使用该 ID：
-
-| 路径 | 响应 |
-|---|---|
-| `/api/cs5_6_equity/v1/health` | 可用状态、有效与拒绝的结果数量；无结果时 503 |
-| `/api/cs5_6_equity/v1/runs` | 结果列表及 `default_run_id` |
-| `/api/cs5_6_equity/v1/runs/{id}/stocks` | 支持股票、公司名及有效日期 |
-| `/api/cs5_6_equity/v1/runs/{id}/watchlist?date=2026-08-28&tickers=SCL,TJX,CMG` | 按日期关联当前选择的输入、排名与策略配置 |
-| `/api/cs5_6_equity/v1/runs/{id}/watchlist/download?date=2026-08-28&tickers=SCL,TJX,CMG&format=csv` | 当前选择 CSV；也支持 JSON |
-| `/api/cs5_6_equity/v1/runs/{id}/inputs` | 输入目录、字段、日期覆盖和哈希 |
-| `/api/cs5_6_equity/v1/runs/{id}/inputs/{dataset}/rows` | factors/prices，支持 date、scope、q、page、page_size |
-| `/api/cs5_6_equity/v1/runs/{id}/inputs/{dataset}/download` | 完整原始输入 CSV |
-| `/api/cs5_6_equity/v1/runs/{id}/overview` | 指标、全部可选信号日期、来源与覆盖范围 |
-| `/api/cs5_6_equity/v1/runs/{id}/equity` | 完整每周资金、收益与从初始资金起计算的历史回撤 |
-| `/api/cs5_6_equity/v1/runs/{id}/rankings?date=2026-08-28&q=ANF&page=1&page_size=10` | 日期排名、股票代码过滤与分页；page_size 上限 100 |
-| `/api/cs5_6_equity/v1/runs/{id}/downloads/{kind}` | 原始文件，字节与已验证快照相同 |
-
-`kind` 可为 `predictions`、`equity`、`summary`、`manifest`、`prediction-verification`、`backtest-verification`。不存在的结果或下载返回 404；非法日期/页码返回 422。服务器不暴露仓库文件路径，也不接受文件上传、任意路径下载或执行命令。
-
-所有摘要指标对应完整 210 周回测，切换图表区间不会重新计算顶端指标。预测覆盖 366 周与回测覆盖 210 周在页面中分别标注。回撤按完整资金历史计算，切换区间只裁剪显示，不重新设置峰值。
-
-## 开发与测试
-
-语言功能及验收见 [中英文切换说明](docs/LANGUAGE_SUPPORT.md)。
-
-后端启动后，另开终端执行 `npm --prefix dashboard/frontend run dev`。Vite 将 `/api` 代理到 `127.0.0.1:8000`，只供本地开发；修改后重新 build 即可由 Python 服务提供更新后的静态页面。
+Run the backend, then `npm --prefix dashboard/frontend run dev` for Vite development; it proxies `/api` to port 8000. Rebuild the frontend before serving changed source through Python.
 
 ```bash
 .venv-dashboard/bin/python -m pip install -r dashboard/requirements-test.txt
-npm --prefix dashboard/frontend run build
 .venv-dashboard/bin/python -m unittest discover -s dashboard/tests -v
+node --experimental-strip-types --test dashboard/frontend/tests/*.test.ts
+npm --prefix dashboard/frontend run build
 ```
 
-49 项接口与完整性测试覆盖真实数值、排名分页/搜索、原始下载、损坏文件、非有限数值、路径和符号链接越界、域名白名单及空结果状态。另有 12 项前端语言/搜索/超时测试，运行 `node --experimental-strip-types --test dashboard/frontend/tests/*.test.ts`。最新浏览器验收见 `docs/PRESENTATION_VALIDATION.md`。
+Web packaging requires a Git checkout, Dashboard dependencies and built frontend; it is not a client installation command. The package contains the root English guide, frontend/server source, prebuilt assets, pinned dependencies, matched inputs, module snapshots, verified results and validation tools. It excludes the complete training environment and refuses to overwrite existing archives. See [build instructions](docs/DELIVERY_BUILD.md).
 
-参考：[FastAPI 静态文件](https://fastapi.tiangolo.com/tutorial/static-files/)、[Vite 相对部署路径](https://vite.dev/guide/build#relative-base)、[MDN 嵌入域名策略](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors)。
+Further reading: [input/output guide](docs/LOCAL_IO.md), [English presentation script](docs/PRESENTATION_SCRIPT_EN.md), [demo guide](docs/CUSTOMER_DEMO_GUIDE.md), [language policy](docs/LANGUAGE_SUPPORT.md), [1.4 feature validation](docs/PRESENTATION_VALIDATION.md), [development plan](docs/DEVELOPMENT_PLAN.md). Earlier validation documents are dated historical records, not claims that all checks were rerun for every revision.

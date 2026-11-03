@@ -1,78 +1,62 @@
-# 本地 Dashboard：输入、输出与接口
+# Local Dashboard: inputs, outputs and interfaces
 
-当前版本读取项目现有文件，展示已验证的真实历史结果。所有接口只读，不接收上传或触发重新计算。使用 Python 原生服务即可，不需要 Docker。
+The Dashboard reads existing project files and verified historical results. All APIs are read-only: queries do not accept uploads, train models or rerun calculations. Use the native Python service; Docker is not required. First installation is documented in [START_HERE](../../START_HERE.md).
 
-## 启动与查看
+## Start and browse
 
-在项目根目录运行：
+From the installed project root, run `.venv-dashboard/bin/python dashboard/start.py` (Windows: `.\.venv-dashboard\Scripts\python.exe dashboard/start.py`). For a configured Web package append `--config config.toml`. Open <http://127.0.0.1:8000/?lang=en> and keep the terminal running.
 
-```bash
-.venv-dashboard/bin/python dashboard/start.py
-```
+1. Open **Input data**, choose **Model factor inputs** or **Backtest price inputs**, then select a date or search a ticker.
+2. **Aligned with this output** is the default scope; **Full source file** exposes earlier history on an independent date. Wide tables scroll inside their own containers.
+3. Click **View output** to show the same date/ticker in Stock rankings. Inputs earlier than prediction coverage are explicitly marked outside that coverage.
+4. **Performance** shows the original full strategy; raw stock rankings are before filtering and are not actual holdings. Use **Stocks & weights** for the saved allocation.
+5. Copy the current query URL or open JSON. Full-input downloads preserve the entire original file; watchlist exports use the selected date/stocks.
 
-保持终端运行，打开 <http://127.0.0.1:8000/>。首次安装见 [Dashboard README](../README.md)。
+Restart the Python service after changing data. Refreshing the browser does not reload disk files.
 
-1. 点击“输入数据”：切换“模型因子输入”和“回测价格输入”，选择日期或搜索股票代码。
-2. 默认查看“与本次输出对齐”的记录；改为“完整源文件”可查看更早历史。表格可横向滚动。
-3. 点击某条输入的“查看输出”，排名表自动切换到相同日期和股票。早于预测区间的输入明确标注“不在预测区间”。
-4. “策略概览”显示完整回测指标和资金曲线；“股票排名”显示过滤前排名，不是实际持仓。
-5. 在输入区复制当前查询地址或打开 JSON；下载按钮保存完整原始输入 CSV。“输入输出接口”区可打开接口文档及输入/输出 JSON。
+## Language
 
-数据更换后重启 Python 服务，再刷新网页。浏览器刷新本身不会重新加载磁盘文件。
+English is the first-visit default. The **English / Chinese** selector preserves run, date, stock search, input scope, pagination and chart choices. Explicit `?lang=en` or `?lang=zh` overrides a saved preference; existing Chinese preferences remain honoured. Use `?embed=1&lang=en` for an English client embed. API display labels/reasons are English; the optional Chinese UI translates those labels locally. Numerical values, identifiers and original research downloads are not translated or reformatted.
 
-## 中英文切换
+## Model inputs
 
-点击页面顶部的“中文 / English”即可切换。当前结果版本、输入范围、日期、股票搜索和图表选择会保留；浏览器记住语言。直接访问 `/?lang=en` 打开英文，`/?lang=zh` 打开中文；嵌入使用 `/?embed=1&lang=en`。URL 中的语言优先于本机记忆，无设置时默认为中文。
-
-界面会翻译字段说明，API 字段名、原始响应及 CSV 文件保持原始合同。完整 API 文档和下载的研究文件不做语言改写。
-
-## 输入是什么
-
-| 输入 | 项目内文件 | 用途 |
+| Input | Project path | Purpose |
 |---|---|---|
-| 模型因子 | external_validation/ensemble_ranker/inputs/test40.csv | date、ticker、五个原始财务因子；模型内部做同周百分位转换 |
-| 历史价格 | external_validation/shared_inputs/inputs/test40_with_prices.csv | buy_price / sell_price 为下一周开盘/收盘代理价，用于历史回测 |
+| Raw model factors | `external_validation/ensemble_ranker/inputs/test40.csv` | date/ticker and five financial factors; models transform them to within-week percentiles |
+| Historical execution prices | `external_validation/shared_inputs/inputs/test40_with_prices.csv` | next-week open/close proxies for the historical backtest |
 
-五个因子：revenue_growth_yoy、operating_profitability、cashflow_to_assets、debt_to_assets、asset_growth_yoy。stock_name 仅用于展示。
+Factors: `revenue_growth_yoy`, `operating_profitability`, `cashflow_to_assets`, `debt_to_assets`, `asset_growth_yoy`. `stock_name` is a display label.
 
-两份文件各 17,353 行、574 个信号周，范围 2015-09-04 至 2026-08-28。当前预测对应 13,517 条因子记录、366 周；当前回测日期/股票键对应 8,354 条价格记录、210 周。更早价格仍可能用于 13 周过滤回看，所以“输出对齐”并不表示计算只使用这些行。
+Each source file has 17,353 rows over 574 signal weeks, 2015-09-04 to 2026-08-28. Predictions align to 13,517 factor rows / 366 weeks; portfolio outputs align to 8,354 price rows / 210 weeks. Earlier prices may still support the 13-week lookback, so output alignment does not mean only those rows were used in computation.
 
-原始 CSV 还含 target1/target2 等研究字段，下载保留完整原文件；查询只返回所列输入字段。未来收益标签不参与预测或选股。
+Original CSVs also contain research fields such as `target1/target2`; complete downloads preserve them. Queries expose the listed input fields only. Future-return labels are not prediction or selection inputs.
 
-输入文件通过 `external_validation/ensemble_ranker/model_configuration.json`、`saved_models_manifest.json` 和本次预测/回测验证记录关联。缺失或身份不符时，输入区显示不可用，已验证的输出仍可查看。文件 SHA-256 是一致性校验，不是数字签名。
+Input identity is checked against model configuration, saved-model manifest and prediction/backtest verification records. Missing or mismatched inputs become unavailable while verified outputs remain accessible. SHA-256 checks file consistency, not authenticity from a third party.
 
-## 输出是什么
+## Outputs
 
-- 股票排名：13,517 条预测，按信号日期和 ticker 与因子输入关联；包含集成排名/得分及三组件百分位。
-- 每周资金：210 周账户序列，含期末资金、净收益、现金、费用和回撤。
-- 汇总指标：本次历史回测初始资金 100,000，期末资金约 149,330.61，累计收益约 49.33%；数值以当前回放 CSV 为准。
-- 原始下载：预测、每周资金、汇总以及校验清单。
+- 13,517 stock-week model predictions: ensemble rank/score and three component percentiles, linked by signal date and ticker.
+- 210 weekly account observations: capital, net return, cash, fees and drawdown.
+- Full strategy metrics: initial capital 100000, final capital approximately 149330.61, total return 49.33%; the actual selected run's CSV is authoritative.
+- Original prediction, capital, summary and verification downloads.
 
-Dashboard 不会重新生成这些输出。本机默认选择最近一次验证通过的回放；新克隆仓库使用随仓库交付的 verified_replay。由 `/api/cs5_6_equity/v1/runs` 返回实际运行 ID，客户不要写死本机 ID。
+The Dashboard does not regenerate these outputs. Development checkouts select the latest valid local replay; fresh packages use the tracked verified replay. Request `/api/cs5_6_equity/v1/runs` for the actual ID.
 
-## 客户怎样拿到接口
+## Query interfaces
 
-本地文档：<http://127.0.0.1:8000/api/docs>；机器可读定义：<http://127.0.0.1:8000/api/openapi.json>。可直接把 [openapi.json](openapi.json)、[API_V1.md](API_V1.md) 和 [client.mjs](../examples/client.mjs) 交给客户开发者。
+Base URL: `http://127.0.0.1:8000/api/cs5_6_equity/v1/`.
 
-以下路径均以 `http://127.0.0.1:8000/api/cs5_6_equity/v1/` 为基础地址：
-
-| 步骤 | GET 路径 |
+| Purpose | GET path |
 |---|---|
-| 获取当前 ID | runs |
-| 输入目录与字段 | runs/{id}/inputs |
-| 因子查询 | runs/{id}/inputs/factors/rows?date=2026-08-28&q=ANF&scope=output |
-| 价格查询 | runs/{id}/inputs/prices/rows?date=2026-08-28&q=ANF&scope=output |
-| 完整输入下载 | runs/{id}/inputs/{factors或prices}/download |
-| 对应排名 | runs/{id}/rankings?date=2026-08-28&q=ANF |
-| 回测汇总 | runs/{id}/overview |
-| 资金序列 | runs/{id}/equity |
+| Active run | `runs` |
+| Inputs and fields | `runs/{id}/inputs` |
+| Factors | `runs/{id}/inputs/factors/rows?date=2026-08-28&q=ANF&scope=output` |
+| Prices | `runs/{id}/inputs/prices/rows?date=2026-08-28&q=ANF&scope=output` |
+| Complete input | `runs/{id}/inputs/{dataset}/download` |
+| Linked ranking | `runs/{id}/rankings?date=2026-08-28&q=ANF` |
+| Summary | `runs/{id}/overview` |
+| Account series | `runs/{id}/equity` |
 
-输入 rows 支持 `scope=output` 或 `source`；省略 date 查询该范围的全部日期。`page` 从 1 开始，`page_size` 最大 100。`q` 是股票代码子串查询，关联时仍用准确的 date + ticker。
+`dataset` is `factors` or `prices`. Input rows accept `scope=output` or `source`; omit date for all dates in that scope. Page numbering starts at 1; page size is at most 100. `q` searches a ticker substring; joins still use exact date + ticker.
 
-可运行示例（Node.js 22 或更高版本）：
-
-```bash
-node dashboard/examples/client.mjs http://127.0.0.1:8000/
-```
-
-该示例自动查找默认运行和最近日期，打印同一只股票的因子、价格、输出排名、汇总及下载地址。页面与接口由同一个本地服务提供。`127.0.0.1` 指调用者自己的电脑；交付接口定义后，客户可在自己的环境运行服务，再替换基础地址。若其网页跨域请求服务，按 API 文档配置精确的 api_origins。
+Provide the client [OpenAPI](openapi.json), [API guide](API_V1.md) and [JavaScript example](../examples/client.mjs). Run the example with `node dashboard/examples/client.mjs http://127.0.0.1:8000/`; it discovers the run/date and prints one stock's factors, prices, ranking, summary and download URLs. For a hosted installation replace the base URL and configure exact `api_origins` for cross-origin browser callers. Localhost refers to the caller's own computer.

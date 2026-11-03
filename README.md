@@ -6,9 +6,9 @@ SafeCapital presents a weekly stock-ranking research method and one selected ext
 
 ## Web Dashboard
 
-**Client delivery / start here:** [English installation and handoff guide](START_HERE.md) · [Chinese installation guide](dashboard/docs/CUSTOMER_HANDOFF.md) · [English submission message](dashboard/docs/CLIENT_SUBMISSION_EN.md). Choose the complete source ZIP or the prebuilt Web package before following installation commands. No API key is required for the delivered Dashboard or supplied-data replay.
+**Client delivery / start here:** [English installation and handoff guide](START_HERE.md) · [Installation quick reference](dashboard/docs/CUSTOMER_HANDOFF.md) · [English submission message](dashboard/docs/CLIENT_SUBMISSION_EN.md). Choose the complete source ZIP or the prebuilt Web package before following installation commands. No API key is required for the delivered Dashboard or supplied-data replay.
 
-Version 1.4 provides a Chinese/English Dashboard with stock watchlists, shared historical dates, factor and ranking details, actual strategy selections and weights, charts, CSV/JSON exports, and read-only APIs. Watchlist selections do not change the original strategy or its return. See the [local input/output guide](dashboard/docs/LOCAL_IO.md). Docker and public deployment are deferred.
+Version 1.4 provides an English-first Dashboard with optional Chinese with stock watchlists, shared historical dates, factor and ranking details, actual strategy selections and weights, charts, CSV/JSON exports, and read-only APIs. Watchlist selections do not change the original strategy or its return. See the [local input/output guide](dashboard/docs/LOCAL_IO.md). Docker and public deployment are deferred.
 
 Customer handoff now includes a [complete implementation plan](dashboard/docs/DEVELOPMENT_PLAN.md), [installation/integration guide](dashboard/docs/CUSTOMER_HANDOFF.md), [API v1 contract](dashboard/docs/API_V1.md), and portable ZIP packaging with prebuilt frontend and a real verified result snapshot. See [delivery acceptance](dashboard/docs/DELIVERY_VALIDATION.md) for completed checks and target-environment limits.
 
@@ -162,5 +162,3 @@ See [NOTICE.md](NOTICE.md) for provenance and [CHANGELOG.md](CHANGELOG.md) for d
 ## Reporting reference for original research results
 
 For the model metrics quoted in the project report, the original delivered result tables in each model's `research/02_ridge/results/`, `research/03_random_forest/results/`, `research/04_xgboost/results/` and `research/05_xgboost_ranker/results/` directory take precedence. The unified evaluation in `research/06_evaluation_backtest/results/` is retained separately as the evaluation of its archived rerun predictions; it does not supersede the original delivered tables or establish reproduction of their differing metrics. This reporting convention does not change the separate frozen external Ensemble replay.
-
-报告中的模型指标以各模型目录内的原始交付结果表为准；统一评估目录中的结果作为其保存的重跑预测对应的核验记录单独保留，不替代原交付结果，也不表示已复现原交付中存在差异的指标。此说明不改变独立的外部集成模型冻结回放结果。

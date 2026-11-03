@@ -9,12 +9,12 @@
     "module_id": "cs5_6_equity",
     "error": {
       "code": "invalid_request",
-      "message": "请求参数不符合接口约定",
+      "message": "Request parameters do not match the API contract.",
       "request_id": "9ebd6e8ccc2f4791974fa37275ea0986",
       "fields": [
         "query.date"
       ]
     },
-    "detail": "请求参数不符合接口约定"
+    "detail": "Request parameters do not match the API contract."
   }
 }

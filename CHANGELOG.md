@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-03 — English-first client delivery
+
+- Made English the initial Dashboard and embedding-preview language; retained explicit/saved Chinese preferences and put English first in the selector.
+- Standardised API labels and error messages in English, with optional Chinese UI translation; structured identifiers, research values and original downloads are unchanged.
+- Translated client guides, API documents, plans and historical validation records; added a full English speaking script with an optional collapsed bilingual reference. Refreshed client screenshots in English.
+
 ## 2026-11-03 — Dashboard 1.4 delivery documentation
 
 - Added an English client entry guide and submission template, with separate full-source and prebuilt-Web installation paths, API-key requirements, integration configuration, and scope limits.

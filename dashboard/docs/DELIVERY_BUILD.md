@@ -2,7 +2,7 @@
 
 This is a maintainer guide, not a client installation step. Clients should start with the root `START_HERE.md`.
 
-Dashboard version remains **1.4.0**; **2026-11-03** identifies the documentation/packaging revision. No research data or model behavior is changed. Use a clean Git checkout with Python 3.12 Dashboard dependencies and Node.js/npm installed. The source ZIP intentionally has no `.git`; building a Web package requires a checkout, while running the source Dashboard does not.
+Dashboard version remains **1.4.0**; **2026-11-03-en** identifies the English-first delivery revision. No research data or model behavior is changed. Use a clean Git checkout with Python 3.12 Dashboard dependencies and Node.js/npm installed. The source ZIP intentionally has no `.git`; building a Web package requires a checkout, while running the source Dashboard does not.
 
 ## Prepare the source
 
@@ -20,7 +20,7 @@ The working tree must be clean for the final build. Record the full commit SHA w
 ```bash
 npm --prefix dashboard/frontend ci
 npm --prefix dashboard/frontend run build
-.venv-dashboard/bin/python dashboard/tools/build_delivery.py --result FINAL_OUTPUTS/01_saved_model_replay/verified_replay --output deliveries/SafeCapital-Web-1.4.0-20261103.zip
+.venv-dashboard/bin/python dashboard/tools/build_delivery.py --result FINAL_OUTPUTS/01_saved_model_replay/verified_replay --output deliveries/SafeCapital-Web-1.4.0-20261103-en.zip
 ```
 
 The explicit `--result` selects the tracked delivered replay rather than a developer's newer local `runs/` folder. The package manifest records the clean source commit. Build into a new output filename if one already exists; the tool refuses to overwrite archives. The Web package includes the root English `START_HERE.md`, the latest presentation script, examples, locked dependencies, verified result bytes, matched inputs, and prebuilt frontend.
@@ -28,7 +28,7 @@ The explicit `--result` selects the tracked delivered replay rather than a devel
 ## Export the complete source ZIP
 
 ```bash
-git archive --format=zip --prefix=SafeCapital-Source-1.4.0-20261103/ --output=deliveries/SafeCapital-Source-1.4.0-20261103.zip HEAD
+git archive --format=zip --prefix=SafeCapital-Source-1.4.0-20261103-en/ --output=deliveries/SafeCapital-Source-1.4.0-20261103-en.zip HEAD
 ```
 
 This exports committed files, including datasets, saved models, and reports, without local environments, ignored files, or Git history. The source commit is also stored in the ZIP comment by Git. Use the same commit for both packages. Record SHA-256 and byte size for both archives in companion files.
@@ -46,4 +46,4 @@ This command exports locally from the Git repository. After the commit is pushed
 
 The source and Web services must report the same delivered data and research metrics. This is installation/serving validation, not a rerun of model training. Include the actual logs alongside the final report; do not claim Windows/Linux, Docker, SSO, or production integration from a local macOS check.
 
-The video is recorded separately by the team, using `dashboard/docs/PRESENTATION_SCRIPT_ZH_EN.md` as the speaking guide. Do not send the submission template with placeholders still present.
+The video is recorded separately by the team, using `dashboard/docs/PRESENTATION_SCRIPT_EN.md` as the speaking guide. Do not send the submission template with placeholders still present.

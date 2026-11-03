@@ -14,7 +14,7 @@ test_served_snapshot_is_immutable_until_restart (test_dashboard.ResultIntegrityT
 test_symlink_cannot_escape (test_dashboard.ResultIntegrityTests.test_symlink_cannot_escape) ... ok
 test_tampered_result_is_excluded (test_dashboard.ResultIntegrityTests.test_tampered_result_is_excluded) ... ok
 test_catalog_links_source_and_output_coverage (test_inputs.InputTests.test_catalog_links_source_and_output_coverage) ... ok
-test_factor_rows_equal_original_and_omit_labels (test_inputs.InputTests.test_factor_rows_equal_original_and_omit_labels) ... /Users/april/Desktop/USYD 2026s2/5703/5703前端版本/SafeCapital_ensemble_external/dashboard/tests/test_inputs.py:48: ResourceWarning: unclosed file <_io.TextIOWrapper name='/Users/april/Desktop/USYD 2026s2/5703/5703前端版本/SafeCapital_ensemble_external/external_validation/ensemble_ranker/inputs/test40.csv' mode='r' encoding='utf-8-sig'>
+test_factor_rows_equal_original_and_omit_labels (test_inputs.InputTests.test_factor_rows_equal_original_and_omit_labels) ... <source-checkout>/dashboard/tests/test_inputs.py:48: ResourceWarning: unclosed file <_io.TextIOWrapper name='<source-checkout>/external_validation/ensemble_ranker/inputs/test40.csv' mode='r' encoding='utf-8-sig'>
 test_missing_inputs_do_not_break_outputs (test_inputs.InputTests.test_missing_inputs_do_not_break_outputs) ... ok
 test_pagination_filter_and_invalid_requests (test_inputs.InputTests.test_pagination_filter_and_invalid_requests) ... ok
 test_price_fields_and_raw_download_identity (test_inputs.InputTests.test_price_fields_and_raw_download_identity) ... ok

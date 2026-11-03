@@ -1,5 +1,8 @@
 import { english } from "./messages.ts";
 
+// API display text is English; keep the optional Chinese UI localised too.
+const chinese = new Map(Object.entries(english).map(([zh, en]) => [en, zh]));
+
 export type Language = "zh" | "en";
 export const LANGUAGE_KEY = "cs5_6_equity.language";
 export function isLanguage(value: unknown): value is Language {
@@ -7,7 +10,7 @@ export function isLanguage(value: unknown): value is Language {
 }
 export function chooseLanguage(search: string, saved: string | null): Language {
   const requested = new URLSearchParams(search).get("lang");
-  return isLanguage(requested) ? requested : isLanguage(saved) ? saved : "zh";
+  return isLanguage(requested) ? requested : isLanguage(saved) ? saved : "en";
 }
 export function translate(
   language: Language,
@@ -23,7 +26,11 @@ export function translate(
     ? "无法读取结果，请确认 Dashboard 服务正在运行。"
     : text;
   const template =
-    language === "en" && Object.hasOwn(english, key) ? english[key] : key;
+    language === "en"
+      ? Object.hasOwn(english, key)
+        ? english[key]
+        : key
+      : (chinese.get(key) ?? key);
   return template.replace(/\{(\w+)\}/g, (match, name: string) =>
     Object.hasOwn(values, name) ? String(values[name]) : match,
   );

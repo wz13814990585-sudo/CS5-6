@@ -93,6 +93,7 @@ def build(output, result=None):
                     ".yaml",
                     ".mjs",
                     ".jpg",
+                    ".png",
                 }
             ):
                 if name.endswith("/config.toml"):
@@ -151,7 +152,7 @@ def build(output, result=None):
         record = {
             "schema_version": 1,
             "version": VERSION,
-            "delivery_revision": "2026-11-03",
+            "delivery_revision": "2026-11-03-en",
             "created_utc": datetime.now(timezone.utc).isoformat(),
             "source_commit": subprocess.check_output(
                 ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True

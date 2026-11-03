@@ -1,52 +1,32 @@
-# SafeCapital 客户交付开发计划
+# SafeCapital client delivery development plan
 
-## Presentation 版本（2026-11-02）
+## Current delivery
 
-1.4 已完成关注股票多选、统一日期、集中输入/输出详情、示例重置、CSV/JSON 导出和异常重试。实现与验收分别见 [演示流程](PRESENTATION_WATCHLIST.md) 和 [验收记录](PRESENTATION_VALIDATION.md)。关注模式只展示已有结果，不重新构建组合。后续可按实际反馈安排排名历史图、打印报告；客户部署和 SSO 仍待其环境信息。
+Dashboard 1.4 provides multiple followed stocks, shared historical dates, linked input/model/allocation details, example reset, CSV/JSON exports and failure/retry handling. See [workflow](PRESENTATION_WATCHLIST.md) and [feature validation](PRESENTATION_VALIDATION.md). The 2026-11-03 client revision makes documentation/API display text English and defaults new UI visits to English, with Chinese retained as an optional preference.
 
-## 当前优先级调整（2026-11-01）
+The current goal is local input/output visibility and documented read-only interfaces. Existing source files and verified results are used; no upload, new inference, training or trading flow is introduced. Docker, public hosting and client-domain integration are deferred until environment details are supplied.
 
-根据用户确认，先完成本地 Dashboard 的输入/输出可视化与只读查询接口。输入使用项目现有文件，不增加上传、推理、训练流程。Docker、服务器部署和客户域名接入暂缓。
+## Delivery stages
 
-1. 将输入文件身份与当前回放校验记录匹配；区分源文件范围和输出覆盖范围。
-2. 展示因子及价格，提供日期/股票筛选、分页、原文件下载和输入到排名的跳转。
-3. 提供版本化输入 API、OpenAPI 定义和可运行的输入/输出关联示例。
-4. 完成本地接口、真实字节和浏览器交互验收，更新本地使用指南。
-
-本次结果见 [本地输入输出验收](LOCAL_IO_VALIDATION.md)。以下六阶段保留为此前交付工作的记录；部署部分待客户环境明确后再继续。
-
-## 目标与边界
-
-交付独立网站、版本化只读 API 和可安装的软件包。客户可以嵌入完整页面，也可以调用 API 自建页面。第一版使用真实、验证通过的历史回放，不接收新数据，不运行训练或交易。客户网站技术栈未知，不影响本模块的开发。
-
-## 工作阶段与验收
-
-| 阶段 | 工作 | 验收标准 |
+| Stage | Work | Acceptance |
 |---|---|---|
-| 1 范围与基线 | 保留真实指标、曲线、日期排名、下载和来源说明 | 结果与 CSV 一致，保留已验证的模型工程 |
-| 2 配置 | TOML 配置、环境覆盖、CLI、启动校验 | 客户不改源码即可设置端口、域名、结果目录；非法配置拒绝启动 |
-| 3 API 合同 | /api/v1、响应模型、统一错误、OpenAPI、JS 示例、精确 CORS | 客户可按文档调用；旧 /api 路径兼容；不允许的来源不获跨域授权 |
-| 4 运维 | 健康检查、Compose、反向代理、更新与回滚说明 | 配置和命令可验证；说明登录/HTTPS 的责任边界 |
-| 5 交付 | 预构建页面、服务器源码、真实快照、离线 API 合同、依赖锁、SHA256 清单 | ZIP 不包含本机环境、秘密文件或整个训练工程；解压即可安装 |
-| 6 验收 | 配置/API/交付测试，全新路径及 Python 环境安装、实际 HTTP 检查 | 全新环境无需 Node 或原模型依赖即可提供真实页面和结果 |
+| Scope and baseline | Real metrics/charts/rankings/downloads/provenance | Original CSV values and research evidence preserved |
+| Configuration | TOML, environment overrides, CLI and startup validation | Port/origin/result directory configurable without source edits; invalid configuration rejected |
+| API contract | Namespaced v1 models, errors, OpenAPI, JS examples and exact CORS | Documented calls, compatibility aliases, no cross-origin authorisation for unlisted sites |
+| Operations | Health, reverse proxy, update/rollback guidance | State actual platform/HTTPS/login responsibilities; old Compose examples remain deferred |
+| Packaging | Prebuilt frontend/server, verified snapshot, matched inputs, dependency locks and hashes | Web ZIP excludes secrets/local environments/full training project; Source ZIP retains complete tracked research |
+| Acceptance | Tests, fresh extraction/environments and HTTP/browser checks | Real outputs served without requiring research libraries or Node.js for Web |
 
-每阶段的实现与实际验收状态记录到 `DELIVERY_VALIDATION.md`。本计划不把未经验证的平台或客户环境标为完成。
+The original six-stage delivery was validated on the native macOS path with 23 tests in version 1.1. Version 1.2 added input binding, coverage distinctions, browsing and APIs; version 1.3 added actual allocations and module scope; version 1.4 added presentation watchlists. These are dated milestones, not claims of repeated execution. See each validation record and the companion final archive report for exact coverage.
 
-## 交付顺序
+## Integration information needed from the client
 
-实现配置与 API → 更新前端接入代码 → 编写交付打包/校验/验收工具 → 补齐部署与接口文档 → 构建及测试 → 打包 → 干净环境安装与浏览器检查 → 同步仓库。
+- Final module address and exact embedding/API origins.
+- Hosting platform and operational owner; any container requirement.
+- Login/SSO requirements, including protection for page/API/downloads.
+- Staging access and regression expectations for other Portfolio modules.
+- Ownership and frequency of future verified-result updates.
 
-## 客户提供的信息（正式接入时）
+## Later features requiring separate scope
 
-- 最终访问域名、允许嵌入/API 调用的站点 origin。
-- 部署服务器和维护责任人，是否允许容器。
-- 是否需要客户登录系统保护；由客户网关同时保护页面、API、下载。
-- 历史结果更新责任人及更新频率。
-
-## 后续版本（须另行明确需求）
-
-最新数据接入、定时计算、新股票池、用户上传、参数化回测、在线训练、逐笔交易/完整持仓历史导出、多租户与 SSO。当前版本通过明确 API 和结果快照边界为这些扩展提供基础，不在页面中承诺未实现能力。
-
-## 执行结果
-
-以上六阶段已完成本机原生部署路径的开发与验收；23 项测试、干净环境安装及 HTTP 检查通过。Docker Compose 配置已验证，容器运行、客户生产域名和登录仍待目标环境验证。详细证据见 [交付验收记录](DELIVERY_VALIDATION.md)。
+New data ingestion, scheduled computation, new stock universes, uploads, parameterised backtests, online training/inference, fuller trade exports, rank-history charts, print reports, multi-tenant accounts and SSO. APIs and versioned snapshots provide extension points, but the current interface must not claim these features are implemented.

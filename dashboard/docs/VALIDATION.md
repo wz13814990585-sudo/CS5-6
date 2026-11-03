@@ -1,44 +1,31 @@
-# Dashboard V1 验收记录
+# Dashboard V1 validation record
 
-日期：2026-11-01，macOS 14.5 arm64 / Python 3.12.10 / Node.js 25.2.1。
+Historical validation: 2026-11-01, macOS 14.5 arm64, Python 3.12.10, Node.js 25.2.1. This is an English translation of the original record; it is not a claim that these checks were rerun during translation. Original screenshots remain in Git history; current English illustrations are listed in [language support](LANGUAGE_SUPPORT.md#screenshots).
 
-## 真实数据
+## Real data and automated checks
 
-本机默认使用 `saved_ensemble_20261101T062202_638390Z`：13,517 条预测、366 个信号周、210 周组合回测。API 返回期末资金 149330.60888418998、累计收益 0.49330608884189986，与该回放原始 CSV 相同。浏览器展示 149,330.61 和 +49.33%。
+The local default was `saved_ensemble_20261101T062202_638390Z`: 13,517 predictions, 366 signal weeks, 210 backtest weeks. API final capital 149330.60888418998 and total return 0.49330608884189986 matched its original CSV. The browser showed 149,330.61 and +49.33%. The tracked delivered replay also loaded and matched values; no local runs directory was required for a fresh environment.
 
-随仓库交付的真实结果也通过 API 加载和数值检查。只有启动时清单及文件哈希验证成功的结果进入选择列表；新环境无需复制本机 runs 即可展示。
+- TypeScript and Vite production build passed.
+- 15 Dashboard tests passed; 87 research regression tests passed in the separate model environment.
+- API coverage: original metrics/bytes; ranking date/search/pagination; invalid input, writes, no results, corruption, non-finite values, path/symlink escape, snapshot consistency and embed origins.
+- At that validation date, npm audit reported zero known vulnerabilities and pip-audit of the fully pinned Python dependencies reported none. These are dated checks, not a current security guarantee.
+- Dashboard dependencies were isolated; research source, inputs and frozen models were unchanged.
 
-## 自动检查
+Log: [api-tests.log](api-tests.log). Starlette emitted an httpx testing-adapter deprecation warning; runtime does not require httpx.
 
-- TypeScript 类型检查与 Vite 生产构建通过。
-- `python -m unittest discover -s dashboard/tests -v`：15 项通过。
-- 原模型环境 `python -B -m unittest discover -s pipeline_tests -q`：87 项通过。
-- API 测试覆盖指标/原始字节、排名日期搜索分页、错误输入、拒绝写操作、无可用结果、损坏文件、非有限数值、路径与符号链接越界、快照一致性和嵌入域名限制。
-- `npm audit`：0 项已知漏洞；Python 完整锁定运行依赖经 `pip-audit -r dashboard/requirements.txt --no-deps --disable-pip` 查询，无已知漏洞（该命令针对已锁定的全部运行依赖，不执行新解析）。
-- Dashboard Python 环境与模型 `.venv` 独立；原模型源代码、输入和冻结权重未修改。
+## Browser checks recorded at the time
 
-测试日志见 [api-tests.log](api-tests.log)。当前 Starlette 对测试工具 httpx 发出弃用提示；15 项测试通过，运行服务不依赖 httpx。
+1. Real metrics/chart loaded; Weekly return and Last 52 weeks displayed 2025-09-05–2026-08-28.
+2. ANF on 2026-08-28 had rank 30 and score 0.3417; unmatched search showed an empty state.
+3. Pagination showed ranks 11–20; 2019-08-30 had 27 ranked stocks, led by TJX at score 0.8272.
+4. Switching to delivered retained the historical metrics and changed the source ID.
+5. Same-origin iframe loaded and allowed searching.
+6. A temporary host at 127.0.0.1:9001 embedded the module at port 8000 using an exact origin allowance; real metrics/search worked. Temporary configuration/server were removed afterwards.
+7. At 390×844, page scrollWidth was 390; mobile navigation worked and ranking tables scrolled locally.
+8. A real summary download completed; API checks confirmed original file bytes.
+9. No application console errors were observed.
 
-## 浏览器实际操作
+## Limits
 
-通过本机浏览器执行：
-
-1. 独立页面加载真实指标，资金图正常绘制；切换每周收益、末 52 周，日期区间变为 2025-09-05 至 2026-08-28。
-2. 搜索 ANF 显示 2026-08-28 排名 30、得分 0.3417；无匹配代码显示空状态。
-3. 清空搜索，下一页显示排名 11–20；切换 2019-08-30 显示当周 27 只股票，排名第一 TJX、得分 0.8272。
-4. 切换交付版本，指标保持与历史结果一致，来源编号更新为 delivered。
-5. 同源示例页通过真实 iframe 加载；嵌入页无侧栏，框内搜索正常。
-6. 临时使用 `127.0.0.1:9001` 作为客户站点，`127.0.0.1:8000` 作为 Dashboard，配置精确 origin 后验证跨域 iframe 的真实指标和搜索。测试完毕撤销临时允许域名并停止临时客户站点。
-7. 390 × 844 视口检查：页面 scrollWidth 为 390，无页面级横向溢出；移动导航可以打开并跳转排名。排名表在自身容器横向滚动。
-8. 实际点击回测汇总下载，文件保存到本机 Downloads；接口测试确认其字节与原始 CSV 一致。
-9. 浏览器控制台未出现应用错误。
-
-预览截图：[dashboard-preview.jpg](dashboard-preview.jpg)。
-
-## 尚待目标环境验证
-
-- Dockerfile 已提供，但本机 Docker daemon 未运行，未实测镜像构建或容器启动。
-- 未部署公网域名、配置客户 HTTPS 或对接客户登录。
-- Windows 和客户浏览器/网站 CSP 需在目标环境验收。
-
-Dashboard V1 仅呈现历史结果；不提供在线训练、任意新数据推理或真实交易执行。
+Docker recipes existed but daemon/image/container execution was not tested. Public hosting, client HTTPS/login and target Windows/client CSP acceptance were pending. V1 was a historical-result viewer, not online training, arbitrary inference or trading.
