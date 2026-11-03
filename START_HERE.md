@@ -6,7 +6,7 @@ This delivery provides **Model-Based Stock Strategies**, an independent research
 
 **API keys: none are required to run the delivered Dashboard or replay the supplied frozen research results.** Installation downloads dependencies. The Dashboard uses the supplied local data; it does not call a live market-data or AI service.
 
-English is the initial UI language and the primary language of all client guides. An explicit URL or saved Chinese preference is still respected; use `?lang=en` to force English for a presentation. API display labels and error messages are English.
+English is the initial UI language and the primary language of all client guides. An explicit URL or saved Chinese preference is still respected; use `?lang=en` to force English for a presentation. API display labels and error messages are English. Source-repository README files include complete English and Chinese versions; the repository root README contains the full navigation index.
 
 ## 1. Choose your package
 

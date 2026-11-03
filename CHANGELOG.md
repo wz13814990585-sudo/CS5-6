@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-03 — Bilingual README documentation
+
+- Added complete Chinese versions to all 22 repository README documents while preserving their English content first, commands, metric definitions and limitations.
+- Added a full README index at the project root, with direct English/Chinese links to every document, including the Ensemble evidence README.
+- Updated documentation hashes and the delivered replay manifest with an explicit documentation-only provenance record; numerical results, trained models and input data are unchanged. API example manifest identities follow that revision. No model/replay execution is claimed for this documentation change.
+
 ## 2026-11-03 — English-first client delivery
 
 - Made English the initial Dashboard and embedding-preview language; retained explicit/saved Chinese preferences and put English first in the selector.

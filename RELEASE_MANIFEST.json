@@ -5,7 +5,7 @@
     "name": "SafeCapital_Final_FrozenTrees_RunFix_20261024.zip",
     "sha256": "64aa8bf7ec88621602b649cf0c2be0b1cf3b71dea9aaae515a1838c403e6af01"
   },
-  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not. Local Dashboard 1.2 adds identity-bound input browsing and query/download APIs, 30 web tests, local browser/HTTP acceptance and input-inclusive package checks. Docker and public deployment are deferred. Chinese/English UI switching adds six language tests, persistent language and URL preferences, and standalone/embed/mobile browser acceptance without changing model data or API contracts. Portfolio Neo module 1.3 adds isolated cs5_6_equity API and client-style bilingual interface, reconciled offline holdings (two variants, 210 weeks each, original weekly error zero), 39 web tests, 6 language tests, desktop/mobile and local entry-card/iframe checks. 207 existing non-Dashboard file hashes are unchanged. Actual client-site integration, authentication, staging regression and production release require the client core team and are not claimed. Presentation Dashboard 1.4 adds read-only stock watchlists, shared historical dates, five-factor/model/allocation details, current-selection exports, bilingual demo presets, request timeouts and iframe failure recovery. 49 backend tests and 12 frontend tests pass; browser desktop/mobile interactions and isolated package HTTP checks pass. The original 207 non-Dashboard files are unchanged; no new research computation or client production integration is claimed. English-first client delivery revision 2026-11-03-en translates primary client documents and API display text, defaults new UI visits to English, retains optional Chinese, and replaces delivery screenshots with English views. 50 backend tests and 12 frontend tests pass. Research inputs, trained models, original numerical results and report binaries are unchanged relative to the previous delivery; two research README files only have redundant Chinese removed. The companion final delivery report records archive installation validation.",
+  "verification_scope": "Frozen Ensemble full prediction and selected-strategy replay, independent selection/account verification, full three-component training-only demonstration, regression suite, syntax, file hashes and package integrity. Dashboard V1 adds read-only verified-result API, frontend build, 15 API/integrity tests and browser standalone/embed checks; Docker execution and customer deployment are not validated. Customer delivery 1.1 adds typed v1 API, deployment configuration, 23 web tests, portable packaging and clean macOS installation/HTTP acceptance. Docker Compose configuration is validated, but container runtime is not. Local Dashboard 1.2 adds identity-bound input browsing and query/download APIs, 30 web tests, local browser/HTTP acceptance and input-inclusive package checks. Docker and public deployment are deferred. Chinese/English UI switching adds six language tests, persistent language and URL preferences, and standalone/embed/mobile browser acceptance without changing model data or API contracts. Portfolio Neo module 1.3 adds isolated cs5_6_equity API and client-style bilingual interface, reconciled offline holdings (two variants, 210 weeks each, original weekly error zero), 39 web tests, 6 language tests, desktop/mobile and local entry-card/iframe checks. 207 existing non-Dashboard file hashes are unchanged. Actual client-site integration, authentication, staging regression and production release require the client core team and are not claimed. Presentation Dashboard 1.4 adds read-only stock watchlists, shared historical dates, five-factor/model/allocation details, current-selection exports, bilingual demo presets, request timeouts and iframe failure recovery. 49 backend tests and 12 frontend tests pass; browser desktop/mobile interactions and isolated package HTTP checks pass. The original 207 non-Dashboard files are unchanged; no new research computation or client production integration is claimed. English-first client delivery revision 2026-11-03-en translates primary client documents and API display text, defaults new UI visits to English, retains optional Chinese, and replaces delivery screenshots with English views. 50 backend tests and 12 frontend tests pass. Research inputs, trained models, original numerical results and report binaries are unchanged relative to the previous delivery; two research README files only have redundant Chinese removed. The companion final delivery report records archive installation validation. Bilingual README revision 2026-11-03 adds complete Chinese versions beside the preserved English text in all 22 README documents and a root index with language anchors. Replay documentation and file-inventory hashes are updated with explicit provenance; numerical data, model files and calculation code are unchanged. This is not a new research run.",
   "checks": {
     "python_syntax_files": 65,
     "regression_tests_run": 87,
@@ -39,7 +39,9 @@
     "dashboard_frontend_tests_passed": 12,
     "dashboard_watchlist_package_roundtrip_passed": true,
     "dashboard_delivery_revision": "2026-11-03-en",
-    "dashboard_default_language": "en"
+    "dashboard_default_language": "en",
+    "bilingual_readme_files": 22,
+    "bilingual_readme_index": "README.md#readme-index"
   },
   "files": {
     ".dockerignore": {
@@ -55,8 +57,8 @@
       "bytes": 1153
     },
     "CHANGELOG.md": {
-      "sha256": "ac03837240e73c6f858320d647900476c951cf3f4991e82295d5d31a6d934389",
-      "bytes": 5550
+      "sha256": "b38b228e70ec7c0c9bbf8a99ef977bc95c4005e01385b3523d34fc8008cf1a96",
+      "bytes": 6219
     },
     "EXTERNAL_SCOPE.md": {
       "sha256": "39b8aefad9a255468ee72364bf49135805dc11b2d5f66fcb1f4e5629d3888680",
@@ -71,8 +73,8 @@
       "bytes": 3655
     },
     "FINAL_OUTPUTS/01_saved_model_replay/README.md": {
-      "sha256": "60d1ae9304e433ec523e26ccddcc14280739f77c00eceaa12d34f5e5022b6381",
-      "bytes": 1017
+      "sha256": "2e02e86a103d9a7ead13f0c204cf77b9c5b9ba426f8222fb17901d81a06cb2c1",
+      "bytes": 2037
     },
     "FINAL_OUTPUTS/01_saved_model_replay/model_configuration.json": {
       "sha256": "78abfc0ba65998bb68e7f07ecee4fe0cf83ab3c55f938dc83bd1b5bda9eeebba",
@@ -87,8 +89,8 @@
       "bytes": 280
     },
     "FINAL_OUTPUTS/01_saved_model_replay/verified_replay/backtest/README.md": {
-      "sha256": "67176c267ddcba5314705113c4b2a440f5aac64513fd7ed18db10d7595d1f27a",
-      "bytes": 865
+      "sha256": "4b322ea27f98f6f805beab629122e638387ad0c883549fa8f9d2bba735080de6",
+      "bytes": 1762
     },
     "FINAL_OUTPUTS/01_saved_model_replay/verified_replay/backtest/summary.csv": {
       "sha256": "35d8b0e3e0e0e6de0464f4313b61617e9e4e3a635f7fd944683b862d5ba870e2",
@@ -103,8 +105,8 @@
       "bytes": 44842
     },
     "FINAL_OUTPUTS/01_saved_model_replay/verified_replay/manifest.json": {
-      "sha256": "d14ee3b5010a373ceaf5af6c5afb707b6b58a61cbb64680ab59c6b498a64cd7a",
-      "bytes": 1005
+      "sha256": "c1a33cd7e66aedc133edca1ffeec216244cfd2880a91f80ab2d7f12978c769e1",
+      "bytes": 1581
     },
     "FINAL_OUTPUTS/01_saved_model_replay/verified_replay/prediction_verification.json": {
       "sha256": "f310bbcd2e532fcefc199ef4f5ae7bb6c0c21f4bdb080e5855bdf7dc9dd7c473",
@@ -119,28 +121,28 @@
       "bytes": 801648
     },
     "FINAL_OUTPUTS/FILE_MANIFEST.csv": {
-      "sha256": "ef0f2125760c6e1659557ae3d156066d2af4faad9ea902944553b97069c313fe",
-      "bytes": 1986
+      "sha256": "897a466cb91f33ea5342734b58345b1827c8909b331e3e4318625f5db8f5c85f",
+      "bytes": 1988
     },
     "FINAL_OUTPUTS/README.md": {
-      "sha256": "24579eb5379447d5ab76a315b7a21bfe66c548fc3853c5903a6f83d23c6e8bd4",
-      "bytes": 768
+      "sha256": "c76b42174a5fb721d6475db8db61d75d0726347f16b2628048b1b99fb358f6b6",
+      "bytes": 1607
     },
     "NOTICE.md": {
       "sha256": "ea77a2db553f9a0a85e5e670ca6ee8bc7e06e300e1d7e66fe0118e86050b52e7",
       "bytes": 2684
     },
     "README.md": {
-      "sha256": "a2fa67c29b558c29b7d9a6f7f8d9738540b31996f058ec3cc687cd788ff58824",
-      "bytes": 15243
+      "sha256": "d3637bc42f8ac6719b97409775aa9a80da1023035c9547a6ae53dac08441a49f",
+      "bytes": 34622
     },
     "START_HERE.md": {
-      "sha256": "391dd7bb821a7097296ac44f1fb5926e82c028478fdc43ff8a8d833f63b18146",
-      "bytes": 15967
+      "sha256": "6e630d5ebd4b6fb5a18444729fddccf3f42add3cd1edf86a581d36ae8ce0ade5",
+      "bytes": 16108
     },
     "backtesting/README.md": {
-      "sha256": "bc8b471cfd549dd2c1595bfecdd44552c476e4dc0edd84990d7bfc1320b5d964",
-      "bytes": 698
+      "sha256": "0d3ff1487fd971a1f292c19fc1ce8bd0c15b25e6d4624ea9661eb55696fd655c",
+      "bytes": 1413
     },
     "backtesting/external40/integer_backtest.py": {
       "sha256": "0f29792808648f331fbae3c17ebe1f0dbd4d425b3e856429a9f35c85e5195d8b",
@@ -159,8 +161,8 @@
       "bytes": 767
     },
     "dashboard/README.md": {
-      "sha256": "0ab8af0600187e74d302cba6b153ee2053466515ec0897e38e30d314ec9f40ee",
-      "bytes": 8299
+      "sha256": "5ba229dcc5d4d9800fd6d24d92696401978e19f02f829b395c746dd8899f2af7",
+      "bytes": 16156
     },
     "dashboard/compose.delivery.yaml": {
       "sha256": "98c8ad3e7a12bac3214712f621def214457ac7658726739b30d5f86e0baf13b5",
@@ -211,8 +213,8 @@
       "bytes": 3083
     },
     "dashboard/docs/LANGUAGE_SUPPORT.md": {
-      "sha256": "16781106ad85edaad45b50ebf019443536e4a4384fb80e8b894674a5ec2a83b8",
-      "bytes": 4376
+      "sha256": "e01fbead268046a8a7cb54c166368d6398dd73a2dd7131c349a3951fd0e47f68",
+      "bytes": 4546
     },
     "dashboard/docs/LOCAL_IO.md": {
       "sha256": "dda6a7e2978ebd1364e60410879858cbc57366243babe56e4c6ae66bd3c4d5e0",
@@ -295,11 +297,11 @@
       "bytes": 513
     },
     "dashboard/examples/cs5_6_equity/no-data.json": {
-      "sha256": "a208707ef907c6ef5a50f3b4354d6d3ca0b289bf549daf4865d83efbab6ac57b",
+      "sha256": "92d3b45305cc0055875539645aed8639e421049fd0e1b7190257f9dff5594114",
       "bytes": 11121
     },
     "dashboard/examples/cs5_6_equity/success.json": {
-      "sha256": "de7479017414967f07e81e3c8447d7361548270dc8ac48010a0b4b24b53ff2b0",
+      "sha256": "58fb4c17d59114f728301b3255dd3b45db6b04a0688b702d0aabb2ec068e11e4",
       "bytes": 12955
     },
     "dashboard/examples/cs5_6_equity/watchlist-invalid.json": {
@@ -307,11 +309,11 @@
       "bytes": 261
     },
     "dashboard/examples/cs5_6_equity/watchlist-no-data.json": {
-      "sha256": "08eb349fd55324be8d38a9e67882f1364e7d773f4768ff2aee9a3d861b64f6e6",
+      "sha256": "245d8dc38d53f9c5a228ce5ddaf4a52c2e38f4287dff10f997ff81de66572ca6",
       "bytes": 4073
     },
     "dashboard/examples/cs5_6_equity/watchlist-success.json": {
-      "sha256": "d4ef1b3b92426cb4b4f82eee2ff1b9cf6566039e3300bc642e805eccfd3b70cb",
+      "sha256": "d7cceb8897744ac91bd4c5d6130e4e7ad9a7e48a092f5a73b8d762cff7b5841c",
       "bytes": 7923
     },
     "dashboard/examples/verify-module.mjs": {
@@ -507,8 +509,8 @@
       "bytes": 31338708
     },
     "data/README.md": {
-      "sha256": "e5f90fbd6089258bab1cdeaf7a75e64e160c00c49f599c413f9c72b54f1ff0d1",
-      "bytes": 2147
+      "sha256": "cb6cfe24b3d1cb4e028ecb0cb67be7834d576d9b3bfa949762301302507d612c",
+      "bytes": 4140
     },
     "data/additional_40/additional_40_five_factors_targets_final.xlsx": {
       "sha256": "ca1668c7da7a785acb54e3ba29da9227dd9bc1096278e991fd50b4ecbe6e53b4",
@@ -523,8 +525,8 @@
       "bytes": 2813
     },
     "data/raw_inputs/README.md": {
-      "sha256": "70b3ac5278aa687cd7e20d3c702a17c3e5097971ad119d9077469e1e9b62feaf",
-      "bytes": 328
+      "sha256": "636f478f640216b3ff48227b3764efed552b03ceddccc088778306e13d1900af",
+      "bytes": 692
     },
     "data/reproducible/test_universe.csv": {
       "sha256": "0eb6d338ad5aa9a9a5b6f1e363c7d7ef54711ada189cfb255d47e2477ffdb314",
@@ -547,8 +549,8 @@
       "bytes": 41748119
     },
     "data_processing/README.md": {
-      "sha256": "3755462847e7711aea1771f272296688d554c977efd572fec77d064b32e22ad5",
-      "bytes": 2911
+      "sha256": "b6b00eae0850f1c92b1bf719284eb63483aba1c62a2b3a2bbee3ced4128f757e",
+      "bytes": 5791
     },
     "data_processing/build_external_factors.py": {
       "sha256": "0488dd21c60e3108c3d6d277b2c9a9b142e1c3acb09307af2c21c0c75399c5ab",
@@ -591,8 +593,8 @@
       "bytes": 21012
     },
     "docs/validation_runs/2026-11-01/README.md": {
-      "sha256": "dc6990f2b64fb74296d261becc90e2abd915e9ba873018562674ccf19b4c111d",
-      "bytes": 1362
+      "sha256": "cd00b8b0268883bf756b16a977d788a03ef0ed7662c6e5e656c04e8e80b3d2ca",
+      "bytes": 2780
     },
     "docs/validation_runs/2026-11-01/backtest_verification.json": {
       "sha256": "27a547f7b8ef6fc57d9889fe9e37bb5e6482e5adae7c7e5628e2c4fa4d446e28",
@@ -643,8 +645,8 @@
       "bytes": 2300
     },
     "external_validation/ensemble_ranker/README.md": {
-      "sha256": "6d65563604ab1344b433a9ecee6114c7085916c5fce57e4d9d6d675e75485061",
-      "bytes": 2059
+      "sha256": "1b655ec5ec1101f4be3fda162c35b6dd0c37ccb76bca4da4ddfee37e3c045253",
+      "bytes": 3855
     },
     "external_validation/ensemble_ranker/code/ranker_core.py": {
       "sha256": "9c3ab116cad5c2ef31a1d0aae238cc5cbe41d59ec17b3451b1ebbd53965c0422",
@@ -663,8 +665,8 @@
       "bytes": 3408
     },
     "external_validation/ensemble_ranker/predictions/README.md": {
-      "sha256": "b80c4ad8f995b7f0f9e8e05913f8da523bf961c79654fad8f220979ae17066c1",
-      "bytes": 727
+      "sha256": "f0e200d11bec47fb1fb0552da416b43a39f1218246953419ac58320b220bddc7",
+      "bytes": 1464
     },
     "external_validation/ensemble_ranker/predictions/stock_rankings.csv": {
       "sha256": "d8e219d6749031117add13e13d8fbea15abecec87e190a0c72e92ec3d340d007",
@@ -855,8 +857,8 @@
       "bytes": 56642
     },
     "external_validation/ensemble_ranker/training_reference/README.md": {
-      "sha256": "8c4ee091206bdb5e1f55689aff9c3b84ec11dfee2cbdaf804ed9e0b368d8aa20",
-      "bytes": 974
+      "sha256": "3839c6981116336e82c39e152156b8de318258cb244083e09a1a8461690c3e1f",
+      "bytes": 1954
     },
     "external_validation/ensemble_ranker/training_reference/prediction_helpers.py": {
       "sha256": "fb92d4c43a7f94680989d06e33c6fafccd5cada86ad3033220209c7085fe2d1b",
@@ -871,8 +873,8 @@
       "bytes": 4805
     },
     "external_validation/shared_inputs/README.md": {
-      "sha256": "48036a36ba5d580f0966dc3490036b4665ba470bf36153c617216b63a2886b4a",
-      "bytes": 398
+      "sha256": "4919f0e69a3115ccaeb9eb60f611a5278a9994c32c7f37d5de02fd0c0e2f8023",
+      "bytes": 871
     },
     "external_validation/shared_inputs/inputs/test40_with_prices.csv": {
       "sha256": "3ff2cbfd862ec7207157dc67675f5c4e28c5f7e9061ff8fa7fcfa24a134fdc39",
@@ -931,12 +933,12 @@
       "bytes": 6380
     },
     "reports/README.md": {
-      "sha256": "d480e7020aa0f47245274b5eb8aff7208dbe0e6a8f2bf8b96847fd4400a470ae",
-      "bytes": 763
+      "sha256": "a8e207a5033e22417447a12fe720a1a173feda8f07ade3e64c7cda3f899617a2",
+      "bytes": 1583
     },
     "reports/ensemble/00_README_models_factors_files.md": {
-      "sha256": "aab6a088a6f6a14628b854b6718fcf70cd1a72d320b7adec34236d08eb6c886f",
-      "bytes": 1096
+      "sha256": "61d151f4b744e3e3e18d7cfd025f2bb0170a974f8bf7d3243be9d23a0fd45ddc",
+      "bytes": 2182
     },
     "reports/ensemble/02_ensemble_evaluation_backtest_report.md": {
       "sha256": "36d731786ffcf7ea9f65ce7230179603383cc654ed7dd2242bea13551653602a",
@@ -991,8 +993,8 @@
       "bytes": 38559
     },
     "research/01_factor_analysis/README.md": {
-      "sha256": "12b7c593497e1212c59786821e75d5f3e9b656558ff953ffcc8b8a3dd7daf6b7",
-      "bytes": 2688
+      "sha256": "4f73f9c74ab4cde1bd827dbf924c9338d01cd25eedc5122cefde1f033b6e3552",
+      "bytes": 5344
     },
     "research/01_factor_analysis/factor_analysis.py": {
       "sha256": "a0fe286cdb39a28d6445ceeaaca34fd90f29e8b2ba1534c6249fd48fe8f8ece9",
@@ -1003,8 +1005,8 @@
       "bytes": 12367
     },
     "research/02_ridge/README.md": {
-      "sha256": "76ca302dbd4fed951bb86db91fc03f90eb9da84127210d9608ed6f9d4fdc1249",
-      "bytes": 9484
+      "sha256": "e7641a87265f696f0bb65271211e572dea105f1591418d8f6894ef37831eae10",
+      "bytes": 17894
     },
     "research/02_ridge/results/ridge_5_7_11_45_6y26w_results.csv": {
       "sha256": "f025803c30931209b6c6bfeeea510a2e5e787ff5e68164eb1c4eb99c7176930f",
@@ -1015,8 +1017,8 @@
       "bytes": 16996
     },
     "research/03_random_forest/README.md": {
-      "sha256": "bbb2d944beb33395ce73e85377fc61c70c6ff0af858a31ef2ac0d1f7b538a781",
-      "bytes": 2324
+      "sha256": "db87c85ad807365bff1a72ff7cef84d3de3a81371037cb8e5d59a832e0aa9a9f",
+      "bytes": 4571
     },
     "research/03_random_forest/results/random_forest_5_7_11_45_6y26w_results.csv": {
       "sha256": "41718ced4a7a32bd61628192fe67b36de132cfede1979ae55a682f0a42a948a4",
@@ -1031,8 +1033,8 @@
       "bytes": 17215
     },
     "research/04_xgboost/README.md": {
-      "sha256": "4836e4c1479a227591cf13ea49276dc47b4cffb1f105246e3819d92c1cae5a84",
-      "bytes": 2747
+      "sha256": "ee2e91860a4e8ff625fb5f5eb04a97d0bafe51dbb5d73fee6e1b6c3ef0d75efd",
+      "bytes": 5379
     },
     "research/04_xgboost/results/xgboost_5_7_11_45_6y26w_results.csv": {
       "sha256": "b24da4d045c92572808e37421748cc31625ab4d9a4e83864c580ddcafc9725fb",
@@ -1043,8 +1045,8 @@
       "bytes": 16818
     },
     "research/05_xgboost_ranker/README.md": {
-      "sha256": "945a6a5f7034a49b0058514d3c515cbe387db452ab4993ea79590eb3720ca036",
-      "bytes": 5396
+      "sha256": "7d6bfb629ea3a24772d2e35e1494bfd4c70abc1d786a515258eecfdd1b416529",
+      "bytes": 10352
     },
     "research/05_xgboost_ranker/results/baseline_results.csv": {
       "sha256": "1bb5b2c6c05afb72a5e5016b8d5a96cd928780077066405a3d8b5e7b00d8d923",
@@ -1059,8 +1061,8 @@
       "bytes": 27885
     },
     "research/06_evaluation_backtest/README.md": {
-      "sha256": "671d521c86634883197e1dd2e27c3d695f66f394dfe31f31222a4317242e6fda",
-      "bytes": 6197
+      "sha256": "45cf5ddc9b0db5e5838e07b3d353296e1bc955467a18e8618df154e864b7824d",
+      "bytes": 11764
     },
     "research/06_evaluation_backtest/evaluate.py": {
       "sha256": "850f9c5146d334e3bd248654588ba8ba9b78e677840b402fb79ef3954b7acbff",

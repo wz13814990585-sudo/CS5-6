@@ -1,5 +1,11 @@
 # Historical Ensemble investment simulation
 
+[English](#readme-en) | [中文](#readme-zh)
+
+<a id="readme-en"></a>
+
+## English
+
 Prediction source: loaded historical saved models; new inference, no training. No models are trained in this simulation.
 
 Only the Ensemble Top5_NoLoss13w strategy is retained. It excludes stocks with a negative observable trailing 13-week return before selecting the five highest Ensemble ranks.
@@ -11,3 +17,21 @@ Initial capital is 100,000, one-way transaction cost is 10bps, and the execution
 | FullHistory | Top5_NoLoss13w | 210 | 10.44% | 0.543 | -24.88% | 149330.61 |
 
 Only date, ticker and ensemble_ranking_score are passed to the trading engine. Future realised-return and evaluation-label columns in the source file are not used for selection or execution.
+
+---
+
+<a id="readme-zh"></a>
+
+## 中文
+
+预测来源是已保存的历史模型：重新执行推断，不进行训练。本次模拟没有训练任何模型。
+
+仅保留 Ensemble `Top5_NoLoss13w` 策略。先排除信号时点可观测的过去 13 周收益为负的股票，再从剩余股票中选择 Ensemble 排名最高的五只。
+
+初始资金为 100,000，单边交易成本为 10bps，执行引擎按整数股数交易。
+
+| 区间 | 策略 | 周数 | 年化收益 | 夏普比率 | 最大回撤 | 最终资金 |
+|---|---|---:|---:|---:|---:|---:|
+| FullHistory | Top5_NoLoss13w | 210 | 10.44% | 0.543 | -24.88% | 149330.61 |
+
+交易引擎仅接收 `date`、`ticker` 和 `ensemble_ranking_score`。源文件中的未来已实现收益及评估标签列不参与选股或执行。
