@@ -12,7 +12,7 @@ The local default was `saved_ensemble_20261101T062202_638390Z`: 13,517 predictio
 - At that validation date, npm audit reported zero known vulnerabilities and pip-audit of the fully pinned Python dependencies reported none. These are dated checks, not a current security guarantee.
 - Dashboard dependencies were isolated; research source, inputs and frozen models were unchanged.
 
-Log: [api-tests.log](api-tests.log). Starlette emitted an httpx testing-adapter deprecation warning; runtime does not require httpx.
+Log: api-tests.log (`dashboard/docs/api-tests.log` in the complete source package). Starlette emitted an httpx testing-adapter deprecation warning; runtime does not require httpx.
 
 ## Browser checks recorded at the time
 

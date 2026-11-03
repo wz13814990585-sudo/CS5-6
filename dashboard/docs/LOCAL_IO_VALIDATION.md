@@ -4,7 +4,7 @@
 
 ## Automated checks
 
-- 30 Dashboard tests passed: the earlier 23 plus seven input tests. Log: [local-io-tests.log](local-io-tests.log).
+- 30 Dashboard tests passed: the earlier 23 plus seven input tests. Log: local-io-tests.log (`dashboard/docs/local-io-tests.log` in the complete source package).
 - TypeScript and Vite build passed.
 - HTTP checks verified both input download hashes, 17,353 rows each, queried values against the original input files, and output bytes against the local replay: 13,517 predictions, 210 backtest weeks, final capital 149330.60888418998.
 - Input coverage included full/output scopes, exact factors, label exclusion, pagination/search, invalid parameters, original downloads, missing inputs and identity mismatch rejection.

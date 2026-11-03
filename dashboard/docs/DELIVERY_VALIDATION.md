@@ -15,7 +15,7 @@ Date: 2026-11-01. Environment: macOS 14.5 arm64, Python 3.12.10, Node.js 25.2.1.
 
 All 23 web tests passed, as did TypeScript/Vite builds and both Compose configuration parses. This established configuration validity only, not container runtime. Package hashes and sizes verified. The extracted server passed HTTP acceptance from an independent working directory: 13,517 predictions, 210 weeks, final capital 149330.60888418998.
 
-The smoke check covered page/script assets, health, rankings, account/summary consistency, four original downloads byte-for-byte and the 404 error contract. The JS example returned actual final capital and latest leader SCL. OpenAPI was generated from current response models. Logs: [integration-tests.log](integration-tests.log).
+The smoke check covered page/script assets, health, rankings, account/summary consistency, four original downloads byte-for-byte and the 404 error contract. The JS example returned actual final capital and latest leader SCL. OpenAPI was generated from current response models. Logs: integration-tests.log (`dashboard/docs/integration-tests.log` in the complete source package).
 
 The browser displayed real metrics and delivered provenance; searching, downloads and iframe examples worked. Prior mobile/cross-origin evidence is in [V1 validation](VALIDATION.md). Original research files/models were unchanged; their 87-test record was maintained separately.
 
